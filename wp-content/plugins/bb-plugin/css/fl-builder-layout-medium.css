@@ -1,0 +1,25 @@
+/* Responsive Utilities
+------------------------------------------------------ */
+.fl-visible-desktop,
+.fl-visible-large,
+.fl-visible-mobile,
+.fl-col-group-equal-height .fl-col.fl-visible-desktop,
+.fl-col-group-equal-height .fl-col.fl-visible-large,
+.fl-col-group-equal-height .fl-col.fl-visible-mobile {
+	display: none;
+}
+.fl-visible-medium {
+	display: block;
+}
+.fl-col-group-equal-height .fl-col.fl-visible-medium {
+    display: flex;
+}
+
+/* Reversed Responsive Stacking */
+.fl-col-group.fl-col-group-medium-reversed {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap-reverse;
+	flex-wrap: wrap-reverse;
+	flex-direction: row-reverse;
+}

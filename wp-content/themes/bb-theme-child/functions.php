@@ -57,3 +57,36 @@ function mandatory_coupon_for_grass_valley_fos()
         }
     }
 }
+
+/**
+ * Require coupon for test product
+ */
+add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_test_product');
+function mandatory_coupon_for_test_product()
+{
+    $targeted_ids = array(818); // The targeted product ids (in this array)
+    $coupon_codes = ['TESTCOUPON']; // The required coupon codes
+
+    $applied_coupons = WC()->cart->get_applied_coupons();
+
+    // Check if any of the coupon codes are applied
+    $valid_coupon_applied = false;
+    foreach ($coupon_codes as $code) {
+        if (in_array(strtolower($code), $applied_coupons)) {
+            $valid_coupon_applied = true;
+            break;
+        }
+    }
+
+    // Loop through cart items
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        // Check cart item for defined product Ids and applied coupon
+        if (in_array($cart_item['product_id'], $targeted_ids) && !$valid_coupon_applied) {
+            wc_clear_notices(); // Clear all other notices
+
+            // Avoid checkout displaying an error notice
+            wc_add_notice(sprintf('The product "%s" requires a coupon for checkout.', $cart_item['data']->get_name()), 'error');
+            break; // stop the loop
+        }
+    }
+}

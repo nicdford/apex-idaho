@@ -52,7 +52,8 @@ function mandatory_coupon_for_grass_valley_fos()
             wc_clear_notices(); // Clear all other notices
 
             // Avoid checkout displaying an error notice
-            wc_add_notice(sprintf('The product "%s" requires a coupon for checkout.', $cart_item['data']->get_name()), 'error');
+			// "GVFOS24 Driver Entry requires a coupon code for checkout. Open registration will begin shortly."
+            wc_add_notice(sprintf('%s requires a coupon code for checkout. Open registration will begin shortly.', $cart_item['data']->get_name()), 'error');
             break; // stop the loop
         }
     }

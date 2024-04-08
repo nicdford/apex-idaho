@@ -32,7 +32,7 @@ add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_grass_valley_fo
 function mandatory_coupon_for_grass_valley_fos()
 {
     $targeted_ids = array(807); // The targeted product ids (in this array)
-    $coupon_codes = ['STUZSBWX', 'URCHQDGD', 'T338RSPY', '86JZ63RR', 'AJMSDUM2']; // The required coupon codes
+    $coupon_codes = ['STUZSBWX', 'URCHQDGD', 'T338RSPY', '86JZ63RR', 'AJMSDUM2', '9YYQ9JU2', 'SA79P45V']; // The required coupon codes
 
     $applied_coupons = WC()->cart->get_applied_coupons();
 

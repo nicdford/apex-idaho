@@ -17,18 +17,18 @@ add_action('woocommerce_thankyou', 'custom_woocommerce_auto_complete_order');
 
 function custom_woocommerce_auto_complete_order($order_id)
 {
-	if (!$order_id) {
-		return;
-	}
+    if (!$order_id) {
+        return;
+    }
 
-	$order = wc_get_order($order_id);
-	$order->update_status('completed');
+    $order = wc_get_order($order_id);
+    $order->update_status('completed');
 }
 
 /**
  * Require coupon for checkout on grass valley driver entry tickets
  */
-add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_grass_valley_fos');
+// add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_grass_valley_fos');
 function mandatory_coupon_for_grass_valley_fos()
 {
     $targeted_ids = array(807); // The targeted product ids (in this array)
@@ -52,7 +52,7 @@ function mandatory_coupon_for_grass_valley_fos()
             wc_clear_notices(); // Clear all other notices
 
             // Avoid checkout displaying an error notice
-			// "GVFOS24 Driver Entry requires a coupon code for checkout. Open registration will begin shortly."
+            // "GVFOS24 Driver Entry requires a coupon code for checkout. Open registration will begin shortly."
             wc_add_notice(sprintf('%s requires a coupon code for checkout. Open registration will begin shortly.', $cart_item['data']->get_name()), 'error');
             break; // stop the loop
         }
@@ -62,7 +62,7 @@ function mandatory_coupon_for_grass_valley_fos()
 /**
  * Require coupon for test product
  */
-add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_test_product');
+// add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_test_product');
 function mandatory_coupon_for_test_product()
 {
     $targeted_ids = array(818); // The targeted product ids (in this array)

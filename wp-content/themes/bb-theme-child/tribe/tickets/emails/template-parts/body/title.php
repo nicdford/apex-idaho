@@ -30,7 +30,7 @@
 ?>
 <tr>
   <td>
-    <?php if (in_array('payatgate', $order->get_coupon_codes())) : ?>
+    <?php if ($order && in_array('payatgate', $order->get_coupon_codes())) : ?>
       <h1 class="tec-tickets__email-table-content-title" style="
           background: #FFEB3B;
           padding: 20px !important;

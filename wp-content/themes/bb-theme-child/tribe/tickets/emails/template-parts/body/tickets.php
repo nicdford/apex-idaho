@@ -40,17 +40,6 @@ $this->template('template-parts/body/tickets-total');
         <?php $i++; ?>
         <tr>
           <td class="tec-tickets__email-table-content-ticket">
-            <?php if (in_array('payatgate', $order->get_coupon_codes())) : ?>
-              <h1 class="tec-tickets__email-table-content-title" style="
-              background: #FFEB3B;
-              padding: 20px !important;
-              display: block;
-              color: #bd1e2d;
-              text-align: center;
-          ">
-                ⛔️ Payment due at Gate ⛔️
-              </h1>
-            <?php endif; ?>
             <table class="tec-tickets__email-table-content-ticket-table">
               <tr>
                 <?php $this->template('template-parts/body/ticket/holder-name', ['ticket' => $ticket]); ?>

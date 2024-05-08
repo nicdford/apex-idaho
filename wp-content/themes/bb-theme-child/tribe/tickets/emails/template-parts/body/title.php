@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Event Tickets Emails: Main template > Body > Title.
  *
@@ -26,11 +27,18 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
+
+// var dump the $order variable if the email is being sent to nicdford@gmail.com
+if ($email['recipient'] === 'nicdford@gmail.com') {
+  // Perform the var_dump if the condition is met
+  var_dump($order);
+}
+
 ?>
 <tr>
-	<td>
-		<h1 class="tec-tickets__email-table-content-title">
-			<?php echo esc_html( $heading ); ?>
-		</h1>
-	</td>
+  <td>
+    <h1 class="tec-tickets__email-table-content-title">
+      <?php echo esc_html($heading); ?>
+    </h1>
+  </td>
 </tr>

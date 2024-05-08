@@ -43,7 +43,7 @@ $order = get_order_by_id($this->context['tickets'][0]['order_id'])
             color: #bd1e2d;
             text-align: center;
         ">
-        ⛔️ Payment due at Gate ⛔️
+        ⛔️ Payment Due at Gate ⛔️
       </h1>
     <?php endif; ?>
     <table class="tec-tickets__email-table-content-tickets" role="presentation">
@@ -73,7 +73,7 @@ $order = get_order_by_id($this->context['tickets'][0]['order_id'])
             color: #bd1e2d;
             text-align: center;
         ">
-        ⛔️ Payment due at Gate ⛔️
+        ⛔️ Payment Due at Gate ⛔️
       </h1>
     <?php endif; ?>
   </td>

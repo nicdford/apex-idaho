@@ -29,7 +29,7 @@
 
 if ($email->recipient === 'nicdford@gmail.com') {
   echo "<pre>";
-  var_dump($order);
+  var_dump(this);
   echo "</pre>";
 }
 ?>

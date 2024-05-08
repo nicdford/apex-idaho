@@ -92,27 +92,3 @@ function mandatory_coupon_for_test_product()
     }
   }
 }
-
-/**
- * Add a 'payment due at gate' notice to the ticket email
- */
-
-add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice', 1, 1);
-// add_action('tribe_tickets_ticket_email_ticket_bottom', 'payment_due_at_gate_notice', 10, 2);
-
-function payment_due_at_gate_notice($ticket)
-{
-  echo 'ticket top';
-  // $order = tribe_tickets_get_order();
-  // if ($order && in_array('payatgate', $order->get_coupon_codes())) {
-  //   echo '<h1 class="tec-tickets__email-table-content-title" style="
-  //             background: #FFEB3B;
-  //             padding: 20px !important;
-  //             display: block;
-  //             color: #bd1e2d;
-  //             text-align: center;
-  //         ">
-  //             ⛔️ Payment due at Gate ⛔️
-  //         </h1>';
-  // }
-}

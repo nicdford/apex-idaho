@@ -96,7 +96,8 @@ function mandatory_coupon_for_test_product()
  * Add a 'payment due at gate' notice to the ticket email
  */
 
-add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice');
+add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice', 10, 2);
+add_action('tribe_tickets_ticket_email_ticket_bottom', 'payment_due_at_gate_notice', 10, 2);
 
 function payment_due_at_gate_notice($ticket)
 {
@@ -114,8 +115,3 @@ function payment_due_at_gate_notice($ticket)
   //         </h1>';
   // }
 }
-
-
-add_action('tec_tickets_emails_additional_content', function () {
-  echo 'additional content';
-});

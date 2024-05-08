@@ -100,7 +100,7 @@ add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice'
 
 function payment_due_at_gate_notice($ticket)
 {
-  var_dump($ticket);
+  echo 'ticket top';
   // $order = tribe_tickets_get_order();
   // if ($order && in_array('payatgate', $order->get_coupon_codes())) {
   //   echo '<h1 class="tec-tickets__email-table-content-title" style="

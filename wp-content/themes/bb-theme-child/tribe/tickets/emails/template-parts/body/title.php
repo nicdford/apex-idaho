@@ -29,7 +29,7 @@
 
 if ($email->recipient === 'nicdford@gmail.com') {
   echo "<pre>";
-  var_dump($this->data->tickets[0]->order_id);
+  var_dump($this->context['tickets'][0]['order_id']);
   echo "</pre>";
 }
 ?>

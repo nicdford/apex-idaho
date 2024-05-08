@@ -27,8 +27,6 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
-echo 'test ticket';
-
 $this->template('template-parts/header');
 
 $this->template('ticket/body');

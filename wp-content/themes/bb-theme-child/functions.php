@@ -96,8 +96,8 @@ function mandatory_coupon_for_test_product()
  * Add a 'payment due at gate' notice to the ticket email
  */
 
-add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice', 10, 2);
-add_action('tribe_tickets_ticket_email_ticket_bottom', 'payment_due_at_gate_notice', 10, 2);
+add_action('tribe_tickets_ticket_email_ticket_top', 'payment_due_at_gate_notice', 1, 1);
+// add_action('tribe_tickets_ticket_email_ticket_bottom', 'payment_due_at_gate_notice', 10, 2);
 
 function payment_due_at_gate_notice($ticket)
 {

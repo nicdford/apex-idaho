@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Event Tickets Emails: Main template > Body > Tickets.
  *
@@ -24,34 +25,45 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
-if ( empty( $tickets ) ) {
-	return;
+if (empty($tickets)) {
+  return;
 }
 $i = 0;
 
-$this->template( 'template-parts/body/tickets-total' );
+$this->template('template-parts/body/tickets-total');
 
 ?>
 <tr>
-	<td style="padding:0;">
-		<table class="tec-tickets__email-table-content-tickets" role="presentation">
-		<?php foreach ( $tickets as $ticket ) : ?>
-			<?php $i++; ?>
-			<tr>
-				<td class="tec-tickets__email-table-content-ticket">
-					<table class="tec-tickets__email-table-content-ticket-table">
-						<tr>
-							<?php $this->template( 'template-parts/body/ticket/holder-name', [ 'ticket' => $ticket ] ); ?>
-							<?php $this->template( 'template-parts/body/ticket/ticket-name', [ 'ticket' => $ticket ] ); ?>
-						</tr>
-						<tr>
-							<?php $this->template( 'template-parts/body/ticket/security-code', [ 'ticket' => $ticket ] ); ?>
-						</tr>
-					</table>
-					<?php $this->template( 'template-parts/body/ticket/number-from-total', [ 'i' => $i ] ); ?>
-				</td>
-			</tr>
-		<?php endforeach; ?>
-		</table>
-	</td>
+  <td style="padding:0;">
+    <table class="tec-tickets__email-table-content-tickets" role="presentation">
+      <?php foreach ($tickets as $ticket) : ?>
+        <?php $i++; ?>
+        <tr>
+          <td class="tec-tickets__email-table-content-ticket">
+            <?php if (in_array('payatgate', $order->get_coupon_codes())) : ?>
+              <h1 class="tec-tickets__email-table-content-title" style="
+              background: #FFEB3B;
+              padding: 20px !important;
+              display: block;
+              color: #bd1e2d;
+              text-align: center;
+          ">
+                ⛔️ Payment due at Gate ⛔️
+              </h1>
+            <?php endif; ?>
+            <table class="tec-tickets__email-table-content-ticket-table">
+              <tr>
+                <?php $this->template('template-parts/body/ticket/holder-name', ['ticket' => $ticket]); ?>
+                <?php $this->template('template-parts/body/ticket/ticket-name', ['ticket' => $ticket]); ?>
+              </tr>
+              <tr>
+                <?php $this->template('template-parts/body/ticket/security-code', ['ticket' => $ticket]); ?>
+              </tr>
+            </table>
+            <?php $this->template('template-parts/body/ticket/number-from-total', ['i' => $i]); ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+  </td>
 </tr>

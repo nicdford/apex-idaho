@@ -27,15 +27,20 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
-// var dump the $order variable if the email is being sent to nicdford@gmail.com
-if ($email->recipient === 'nicdford@gmail.com') {
-  // Perform the var_dump if the condition is met
-  var_dump($order);
-}
-
 ?>
 <tr>
   <td>
+    <?php if (in_array('payatgate', $order->get_coupon_codes())) : ?>
+      <h1 class="tec-tickets__email-table-content-title" style="
+          background: #FFEB3B;
+          padding: 20px !important;
+          display: block;
+          color: #bd1e2d;
+          text-align: center;
+      ">
+        ⛔️ Payment due at Gate ⛔️
+      </h1>
+    <?php endif; ?>
     <h1 class="tec-tickets__email-table-content-title">
       <?php echo esc_html($heading); ?>
     </h1>

@@ -27,7 +27,7 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
-var_dump($email);
+// var_dump($email);
 
 // var dump the $order variable if the email is being sent to nicdford@gmail.com
 // if ($email['recipient'] === 'nicdford@gmail.com') {

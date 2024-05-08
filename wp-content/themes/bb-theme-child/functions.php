@@ -17,12 +17,12 @@ add_action('woocommerce_thankyou', 'custom_woocommerce_auto_complete_order');
 
 function custom_woocommerce_auto_complete_order($order_id)
 {
-  if (!$order_id) {
-    return;
-  }
+    if (!$order_id) {
+        return;
+    }
 
-  $order = wc_get_order($order_id);
-  $order->update_status('completed');
+    $order = wc_get_order($order_id);
+    $order->update_status('completed');
 }
 
 /**
@@ -31,32 +31,32 @@ function custom_woocommerce_auto_complete_order($order_id)
 // add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_grass_valley_fos');
 function mandatory_coupon_for_grass_valley_fos()
 {
-  $targeted_ids = array(807); // The targeted product ids (in this array)
-  $coupon_codes = ['STUZSBWX', 'URCHQDGD', 'T338RSPY', '86JZ63RR', 'AJMSDUM2', '9YYQ9JU2', 'SA79P45V']; // The required coupon codes
+    $targeted_ids = array(807); // The targeted product ids (in this array)
+    $coupon_codes = ['STUZSBWX', 'URCHQDGD', 'T338RSPY', '86JZ63RR', 'AJMSDUM2', '9YYQ9JU2', 'SA79P45V']; // The required coupon codes
 
-  $applied_coupons = WC()->cart->get_applied_coupons();
+    $applied_coupons = WC()->cart->get_applied_coupons();
 
-  // Check if any of the coupon codes are applied
-  $valid_coupon_applied = false;
-  foreach ($coupon_codes as $code) {
-    if (in_array(strtolower($code), $applied_coupons)) {
-      $valid_coupon_applied = true;
-      break;
+    // Check if any of the coupon codes are applied
+    $valid_coupon_applied = false;
+    foreach ($coupon_codes as $code) {
+        if (in_array(strtolower($code), $applied_coupons)) {
+            $valid_coupon_applied = true;
+            break;
+        }
     }
-  }
 
-  // Loop through cart items
-  foreach (WC()->cart->get_cart() as $cart_item) {
-    // Check cart item for defined product Ids and applied coupon
-    if (in_array($cart_item['product_id'], $targeted_ids) && !$valid_coupon_applied) {
-      wc_clear_notices(); // Clear all other notices
+    // Loop through cart items
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        // Check cart item for defined product Ids and applied coupon
+        if (in_array($cart_item['product_id'], $targeted_ids) && !$valid_coupon_applied) {
+            wc_clear_notices(); // Clear all other notices
 
-      // Avoid checkout displaying an error notice
-      // "GVFOS24 Driver Entry requires a coupon code for checkout. Open registration will begin shortly."
-      wc_add_notice(sprintf('%s requires a coupon code for checkout. Open registration will begin shortly.', $cart_item['data']->get_name()), 'error');
-      break; // stop the loop
+            // Avoid checkout displaying an error notice
+            // "GVFOS24 Driver Entry requires a coupon code for checkout. Open registration will begin shortly."
+            wc_add_notice(sprintf('%s requires a coupon code for checkout. Open registration will begin shortly.', $cart_item['data']->get_name()), 'error');
+            break; // stop the loop
+        }
     }
-  }
 }
 
 /**
@@ -65,29 +65,30 @@ function mandatory_coupon_for_grass_valley_fos()
 // add_action('woocommerce_check_cart_items', 'mandatory_coupon_for_test_product');
 function mandatory_coupon_for_test_product()
 {
-  $targeted_ids = array(818); // The targeted product ids (in this array)
-  $coupon_codes = ['TESTCOUPON']; // The required coupon codes
+    $targeted_ids = array(818); // The targeted product ids (in this array)
+    $coupon_codes = ['TESTCOUPON']; // The required coupon codes
 
-  $applied_coupons = WC()->cart->get_applied_coupons();
+    $applied_coupons = WC()->cart->get_applied_coupons();
 
-  // Check if any of the coupon codes are applied
-  $valid_coupon_applied = false;
-  foreach ($coupon_codes as $code) {
-    if (in_array(strtolower($code), $applied_coupons)) {
-      $valid_coupon_applied = true;
-      break;
+    // Check if any of the coupon codes are applied
+    $valid_coupon_applied = false;
+    foreach ($coupon_codes as $code) {
+        if (in_array(strtolower($code), $applied_coupons)) {
+            $valid_coupon_applied = true;
+            break;
+        }
     }
-  }
 
-  // Loop through cart items
-  foreach (WC()->cart->get_cart() as $cart_item) {
-    // Check cart item for defined product Ids and applied coupon
-    if (in_array($cart_item['product_id'], $targeted_ids) && !$valid_coupon_applied) {
-      wc_clear_notices(); // Clear all other notices
+    // Loop through cart items
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        // Check cart item for defined product Ids and applied coupon
+        if (in_array($cart_item['product_id'], $targeted_ids) && !$valid_coupon_applied) {
+            wc_clear_notices(); // Clear all other notices
 
-      // Avoid checkout displaying an error notice
-      wc_add_notice(sprintf('The product "%s" requires a coupon for checkout.', $cart_item['data']->get_name()), 'error');
-      break; // stop the loop
+            // Avoid checkout displaying an error notice
+            wc_add_notice(sprintf('The product "%s" requires a coupon for checkout.', $cart_item['data']->get_name()), 'error');
+            break; // stop the loop
+        }
     }
   }
 }

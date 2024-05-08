@@ -27,15 +27,23 @@
  * @see tribe_get_event() For the format of the event object.
  */
 
-if ($email->recipient === 'nicdford@gmail.com') {
-  echo "<pre>";
-  var_dump($this->context['tickets'][0]['order_id']);
-  echo "</pre>";
-}
+$order = get_order_by_id($this->context['tickets'][0]['order_id'])
 ?>
 
 <tr>
   <td>
+    <?php if (order_has_coupon('payatgate', $order)) : ?>
+      <h1 class="tec-tickets__email-table-content-title" style="
+            background: #FFEB3B;
+            padding: 20px !important;
+            display: block;
+            color: #bd1e2d;
+            text-align: center;
+        ">
+        ⛔️ Payment due at Gate ⛔️
+      </h1>
+    <?php endif; ?>
+
     <h1 class="tec-tickets__email-table-content-title">
       <?php echo esc_html($heading); ?>
     </h1>

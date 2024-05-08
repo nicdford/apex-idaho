@@ -91,3 +91,15 @@ function mandatory_coupon_for_test_product()
     }
   }
 }
+
+function get_order_by_id($order_id)
+{
+  if (class_exists('WooCommerce')) {
+    return wc_get_order($order_id);
+  }
+}
+
+function order_has_coupon($coupon, $order)
+{
+  return in_array($coupon, $order->get_coupon_codes());
+}

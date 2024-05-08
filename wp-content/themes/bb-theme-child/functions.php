@@ -114,3 +114,8 @@ function payment_due_at_gate_notice($ticket)
   //         </h1>';
   // }
 }
+
+
+add_action('tec_tickets_emails_additional_content', function () {
+  echo 'additional content';
+});

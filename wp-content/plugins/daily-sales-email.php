@@ -2,7 +2,7 @@
 /*
 Plugin Name: Daily Sales Email
 Description: Sends daily sales numbers for specified products to specified email addresses.
-Version: 1.0.0
+Version: 1.1.0
 Author: Nic D. Ford
  */
 

@@ -48,6 +48,11 @@ function dse_send_daily_sales_email()
     $subject = 'Daily Sales Report';
     $message = $sales_report;
 
+    if (empty($email_addresses)) {
+        error_log('No email addresses specified for daily sales report');
+        return;
+    }
+
     foreach ($email_addresses as $email_address) {
         mail($email_address, $subject, $message);
     }

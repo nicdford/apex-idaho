@@ -2,7 +2,7 @@
 /*
 Plugin Name: Daily Sales Email
 Description: Sends daily sales numbers for specified products to specified email addresses.
-Version: 1.1.0
+Version: 1.2.0
 Author: Nic D. Ford
  */
 
@@ -48,13 +48,8 @@ function dse_send_daily_sales_email()
     $subject = 'Daily Sales Report';
     $message = $sales_report;
 
-    if (empty($email_addresses)) {
-        error_log('No email addresses specified for daily sales report');
-        return;
-    }
-
     foreach ($email_addresses as $email_address) {
-        mail($email_address, $subject, $message);
+        wp_mail($email_address, $subject, $message);
     }
 }
 
@@ -92,7 +87,7 @@ function dse_settings_page()
         </table>
         <?php submit_button();?>
     </form>
-    <form method="post">
+    <form method="post" action="">
         <input type="hidden" name="dse_send_sales_report_now" value="1" />
         <?php submit_button('Send Sales Report Now');?>
     </form>
@@ -101,26 +96,22 @@ function dse_settings_page()
 }
 
 // Handle the button click to send the sales report immediately
-add_action('admin_post_dse_send_sales_report_now', 'dse_handle_send_sales_report_now');
+add_action('admin_init', 'dse_handle_send_sales_report_now');
 function dse_handle_send_sales_report_now()
 {
     if (isset($_POST['dse_send_sales_report_now']) && $_POST['dse_send_sales_report_now'] == '1') {
         dse_send_daily_sales_email();
-        wp_redirect(admin_url('admin.php?page=daily-sales-email%2Fdaily-sales-email.php&sent=1'));
-        exit;
+        add_action('admin_notices', 'dse_admin_notice');
     }
 }
 
 // Add a notice to inform the admin that the report was sent
-add_action('admin_notices', 'dse_admin_notice');
 function dse_admin_notice()
 {
-    if (isset($_GET['sent']) && $_GET['sent'] == '1') {
-        ?>
-        <div class="notice notice-success is-dismissible">
-            <p><?php _e('Sales report sent successfully!', 'dse-text-domain');?></p>
-        </div>
-        <?php
-}
+    ?>
+    <div class="notice notice-success is-dismissible">
+        <p><?php _e('Sales report sent successfully!', 'dse-text-domain');?></p>
+    </div>
+    <?php
 }
 ?>

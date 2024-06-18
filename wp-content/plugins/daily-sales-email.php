@@ -49,7 +49,7 @@ function dse_send_daily_sales_email()
     $message = $sales_report;
 
     foreach ($email_addresses as $email_address) {
-        wp_mail($email_address, $subject, $message);
+        mail($email_address, $subject, $message);
     }
 }
 

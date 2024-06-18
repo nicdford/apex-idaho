@@ -2,8 +2,9 @@
 /*
 Plugin Name: Daily Sales Email
 Description: Sends daily sales numbers for specified products to specified email addresses.
-Version: 1.2.0
+Version: 1.3.0
 Author: Nic D. Ford
+Author URI: https://nicdford.com
  */
 
 // Ensure the file is being accessed via WordPress
@@ -40,8 +41,9 @@ function dse_send_daily_sales_email()
     foreach ($product_ids as $product_id) {
         $product = wc_get_product($product_id);
         if ($product) {
-            $sales = get_post_meta($product_id, 'total_sales', true);
-            $sales_report .= "Product: " . $product->get_name() . "\nSales: " . $sales . "\n\n";
+            $total_sales = get_post_meta($product_id, 'total_sales', true);
+            $sales_today = dse_get_sales_today($product_id);
+            $sales_report .= "Product: " . $product->get_name() . "\nTotal Sales: " . $total_sales . "\nSales Today: " . $sales_today . "\n\n";
         }
     }
 
@@ -51,6 +53,31 @@ function dse_send_daily_sales_email()
     foreach ($email_addresses as $email_address) {
         wp_mail($email_address, $subject, $message);
     }
+}
+
+// Function to get sales made today for a specific product
+function dse_get_sales_today($product_id)
+{
+    $args = array(
+        'status' => 'completed',
+        'date_created' => '>' . (new DateTime('today midnight'))->format('Y-m-d H:i:s'),
+        'meta_key' => '_product_id',
+        'meta_value' => $product_id,
+        'meta_compare' => 'LIKE',
+    );
+
+    $orders = wc_get_orders($args);
+    $sales_today = 0;
+
+    foreach ($orders as $order) {
+        foreach ($order->get_items() as $item) {
+            if ($item->get_product_id() == $product_id) {
+                $sales_today += $item->get_quantity();
+            }
+        }
+    }
+
+    return $sales_today;
 }
 
 // Register settings for product IDs and email addresses in the admin panel

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.4
+Version: 1.1.5
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -40,7 +40,7 @@ function it_yearly_sales_by_state()
   // Filter to keep only orders with a status of completed
   $valid_orders = array_filter($orders, function ($order_id) {
     $order = wc_get_order($order_id);
-    return $order->get_status() === 'completed';
+    return $order->get_status() === 'completed' || $order->get_status() === 'refunded';
   });
 
   // Display the total number of sales
@@ -49,7 +49,7 @@ function it_yearly_sales_by_state()
 
   $total_sales_amount = 0;
 
-  foreach ($orders as $order_id) {
+  foreach ($valid_orders as $order_id) {
     $order = wc_get_order($order_id);
 
     if (is_a($order, 'WC_Order')) {

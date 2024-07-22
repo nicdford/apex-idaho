@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.5
+Version: 1.1.6
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -37,10 +37,21 @@ function it_yearly_sales_by_state()
   );
   $orders = wc_get_orders($args);
 
+  foreach ($orders as $order_id) {
+    $status = $order->get_status();
+
+    // Update status counts
+    if (isset($status_counts[$status])) {
+      $status_counts[$status]++;
+    } else {
+      $status_counts[$status] = 1;
+    }
+  }
+
   // Filter to keep only orders with a status of completed
   $valid_orders = array_filter($orders, function ($order_id) {
     $order = wc_get_order($order_id);
-    return $order->get_status() === 'completed' || $order->get_status() === 'refunded';
+    return $order->has_status('completed');
   });
 
   // Display the total number of sales
@@ -51,31 +62,28 @@ function it_yearly_sales_by_state()
 
   foreach ($valid_orders as $order_id) {
     $order = wc_get_order($order_id);
+    $state = $order->get_billing_state();
+    $total = $order->get_total();
+    $status = $order->get_status();
 
-    if (is_a($order, 'WC_Order')) {
-      $state = $order->get_billing_state();
-      $total = $order->get_total();
-      $status = $order->get_status();
+    // Update status counts
+    if (isset($status_counts[$status])) {
+      $status_counts[$status]++;
+    } else {
+      $status_counts[$status] = 1;
+    }
 
-      // Update status counts
-      if (isset($status_counts[$status])) {
-        $status_counts[$status]++;
-      } else {
-        $status_counts[$status] = 1;
-      }
+    // Optional: Keep or remove debug output
+    // echo "<pre style='font-size: 16px'>";
+    // print_r($order);
+    // echo "</pre>";
 
-      // Optional: Keep or remove debug output
-      // echo "<pre style='font-size: 16px'>";
-      // print_r($order);
-      // echo "</pre>";
+    $total_sales_amount += $total;
 
-      $total_sales_amount += $total;
-
-      if (isset($sales_by_state[$state])) {
-        $sales_by_state[$state] += $total;
-      } else {
-        $sales_by_state[$state] = $total;
-      }
+    if (isset($sales_by_state[$state])) {
+      $sales_by_state[$state] += $total;
+    } else {
+      $sales_by_state[$state] = $total;
     }
   }
 
@@ -83,10 +91,13 @@ function it_yearly_sales_by_state()
   echo 'Total Sales Amount: ' . $total_sales_amount . ' (51,891.15)';
   echo '</pre>';
 
-  echo '<pre style="font-size: 16px">';
+  echo '<table style="font-size: 16px; border-collapse: collapse;">';
+  echo '<tr><th style="border: 1px solid black; padding: 5px;">State</th><th style="border: 1px solid black; padding: 5px;">Sales Amount</th></tr>';
   ksort($sales_by_state);
-  print_r($sales_by_state);
-  echo '</pre>';
+  foreach ($sales_by_state as $state => $amount) {
+    echo '<tr><td style="border: 1px solid black; padding: 5px;">' . $state . '</td><td style="border: 1px solid black; padding: 5px;">' . $amount . '</td></tr>';
+  }
+  echo '</table>';
 
   echo '<h3>Order Status Counts</h3>';
   echo '<pre style="font-size: 16px">';

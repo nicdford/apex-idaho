@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.7
+Version: 1.1.8
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -25,7 +25,7 @@ function it_yearly_sales_by_state()
   $sales_by_state = array();
   $status_counts = array();
 
-  echo "<h3>Sales by State For Year 2024</h3>";
+  echo "<h3>Sales by State for Year 2024</h3>";
 
   $start_date = '2024-01-01';
   $end_date = '2024-12-31';
@@ -63,28 +63,31 @@ function it_yearly_sales_by_state()
 
   foreach ($valid_orders as $order_id) {
     $order = wc_get_order($order_id);
-    $state = $order->get_billing_state();
-    $total = $order->get_total();
-    $status = $order->get_status();
 
-    // Update status counts
-    if (isset($status_counts[$status])) {
-      $status_counts[$status]++;
-    } else {
-      $status_counts[$status] = 1;
-    }
+    if (is_a($order, 'WC_Order')) {
+      $state = $order->get_billing_state();
+      $total = $order->get_total();
+      $status = $order->get_status();
 
-    // Optional: Keep or remove debug output
-    // echo "<pre style='font-size: 16px'>";
-    // print_r($order);
-    // echo "</pre>";
+      // Update status counts
+      if (isset($status_counts[$status])) {
+        $status_counts[$status]++;
+      } else {
+        $status_counts[$status] = 1;
+      }
 
-    $total_sales_amount += $total;
+      // Optional: Keep or remove debug output
+      // echo "<pre style='font-size: 16px'>";
+      // print_r($order);
+      // echo "</pre>";
 
-    if (isset($sales_by_state[$state])) {
-      $sales_by_state[$state] += $total;
-    } else {
-      $sales_by_state[$state] = $total;
+      $total_sales_amount += $total;
+
+      if (isset($sales_by_state[$state])) {
+        $sales_by_state[$state] += $total;
+      } else {
+        $sales_by_state[$state] = $total;
+      }
     }
   }
 

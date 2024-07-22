@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.0.8
+Version: 1.0.9
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -43,20 +43,23 @@ function it_yearly_sales_by_state()
 
   foreach ($orders as $order_id) {
     $order = wc_get_order($order_id);
-    $state = $order->get_billing_state();
-    $total = $order->get_total();
 
-    // Optional: Keep or remove debug output
-    // echo "<pre style='font-size: 16px'>";
-    // print_r($order);
-    // echo "</pre>";
+    if (is_a($order, 'WC_Order')) {
+      $state = $order->get_billing_state();
+      $total = $order->get_total();
 
-    $all_orders_total += $total;
+      // Optional: Keep or remove debug output
+      // echo "<pre style='font-size: 16px'>";
+      // print_r($order);
+      // echo "</pre>";
 
-    if (isset($sales_by_state[$state])) {
-      $sales_by_state[$state] += $total;
-    } else {
-      $sales_by_state[$state] = $total;
+      $all_orders_total += $total;
+
+      if (isset($sales_by_state[$state])) {
+        $sales_by_state[$state] += $total;
+      } else {
+        $sales_by_state[$state] = $total;
+      }
     }
   }
 

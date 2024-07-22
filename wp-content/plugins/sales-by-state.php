@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.2.0
+Version: 1.2.1
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -55,14 +55,18 @@ function it_yearly_sales_by_state()
   }
 
   // Display results
-  echo '<table border="1">';
-  echo '<tr><th>State</th><th>Total Orders</th><th>Total Amount</th></tr>';
-  foreach ($sales_by_state as $state => $data) {
-    echo '<tr>';
-    echo '<td>' . ($state ? $state : 'Unknown') . '</td>';
-    echo '<td>' . $data['total_orders'] . '</td>';
-    echo '<td>' . wc_price($data['total_amount']) . '</td>';
-    echo '</tr>';
+  if (!empty($sales_by_state)) {
+    echo '<table border="1">';
+    echo '<tr><th>State</th><th>Total Orders</th><th>Total Amount</th></tr>';
+    foreach ($sales_by_state as $state => $data) {
+      echo '<tr>';
+      echo '<td>' . ($state ? $state : 'Unknown') . '</td>';
+      echo '<td>' . $data['total_orders'] . '</td>';
+      echo '<td>' . wc_price($data['total_amount']) . '</td>';
+      echo '</tr>';
+    }
+    echo '</table>';
+  } else {
+    echo "<p>No sales data available for the selected period.</p>";
   }
-  echo '</table>';
 }

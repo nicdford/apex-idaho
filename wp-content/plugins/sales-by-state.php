@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.0.4
+Version: 1.0.5
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -31,11 +31,10 @@ function it_yearly_sales_by_state()
     'limit' => -1,
     'return' => 'ids',
     'date_created' => array(
-      'after' => date('Y-m-d H:i:s', strtotime("first day of January $year")),
-      'before' => date('Y-m-d H:i:s', strtotime("last day of December $year"))
+      'after' => date('Y-m-d', strtotime("first day of January $year")),
+      'before' => date('Y-m-d', strtotime("last day of December $year")),
     ),
   );
-
   $orders = wc_get_orders($args);
 
   // Display the total number of sales

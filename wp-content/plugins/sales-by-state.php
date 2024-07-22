@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.0.6
+Version: 1.0.7
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -22,18 +22,17 @@ function it_wp_dashboard_woocommerce_subpage()
 // 2. Calculate sales for all states
 function it_yearly_sales_by_state()
 {
-  $year = 2024; // Optional: make this dynamic if needed
   $sales_by_state = array();
-  echo "<h3>Sales by State For Year {$year} ($)</h3>";
+  echo "<h3>Sales by State For Year 2024 ($)</h3>";
 
-  $start_date = date('Y-m-d', strtotime("first day of January $year"));
-  $end_date = date('Y-m-d', strtotime("last day of December $year"));
+  $start_date = '2024-01-01';
+  $end_date = '2024-12-31';
 
   $args = array(
     'billing_country' => 'US', // COUNTRY
     'limit' => -1,
     'return' => 'ids',
-    'date_created' => ">$start_date...<$end_date"
+    'date_created' => $start_date . '...' . $end_date
   );
   $orders = wc_get_orders($args);
 

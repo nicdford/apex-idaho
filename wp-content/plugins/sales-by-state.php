@@ -1,0 +1,50 @@
+<?php
+/*
+Plugin Name: Sales by State
+Description: Displays sales by state for a specific year.
+Version: 1.0.0
+Author: Nic D. Ford
+Author URI: https://nicdford.com
+ */
+
+// Prevent direct access to the file
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// 1. Create "Sales by State" submenu page
+add_action('admin_menu', 'it_wp_dashboard_woocommerce_subpage', 9999);
+function it_wp_dashboard_woocommerce_subpage()
+{
+    add_submenu_page('woocommerce', 'Sales by State', 'Sales by State', 'manage_woocommerce', 'bb_sales_by_state', 'it_yearly_sales_by_state', 9999);
+}
+
+// 2. Calculate sales for all states
+function it_yearly_sales_by_state()
+{
+    $year = 2024;
+    $sales_by_state = array();
+    echo "<h3>Sales by State For Year {$year} ($)</h3>";
+
+    $args = array(
+        'billing_country' => 'US', // COUNTRY
+        'limit' => -1,
+        'return' => 'ids',
+        'date_created' => strtotime("first day of january " . $year) . '...' . strtotime("last day of december " . $year),
+    );
+    $orders = wc_get_orders($args);
+    foreach ($orders as $order_id) {
+        $order = wc_get_order($order_id);
+        $state = $order->get_billing_state();
+        $total = $order->get_total();
+        if (isset($sales_by_state[$state])) {
+            $sales_by_state[$state] += $total;
+        } else {
+            $sales_by_state[$state] = $total;
+        }
+    }
+    echo '<pre style="font-size: 16px">';
+    ksort($sales_by_state);
+    print_r($sales_by_state);
+    echo '</pre>';
+}

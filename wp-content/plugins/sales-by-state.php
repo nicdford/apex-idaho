@@ -29,7 +29,6 @@ function it_yearly_sales_by_state()
   $end_date = '2024-12-31';
 
   $args = array(
-    'billing_country' => 'US', // COUNTRY
     'limit' => -1,
     'return' => 'ids',
     'date_created' => $start_date . '...' . $end_date

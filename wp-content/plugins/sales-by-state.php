@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.0
+Version: 1.1.2
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -23,7 +23,7 @@ function it_wp_dashboard_woocommerce_subpage()
 function it_yearly_sales_by_state()
 {
   $sales_by_state = array();
-  echo "<h3>Sales by State For Year 2024 ($)</h3>";
+  echo "<h3>Sales by State For Year 2024</h3>";
 
   $start_date = '2024-01-01';
   $end_date = '2024-12-31';
@@ -35,15 +35,15 @@ function it_yearly_sales_by_state()
   );
   $orders = wc_get_orders($args);
 
-  // Filter to keep only valid WC_Order objects
+  // Filter to keep only orders with a status of completed
   $valid_orders = array_filter($orders, function ($order_id) {
     $order = wc_get_order($order_id);
-    return is_a($order, 'WC_Order');
+    return $order->get_status() === 'completed';
   });
 
   // Display the total number of sales
   $total_orders = count($valid_orders);
-  echo "<h4>Total Number of Sales: {$total_orders}</h4>";
+  echo "<h4>Total Number of Sales: {$total_orders} (308)</h4>";
 
   $total_sales_amount = 0;
 
@@ -70,7 +70,7 @@ function it_yearly_sales_by_state()
   }
 
   echo '<pre style="font-size: 16px">';
-  echo 'Total Sales Amount: ' . $total_sales_amount;
+  echo 'Total Sales Amount: ' . $total_sales_amount . ' (51,891.15)';
   echo '</pre>';
 
   echo '<pre style="font-size: 16px">';

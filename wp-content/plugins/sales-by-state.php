@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.0.1
+Version: 1.0.2
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */

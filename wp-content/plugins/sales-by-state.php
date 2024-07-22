@@ -33,10 +33,15 @@ function it_yearly_sales_by_state()
         'date_created' => strtotime("first day of january " . $year) . '...' . strtotime("last day of december " . $year),
     );
     $orders = wc_get_orders($args);
+    $all_orders_total = 0;
+
     foreach ($orders as $order_id) {
         $order = wc_get_order($order_id);
         $state = $order->get_billing_state();
         $total = $order->get_total();
+
+        $all_orders_total += $total;
+
         if (isset($sales_by_state[$state])) {
             $sales_by_state[$state] += $total;
         } else {
@@ -45,7 +50,7 @@ function it_yearly_sales_by_state()
     }
 
     echo '<pre style="font-size: 16px">';
-    print_r($orders);
+    print_r($all_orders_total);
     echo '</pre>';
 
     echo '<pre style="font-size: 16px">';

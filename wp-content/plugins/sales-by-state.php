@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.2.2
+Version: 1.4.0
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -24,10 +24,19 @@ function it_yearly_sales_by_state()
 {
   $sales_by_state = array();
 
-  echo "<h3>Sales by State for Year 2024</h3>";
+  // Check if custom dates are set via GET request
+  $start_date = isset($_GET['start_date']) ? sanitize_text_field($_GET['start_date']) : '2024-01-01';
+  $end_date = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_date']) : '2024-12-31';
 
-  $start_date = '2024-01-01';
-  $end_date = '2024-12-31';
+  echo "<h3>Sales by State</h3>";
+
+  // Form to get custom start and end dates
+  echo '<form method="GET">';
+  echo '<input type="hidden" name="page" value="bb_sales_by_state" />';
+  echo 'Start Date: <input type="text" name="start_date" value="' . esc_attr($start_date) . '" />';
+  echo 'End Date: <input type="text" name="end_date" value="' . esc_attr($end_date) . '" />';
+  echo '<input type="submit" value="Filter" />';
+  echo '</form>';
 
   $args = array(
     'limit' => -1,

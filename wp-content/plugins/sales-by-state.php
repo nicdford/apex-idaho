@@ -43,6 +43,11 @@ function it_yearly_sales_by_state()
             $sales_by_state[$state] = $total;
         }
     }
+
+    echo '<pre style="font-size: 16px">';
+    print_r($orders);
+    echo '</pre>';
+
     echo '<pre style="font-size: 16px">';
     ksort($sales_by_state);
     print_r($sales_by_state);

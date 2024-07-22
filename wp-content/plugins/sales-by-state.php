@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.9
+Version: 1.1.10
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -32,83 +32,84 @@ function it_yearly_sales_by_state()
 
   $args = array(
     'limit' => -1,
-    'return' => 'ids',
     'date_created' => $start_date . '...' . $end_date,
     'status' => array('wc-completed', 'wc-refunded'),
   );
   $orders = wc_get_orders($args);
 
-  foreach ($orders as $order_id) {
-    $order = wc_get_order($order_id);
-    $status = $order->get_status();
+  echo "<h4>Total Number of Orders: " . count($orders) . "</h4>";
 
-    // Update status counts
-    if (isset($status_counts[$status])) {
-      $status_counts[$status]++;
-    } else {
-      $status_counts[$status] = 1;
-    }
-  }
+  // foreach ($orders as $order_id) {
+  //   $order = wc_get_order($order_id);
+  //   $status = $order->get_status();
 
-  // Filter to keep only orders with a status of completed
-  $valid_orders = array_filter($orders, function ($order_id) {
-    $order = wc_get_order($order_id);
-    return $order->has_status('completed');
-  });
+  //   // Update status counts
+  //   if (isset($status_counts[$status])) {
+  //     $status_counts[$status]++;
+  //   } else {
+  //     $status_counts[$status] = 1;
+  //   }
+  // }
 
-  // Display the total number of sales
-  $total_orders = count($valid_orders);
-  echo "<h4>Total Number of Sales (Completed): {$total_orders} (308)</h4>";
+  // // Filter to keep only orders with a status of completed
+  // $valid_orders = array_filter($orders, function ($order_id) {
+  //   $order = wc_get_order($order_id);
+  //   return $order->has_status('completed');
+  // });
 
-  $total_sales_amount = 0;
+  // // Display the total number of sales
+  // $total_orders = count($valid_orders);
+  // echo "<h4>Total Number of Sales (Completed): {$total_orders} (308)</h4>";
 
-  foreach ($valid_orders as $order_id) {
-    $order = wc_get_order($order_id);
+  // $total_sales_amount = 0;
 
-    if (is_a($order, 'WC_Order')) {
-      $state = $order->get_billing_state();
-      $total = $order->get_total();
-      $status = $order->get_status();
+  // foreach ($valid_orders as $order_id) {
+  //   $order = wc_get_order($order_id);
 
-      // Update status counts
-      if (isset($status_counts[$status])) {
-        $status_counts[$status]++;
-      } else {
-        $status_counts[$status] = 1;
-      }
+  //   if (is_a($order, 'WC_Order')) {
+  //     $state = $order->get_billing_state();
+  //     $total = $order->get_total();
+  //     $status = $order->get_status();
 
-      // Optional: Keep or remove debug output
-      // echo "<pre style='font-size: 16px'>";
-      // print_r($order);
-      // echo "</pre>";
+  //     // Update status counts
+  //     if (isset($status_counts[$status])) {
+  //       $status_counts[$status]++;
+  //     } else {
+  //       $status_counts[$status] = 1;
+  //     }
 
-      $total_sales_amount += $total;
+  //     // Optional: Keep or remove debug output
+  //     // echo "<pre style='font-size: 16px'>";
+  //     // print_r($order);
+  //     // echo "</pre>";
 
-      if (isset($sales_by_state[$state])) {
-        $sales_by_state[$state] += $total;
-      } else {
-        $sales_by_state[$state] = $total;
-      }
-    }
-  }
+  //     $total_sales_amount += $total;
 
-  echo '<pre style="font-size: 16px">';
-  echo 'Total Sales Amount: ' . $total_sales_amount . ' (51,891.15)';
-  echo '</pre>';
+  //     if (isset($sales_by_state[$state])) {
+  //       $sales_by_state[$state] += $total;
+  //     } else {
+  //       $sales_by_state[$state] = $total;
+  //     }
+  //   }
+  // }
 
-  echo '<table style="font-size: 16px; border-collapse: collapse;">';
-  echo '<tr><th style="border: 1px solid black; padding: 5px;">State</th><th style="border: 1px solid black; padding: 5px;">Sales Amount</th></tr>';
-  ksort($sales_by_state);
-  foreach ($sales_by_state as $state => $amount) {
-    echo '<tr><td style="border: 1px solid black; padding: 5px;">' . $state . '</td><td style="border: 1px solid black; padding: 5px;">' . $amount . '</td></tr>';
-  }
-  echo '</table>';
+  // echo '<pre style="font-size: 16px">';
+  // echo 'Total Sales Amount: ' . $total_sales_amount . ' (51,891.15)';
+  // echo '</pre>';
 
-  echo '<h3>Order Status Counts</h3>';
-  echo '<pre style="font-size: 16px">';
-  ksort($status_counts);
-  foreach ($status_counts as $status => $count) {
-    echo $status . ': ' . $count . "\n";
-  }
-  echo '</pre>';
+  // echo '<table style="font-size: 16px; border-collapse: collapse;">';
+  // echo '<tr><th style="border: 1px solid black; padding: 5px;">State</th><th style="border: 1px solid black; padding: 5px;">Sales Amount</th></tr>';
+  // ksort($sales_by_state);
+  // foreach ($sales_by_state as $state => $amount) {
+  //   echo '<tr><td style="border: 1px solid black; padding: 5px;">' . $state . '</td><td style="border: 1px solid black; padding: 5px;">' . $amount . '</td></tr>';
+  // }
+  // echo '</table>';
+
+  // echo '<h3>Order Status Counts</h3>';
+  // echo '<pre style="font-size: 16px">';
+  // ksort($status_counts);
+  // foreach ($status_counts as $status => $count) {
+  //   echo $status . ': ' . $count . "\n";
+  // }
+  // echo '</pre>';
 }

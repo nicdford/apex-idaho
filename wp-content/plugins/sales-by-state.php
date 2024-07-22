@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state for a specific year.
-Version: 1.1.8
+Version: 1.1.9
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -34,6 +34,7 @@ function it_yearly_sales_by_state()
     'limit' => -1,
     'return' => 'ids',
     'date_created' => $start_date . '...' . $end_date,
+    'status' => array('wc-completed', 'wc-refunded'),
   );
   $orders = wc_get_orders($args);
 

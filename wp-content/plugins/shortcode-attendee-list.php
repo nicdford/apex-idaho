@@ -60,8 +60,8 @@ function attendee_list_shortcode($atts)
     foreach ($attendees as $attendee) {
         echo '<tr>';
         echo '<td>' . esc_html($attendee['holder_name']) . '</td>';
-        echo '<td>' . esc_html($attendee['attendee_meta']['driving-type']['value']) . '</td>';
-        echo '<td>' . esc_html($attendee['attendee_meta']['hometown']['value']) . '</td>';
+        echo '<td>' . (isset($attendee['attendee_meta']['driving-type']['value']) ? esc_html($attendee['attendee_meta']['driving-type']['value']) : '-') . '</td>';
+        echo '<td>' . (isset($attendee['attendee_meta']['hometown']['value']) ? esc_html($attendee['attendee_meta']['hometown']['value']) : '-') . '</td>';
         echo '</tr>';
     }
 

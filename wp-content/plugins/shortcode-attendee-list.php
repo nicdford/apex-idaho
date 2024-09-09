@@ -21,6 +21,7 @@ function attendee_list_shortcode($atts)
     $atts = shortcode_atts(
         array(
             'event_id' => '',
+            'ticket_name' => '',
         ),
         $atts,
         'attendee_list'
@@ -42,6 +43,11 @@ function attendee_list_shortcode($atts)
     if (empty($attendees)) {
         return 'No attendees found for this event.';
     }
+
+    // filter out any attendees where the ticket name does not match the ticket_name attribute
+    $attendees = array_filter($attendees, function ($attendee) use ($atts) {
+        return $attendee['ticket'] === $atts['ticket_name'];
+    });
 
     // Start output buffering
     ob_start();

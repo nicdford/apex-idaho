@@ -58,6 +58,9 @@ function attendee_list_shortcode($atts)
     echo '<tbody>';
 
     foreach ($attendees as $attendee) {
+        echo "<pre>";
+        print_r($attendee);
+        echo "</pre>";
         echo '<tr>';
         echo '<td>' . esc_html($attendee['holder_name']) . '</td>';
         echo '<td>' . esc_html($attendee['driving-type']) . '</td>';

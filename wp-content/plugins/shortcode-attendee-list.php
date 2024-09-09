@@ -53,17 +53,15 @@ function attendee_list_shortcode($atts)
     ob_start();
 
     // Display attendees
-    echo '<table class="attendee-list">';
+    echo '<table class="attendee-list" style="width: 100%;">';
     echo '<thead><tr><th>Name</th><th>Driving Type</th></tr></thead>';
     echo '<tbody>';
 
     foreach ($attendees as $attendee) {
-        echo "<pre>";
-        print_r($attendee);
-        echo "</pre>";
         echo '<tr>';
         echo '<td>' . esc_html($attendee['holder_name']) . '</td>';
-        echo '<td>' . esc_html($attendee['driving-type']) . '</td>';
+        echo '<td>' . esc_html($attendee['attendee_meta']['driving-type']['value']) . '</td>';
+        echo '<td>' . esc_html($attendee['attendee_meta']['hometown']['value']) . '</td>';
         echo '</tr>';
     }
 

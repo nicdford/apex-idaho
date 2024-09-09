@@ -54,7 +54,7 @@ function attendee_list_shortcode($atts)
 
     // Display attendees
     echo '<table class="attendee-list" style="width: 100%;">';
-    echo '<thead><tr><th>Name</th><th>Driving Type</th></tr></thead>';
+    echo '<thead><tr><th>Name</th><th>Driving Type</th><th>Hometown</th></tr></thead>';
     echo '<tbody>';
 
     foreach ($attendees as $attendee) {

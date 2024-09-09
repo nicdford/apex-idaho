@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Attendee List
-Description: Display the attendees for a given ticket ID.
+Description: Display the attendees for a given event ID.
 Version: 1.0.0
 Author: Nic D. Ford
 Author URI: https://nicdford.com
@@ -20,7 +20,7 @@ function attendee_list_shortcode($atts)
     // Extract attributes
     $atts = shortcode_atts(
         array(
-            'ticket_id' => '',
+            'event_id' => '',
         ),
         $atts,
         'attendee_list'

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Daily Sales Email
 Description: Sends daily sales numbers for specified products to specified email addresses.
-Version: 1.3.0
+Version: 1.3.1
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -42,8 +42,7 @@ function dse_send_daily_sales_email()
         $product = wc_get_product($product_id);
         if ($product) {
             $total_sales = get_post_meta($product_id, 'total_sales', true);
-            $sales_today = dse_get_sales_today($product_id);
-            $sales_report .= "Product: " . $product->get_name() . "\nTotal Sales: " . $total_sales . "\nSales Today: " . $sales_today . "\n\n";
+            $sales_report .= "Product: " . $product->get_name() . "\nTotal Sales: " . $total_sales . "\n\n";
         }
     }
 

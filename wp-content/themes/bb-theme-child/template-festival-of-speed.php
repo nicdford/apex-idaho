@@ -7,48 +7,23 @@ get_header();
 ?>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        red: { DEFAULT: '#bd1e2d', dark: '#8f1621', light: '#d4222f' },
-        dark: { DEFAULT: '#111111', 2: '#1a1a1a', 3: '#222222' },
-      },
-      fontFamily: {
-        display: ['Bebas Neue', 'sans-serif'],
-        body: ['Barlow Condensed', 'sans-serif'],
-      },
-      letterSpacing: {
-        widest: '0.25em',
-        superwide: '0.4em',
-      },
-    }
-  }
-}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+  :root {
+    --pink:   #e8197d;
+    --orange: #f97316;
+    --grad:   linear-gradient(135deg, #e8197d 0%, #f97316 100%);
+  }
+
   .fos-page * { box-sizing: border-box; }
   .fos-page { font-family: 'Barlow Condensed', sans-serif; }
 
-  /* Hero background */
-  .hero-bg {
-    background-color: #111111;
-    background-image:
-      repeating-linear-gradient(
-        -55deg,
-        transparent,
-        transparent 2px,
-        rgba(189,30,45,0.04) 2px,
-        rgba(189,30,45,0.04) 3px
-      );
-  }
+  /* ── Hero ── */
   .hero-photo-bg {
     position: relative;
-    background-color: #111111;
+    background-color: #ffffff;
   }
   .hero-photo-bg::before {
     content: '';
@@ -57,45 +32,26 @@ tailwind.config = {
     background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/images/festival-of-speed-hero.jpg');
     background-size: cover;
     background-position: center 40%;
-    opacity: 0.35;
+    opacity: 0.12;
     z-index: 0;
   }
   .hero-photo-bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(17,17,17,0.95) 40%, rgba(17,17,17,0.4) 100%),
-                linear-gradient(to top, rgba(17,17,17,0.8) 0%, transparent 50%);
+    background: linear-gradient(to right, rgba(255,255,255,0.97) 45%, rgba(255,255,255,0.55) 100%),
+                linear-gradient(to top,   rgba(255,255,255,0.9)  0%,  transparent 50%);
     z-index: 0;
   }
-  .hero-photo-bg > * {
-    position: relative;
-    z-index: 1;
-  }
+  .hero-photo-bg > * { position: relative; z-index: 1; }
 
-  /* Diagonal section cut */
-  .clip-diagonal-bottom {
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
-  }
-  .clip-diagonal-top {
-    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
-  }
+  /* ── Diagonal cuts ── */
+  .clip-diagonal-bottom { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
 
-  /* Red accent bar */
-  .accent-bar::before {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: #bd1e2d;
-    margin-bottom: 1rem;
-  }
-  .accent-bar-center::before {
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* ── Gradient accent bar ── */
+  .accent-bar { width: 50px; height: 4px; background: var(--grad); margin-bottom: 1rem; }
 
-  /* Hero text reveal */
+  /* ── Animations ── */
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(40px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -110,33 +66,41 @@ tailwind.config = {
   .reveal-4 { animation: slideUp 0.7s 0.45s ease forwards; opacity: 0; }
   .reveal-5 { animation: fadeIn 0.7s 0.6s ease forwards; opacity: 0; }
 
-  /* Accordion */
+  /* ── Accordion ── */
   .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
   .accordion-content.open { max-height: 600px; }
   .accordion-trigger.open .accordion-chevron { transform: rotate(180deg); }
   .accordion-chevron { transition: transform 0.3s ease; }
 
-  /* Card hover */
+  /* ── Perk cards ── */
   .perk-card {
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    border: 1px solid rgba(255,255,255,0.07);
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .perk-card:hover {
     transform: translateY(-4px);
-    border-color: #bd1e2d;
+    box-shadow: 0 8px 30px rgba(232,25,125,0.15);
   }
 
-  /* Hotel card */
+  /* ── Hotel cards ── */
   .hotel-card {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
     transition: box-shadow 0.2s ease;
   }
-  .hotel-card:hover {
-    box-shadow: 0 0 0 2px #bd1e2d;
-  }
+  .hotel-card:hover { box-shadow: 0 0 0 2px var(--pink); }
 
-  /* Button */
+  /* ── Sponsor box ── */
+  .sponsor-box {
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: border-color 0.2s ease;
+  }
+  .sponsor-box:hover { border-color: var(--pink); }
+
+  /* ── Buttons ── */
   .btn-primary {
-    background: #bd1e2d;
+    background: var(--grad);
     color: white;
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.15rem;
@@ -145,16 +109,14 @@ tailwind.config = {
     text-transform: uppercase;
     padding: 0.85rem 2rem;
     display: inline-block;
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition: opacity 0.2s ease, transform 0.15s ease;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   }
-  .btn-primary:hover {
-    background: #d4222f;
-    transform: translateY(-2px);
-  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+
   .btn-outline {
     background: transparent;
-    color: white;
+    color: var(--pink);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.15rem;
     font-weight: 700;
@@ -162,33 +124,33 @@ tailwind.config = {
     text-transform: uppercase;
     padding: 0.85rem 2rem;
     display: inline-block;
-    border: 2px solid rgba(255,255,255,0.4);
-    transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    border: 2px solid var(--pink);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   }
   .btn-outline:hover {
-    border-color: #bd1e2d;
-    color: #bd1e2d;
+    background: var(--pink);
+    color: white;
     transform: translateY(-2px);
   }
 
-  /* Sponsor placeholder */
-  .sponsor-box {
-    border: 1px solid rgba(0,0,0,0.1);
-    transition: border-color 0.2s ease;
-  }
-  .sponsor-box:hover { border-color: #bd1e2d; }
-
-  /* Red number */
+  /* ── Step number watermark ── */
   .step-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 3rem;
     line-height: 1;
-    color: rgba(189,30,45,0.15);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.15;
     position: absolute;
     top: 0.5rem;
     right: 1rem;
   }
+
+  /* ── Light section bg ── */
+  .bg-blush { background: #fff5f9; }
 </style>
 
 <div class="fos-page">
@@ -196,35 +158,35 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        HERO
   ═══════════════════════════════════════════ -->
-  <section class="hero-photo-bg clip-diagonal-bottom" style="padding: 7rem 1.5rem 10rem;overflow:hidden;">
-    <!-- Red corner accent -->
-    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:#bd1e2d;z-index:2;"></div>
+  <section class="hero-photo-bg clip-diagonal-bottom" style="padding:7rem 1.5rem 10rem;overflow:hidden;">
+    <!-- Gradient corner accent -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--grad);z-index:2;"></div>
 
     <div style="max-width:1100px;margin:0 auto;position:relative;">
 
       <!-- Pre-title -->
-      <p class="reveal-1" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.35em;font-size:1.1rem;color:#bd1e2d;text-transform:uppercase;margin-bottom:1rem;">
+      <p class="reveal-1" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.35em;font-size:1.1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin-bottom:1rem;">
         APEX Idaho Presents
       </p>
 
-      <!-- Main title -->
+      <!-- Logo -->
       <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:420px;width:100%;height:auto;display:block;margin:0 0 0.25rem;">
 
       <!-- Event meta -->
       <div class="reveal-3" style="display:flex;align-items:center;gap:1.5rem;margin:1.5rem 0 2rem;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:0.5rem;">
-          <span style="color:#bd1e2d;font-size:1.2rem;">&#9632;</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:white;font-size:1.3rem;text-transform:uppercase;">May 23–25</span>
+          <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">May 23–25</span>
         </div>
-        <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);"></div>
+        <div style="width:1px;height:20px;background:rgba(0,0,0,0.15);"></div>
         <div style="display:flex;align-items:center;gap:0.5rem;">
-          <span style="color:#bd1e2d;font-size:1.2rem;">&#9632;</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:white;font-size:1.3rem;text-transform:uppercase;">Twin Falls, ID</span>
+          <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">Twin Falls, ID</span>
         </div>
       </div>
 
       <!-- Tagline -->
-      <p class="reveal-4" style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:1.5rem;color:rgba(255,255,255,0.65);max-width:520px;line-height:1.5;margin-bottom:2.5rem;">
+      <p class="reveal-4" style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.5rem;color:rgba(0,0,0,0.55);max-width:520px;line-height:1.5;margin-bottom:2.5rem;">
         Three days of drift, grip, and full-throttle competition at one of Idaho's premier motorsport events. All skill levels welcome.
       </p>
 
@@ -236,8 +198,8 @@ tailwind.config = {
 
     </div>
 
-    <!-- Decorative large text -->
-    <div style="position:absolute;bottom:-2rem;right:-1rem;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,18rem);line-height:1;color:rgba(255,255,255,0.025);pointer-events:none;user-select:none;">
+    <!-- Decorative ghost text -->
+    <div style="position:absolute;bottom:-2rem;right:-1rem;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,18rem);line-height:1;color:rgba(0,0,0,0.03);pointer-events:none;user-select:none;">
       FOS
     </div>
   </section>
@@ -246,17 +208,17 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        SPONSORS
   ═══════════════════════════════════════════ -->
-  <section style="background:#fff;padding:4rem 1.5rem;">
+  <section style="background:#ffffff;padding:4rem 1.5rem;">
     <div style="max-width:1100px;margin:0 auto;">
-      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.3em;font-size:1rem;color:#bd1e2d;text-transform:uppercase;text-align:center;margin-bottom:2.5rem;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.3em;font-size:1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;text-align:center;margin-bottom:2.5rem;">
         Presented By Our Sponsors
       </p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;">
         <?php
         $sponsors = ['CB', 'KBD', 'SharkFest', 'Partner 04', 'Partner 05', 'Partner 06', 'Partner 07', 'Partner 08', 'Partner 09', 'Partner 10', 'Partner 11', 'Partner 12'];
         foreach ($sponsors as $s) : ?>
-          <div class="sponsor-box" style="display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem;background:#f9f9f9;">
-            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#333;letter-spacing:0.1em;"><?php echo esc_html($s); ?></span>
+          <div class="sponsor-box" style="display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem;background:#fafafa;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#555;letter-spacing:0.1em;"><?php echo esc_html($s); ?></span>
           </div>
         <?php endforeach; ?>
       </div>
@@ -267,37 +229,35 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        DRIVER ENTRY PERKS
   ═══════════════════════════════════════════ -->
-  <section style="background:#111111;padding:5rem 1.5rem 6rem;position:relative;overflow:hidden;">
+  <section class="bg-blush" style="padding:5rem 1.5rem 6rem;position:relative;overflow:hidden;">
     <div style="max-width:1100px;margin:0 auto;">
 
       <div style="margin-bottom:3rem;">
-        <div style="width:50px;height:4px;background:#bd1e2d;margin-bottom:1rem;"></div>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:white;margin:0 0 0.5rem;line-height:1;">
+        <div class="accent-bar"></div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#111;margin:0 0 0.5rem;line-height:1;">
           Driver Entry Includes
         </h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:1.3rem;color:rgba(255,255,255,0.5);">Everything you need for three days on track.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.3rem;color:rgba(0,0,0,0.5);">Everything you need for three days on track.</p>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;">
-
         <?php
         $perks = [
-          ['icon' => '&#9673;', 'title' => '3-Day Track Access',      'desc' => 'Full access to on-track sessions across all three event days.'],
-          ['icon' => '&#9673;', 'title' => 'Paved Pits',              'desc' => 'Dedicated paved pit space with access to all track amenities.'],
-          ['icon' => '&#9673;', 'title' => 'Driver Parties',           'desc' => 'Exclusive Friday & Saturday night driver parties included.'],
-          ['icon' => '&#9673;', 'title' => 'Free Camping',             'desc' => 'Camp on-site all weekend — no reservation needed.'],
-          ['icon' => '&#9673;', 'title' => 'Showers On-Site',         'desc' => 'Clean shower facilities available throughout the event.'],
-          ['icon' => '&#9673;', 'title' => 'Fuel Available',           'desc' => 'On-site fuel so you spend less time sourcing and more time driving.'],
+          ['title' => '3-Day Track Access', 'desc' => 'Full access to on-track sessions across all three event days.'],
+          ['title' => 'Paved Pits',         'desc' => 'Dedicated paved pit space with access to all track amenities.'],
+          ['title' => 'Driver Parties',     'desc' => 'Exclusive Friday & Saturday night driver parties included.'],
+          ['title' => 'Free Camping',       'desc' => 'Camp on-site all weekend — no reservation needed.'],
+          ['title' => 'Showers On-Site',    'desc' => 'Clean shower facilities available throughout the event.'],
+          ['title' => 'Fuel Available',     'desc' => 'On-site fuel so you spend less time sourcing and more time driving.'],
         ];
         foreach ($perks as $i => $perk) : ?>
-          <div class="perk-card" style="background:#1a1a1a;padding:1.75rem 1.5rem;position:relative;overflow:hidden;">
+          <div class="perk-card" style="padding:1.75rem 1.5rem;position:relative;overflow:hidden;">
             <span class="step-num"><?php echo str_pad($i + 1, 2, '0', STR_PAD_LEFT); ?></span>
-            <div style="width:8px;height:8px;background:#bd1e2d;margin-bottom:1rem;transform:rotate(45deg);"></div>
-            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:white;margin:0 0 0.5rem;letter-spacing:0.05em;"><?php echo esc_html($perk['title']); ?></h3>
-            <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.2rem;color:rgba(255,255,255,0.5);margin:0;line-height:1.5;"><?php echo esc_html($perk['desc']); ?></p>
+            <div style="width:8px;height:8px;background:var(--grad);margin-bottom:1rem;transform:rotate(45deg);background:linear-gradient(135deg,#e8197d,#f97316);"></div>
+            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#111;margin:0 0 0.5rem;letter-spacing:0.05em;"><?php echo esc_html($perk['title']); ?></h3>
+            <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.2rem;color:rgba(0,0,0,0.5);margin:0;line-height:1.5;"><?php echo esc_html($perk['desc']); ?></p>
           </div>
         <?php endforeach; ?>
-
       </div>
 
       <div style="margin-top:2.5rem;">
@@ -315,7 +275,7 @@ tailwind.config = {
     <div style="max-width:1100px;margin:0 auto;">
 
       <div style="margin-bottom:3rem;">
-        <div style="width:50px;height:4px;background:#bd1e2d;margin-bottom:1rem;"></div>
+        <div class="accent-bar"></div>
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#111;margin:0;line-height:1;">
           Event Schedule
         </h2>
@@ -327,8 +287,8 @@ tailwind.config = {
           'day'  => 'Friday',
           'date' => 'May 23',
           'sessions' => [
-            ['time' => '8:00 AM', 'name' => 'Gates Open / Registration'],
-            ['time' => '9:00 AM', 'name' => 'Tech Inspection'],
+            ['time' => '8:00 AM',  'name' => 'Gates Open / Registration'],
+            ['time' => '9:00 AM',  'name' => 'Tech Inspection'],
             ['time' => '10:00 AM', 'name' => 'Hot Laps — Open Practice'],
             ['time' => '12:00 PM', 'name' => 'Lunch Break'],
             ['time' => '1:00 PM',  'name' => 'Hot Laps — Afternoon Session'],
@@ -372,15 +332,15 @@ tailwind.config = {
           >
             <div style="display:flex;align-items:baseline;gap:1.25rem;">
               <span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#111;letter-spacing:0.05em;"><?php echo esc_html($day['day']); ?></span>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:1.2rem;color:#bd1e2d;letter-spacing:0.1em;text-transform:uppercase;"><?php echo esc_html($day['date']); ?></span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:1.2rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.1em;text-transform:uppercase;"><?php echo esc_html($day['date']); ?></span>
             </div>
-            <span class="accordion-chevron" style="color:#bd1e2d;font-size:1.5rem;line-height:1;">&#8964;</span>
+            <span class="accordion-chevron" style="font-size:1.5rem;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">&#8964;</span>
           </button>
           <div class="accordion-content<?php echo $idx === 0 ? ' open' : ''; ?>">
             <div style="padding:0 0 1.5rem;">
               <?php foreach ($day['sessions'] as $session) : ?>
                 <div style="display:flex;align-items:baseline;gap:1.5rem;padding:0.6rem 0;border-bottom:1px solid rgba(0,0,0,0.06);">
-                  <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.15rem;color:#bd1e2d;letter-spacing:0.05em;min-width:100px;"><?php echo esc_html($session['time']); ?></span>
+                  <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.15rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.05em;min-width:100px;"><?php echo esc_html($session['time']); ?></span>
                   <span style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:1.25rem;color:#333;"><?php echo esc_html($session['name']); ?></span>
                 </div>
               <?php endforeach; ?>
@@ -397,49 +357,49 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        LODGING
   ═══════════════════════════════════════════ -->
-  <section style="background:#111111;padding:5rem 1.5rem;">
+  <section style="background:#ffffff;padding:5rem 1.5rem;">
     <div style="max-width:1100px;margin:0 auto;">
 
       <div style="margin-bottom:3rem;">
-        <div style="width:50px;height:4px;background:#bd1e2d;margin-bottom:1rem;"></div>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:white;margin:0 0 0.5rem;line-height:1;">
+        <div class="accent-bar"></div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#111;margin:0 0 0.5rem;line-height:1;">
           Partner Lodging
         </h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:1.3rem;color:rgba(255,255,255,0.5);">Official hotel partners with reserved blocks for event attendees.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.3rem;color:rgba(0,0,0,0.5);">Official hotel partners with reserved blocks for event attendees.</p>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">
 
-        <div class="hotel-card" style="background:#1a1a1a;padding:2rem;border:1px solid rgba(255,255,255,0.07);">
+        <div class="hotel-card" style="padding:2rem;">
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
-            <div style="width:4px;height:40px;background:#bd1e2d;flex-shrink:0;"></div>
+            <div style="width:4px;height:40px;background:linear-gradient(180deg,#e8197d,#f97316);flex-shrink:0;"></div>
             <div>
-              <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.75rem;color:white;margin:0;letter-spacing:0.05em;">Hampton Inn</h3>
-              <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.1rem;color:rgba(255,255,255,0.4);margin:0;">1658 Fillmore St., Twin Falls</p>
+              <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.75rem;color:#111;margin:0;letter-spacing:0.05em;">Hampton Inn</h3>
+              <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.1rem;color:rgba(0,0,0,0.4);margin:0;">1658 Fillmore St., Twin Falls</p>
             </div>
           </div>
           <ul style="list-style:none;padding:0;margin:0 0 2rem;display:flex;flex-direction:column;gap:0.4rem;">
             <?php foreach (['Free breakfast included', 'Indoor pool & fitness center', 'Event rate available — ask at booking'] as $amenity) : ?>
-              <li style="display:flex;align-items:center;gap:0.75rem;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:rgba(255,255,255,0.6);">
-                <span style="color:#bd1e2d;font-size:0.6rem;">&#9632;</span> <?php echo esc_html($amenity); ?>
+              <li style="display:flex;align-items:center;gap:0.75rem;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:rgba(0,0,0,0.6);">
+                <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:0.7rem;">&#9632;</span> <?php echo esc_html($amenity); ?>
               </li>
             <?php endforeach; ?>
           </ul>
           <a href="#registration-link" class="btn-primary">Book Now</a>
         </div>
 
-        <div class="hotel-card" style="background:#1a1a1a;padding:2rem;border:1px solid rgba(255,255,255,0.07);">
+        <div class="hotel-card" style="padding:2rem;">
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
-            <div style="width:4px;height:40px;background:#bd1e2d;flex-shrink:0;"></div>
+            <div style="width:4px;height:40px;background:linear-gradient(180deg,#e8197d,#f97316);flex-shrink:0;"></div>
             <div>
-              <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.75rem;color:white;margin:0;letter-spacing:0.05em;">Quality Inn</h3>
-              <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.1rem;color:rgba(255,255,255,0.4);margin:0;">1910 Fillmore St., Twin Falls</p>
+              <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.75rem;color:#111;margin:0;letter-spacing:0.05em;">Quality Inn</h3>
+              <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.1rem;color:rgba(0,0,0,0.4);margin:0;">1910 Fillmore St., Twin Falls</p>
             </div>
           </div>
           <ul style="list-style:none;padding:0;margin:0 0 2rem;display:flex;flex-direction:column;gap:0.4rem;">
             <?php foreach (['Complimentary continental breakfast', 'Outdoor pool', 'Pet-friendly rooms available'] as $amenity) : ?>
-              <li style="display:flex;align-items:center;gap:0.75rem;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:rgba(255,255,255,0.6);">
-                <span style="color:#bd1e2d;font-size:0.6rem;">&#9632;</span> <?php echo esc_html($amenity); ?>
+              <li style="display:flex;align-items:center;gap:0.75rem;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:rgba(0,0,0,0.6);">
+                <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:0.7rem;">&#9632;</span> <?php echo esc_html($amenity); ?>
               </li>
             <?php endforeach; ?>
           </ul>
@@ -454,18 +414,17 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        TECH & RULES BANNER
   ═══════════════════════════════════════════ -->
-  <section style="background:#bd1e2d;padding:4rem 1.5rem;position:relative;overflow:hidden;">
-    <!-- Decorative background text -->
+  <section style="background:linear-gradient(135deg,#e8197d 0%,#f97316 100%);padding:4rem 1.5rem;position:relative;overflow:hidden;">
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;user-select:none;">
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,18vw,14rem);color:rgba(0,0,0,0.08);white-space:nowrap;line-height:1;">TECH &amp; RULES</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,18vw,14rem);color:rgba(255,255,255,0.1);white-space:nowrap;line-height:1;">TECH &amp; RULES</span>
     </div>
     <div style="max-width:1100px;margin:0 auto;position:relative;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
       <div>
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.5rem);color:white;margin:0 0 0.5rem;line-height:1;letter-spacing:0.05em;">Official Tech &amp; Rules</h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.3rem;color:rgba(255,255,255,0.75);margin:0;max-width:480px;">Review the full technical requirements and event rules before you register. All vehicles must pass tech inspection.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.3rem;color:rgba(255,255,255,0.85);margin:0;max-width:480px;">Review the full technical requirements and event rules before you register. All vehicles must pass tech inspection.</p>
       </div>
-      <a href="#registration-link" style="background:white;color:#bd1e2d;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2rem;display:inline-block;white-space:nowrap;transition:background 0.2s ease,transform 0.15s ease;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));"
-         onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      <a href="#registration-link" style="background:white;color:#e8197d;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2rem;display:inline-block;white-space:nowrap;transition:opacity 0.2s ease,transform 0.15s ease;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));"
+         onmouseover="this.style.opacity='0.9';this.style.transform='translateY(-2px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
         View Tech &amp; Rules
       </a>
     </div>
@@ -475,11 +434,11 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        BOTTOM CTA
   ═══════════════════════════════════════════ -->
-  <section class="hero-bg" style="padding:5rem 1.5rem;text-align:center;">
+  <section class="bg-blush" style="padding:5rem 1.5rem;text-align:center;">
     <div style="max-width:700px;margin:0 auto;">
-      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.3em;font-size:1.05rem;color:#bd1e2d;text-transform:uppercase;margin-bottom:1rem;">Don't Miss It</p>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);color:white;margin:0 0 1rem;line-height:0.95;">Ready to Race?</h2>
-      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:1.4rem;color:rgba(255,255,255,0.55);margin:0 0 2.5rem;line-height:1.5;">Spots are limited — secure your entry before they're gone.</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.3em;font-size:1.05rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin-bottom:1rem;">Don't Miss It</p>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);color:#111;margin:0 0 1rem;line-height:0.95;">Ready to Race?</h2>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.4rem;color:rgba(0,0,0,0.5);margin:0 0 2.5rem;line-height:1.5;">Spots are limited — secure your entry before they're gone.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         <a href="#registration-link" class="btn-primary">Buy Driver Entry</a>
         <a href="#registration-link" class="btn-outline">Buy Spectator Tickets</a>
@@ -492,8 +451,7 @@ tailwind.config = {
 <script>
 function toggleAccordion(btn) {
   btn.classList.toggle('open');
-  var content = btn.nextElementSibling;
-  content.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
 }
 </script>
 

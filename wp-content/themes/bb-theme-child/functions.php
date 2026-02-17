@@ -161,6 +161,8 @@ function apex_register_sponsor_fields()
         ->where('post_type', '=', 'sponsor')
         ->add_fields([
             Field::make('image', 'sponsor_logo', 'Logo'),
+            Field::make('checkbox', 'sponsor_invert_logo', 'Invert logo to black')
+                ->set_help_text('Check this if the logo is white/light and needs to appear dark.'),
             Field::make('text', 'sponsor_url', 'Website URL')
                 ->set_attribute('placeholder', 'https://'),
         ]);

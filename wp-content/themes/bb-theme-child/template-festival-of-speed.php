@@ -34,7 +34,7 @@ tailwind.config = {
   .fos-page * { box-sizing: border-box; }
   .fos-page { font-family: 'Barlow Condensed', sans-serif; }
 
-  /* Speed lines background */
+  /* Hero background */
   .hero-bg {
     background-color: #111111;
     background-image:
@@ -45,6 +45,32 @@ tailwind.config = {
         rgba(189,30,45,0.04) 2px,
         rgba(189,30,45,0.04) 3px
       );
+  }
+  .hero-photo-bg {
+    position: relative;
+    background-color: #111111;
+  }
+  .hero-photo-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/images/festival-of-speed-hero.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    opacity: 0.35;
+    z-index: 0;
+  }
+  .hero-photo-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(17,17,17,0.95) 40%, rgba(17,17,17,0.4) 100%),
+                linear-gradient(to top, rgba(17,17,17,0.8) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .hero-photo-bg > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* Diagonal section cut */
@@ -170,9 +196,9 @@ tailwind.config = {
   <!-- ═══════════════════════════════════════════
        HERO
   ═══════════════════════════════════════════ -->
-  <section class="hero-bg clip-diagonal-bottom relative overflow-hidden" style="padding: 7rem 1.5rem 10rem;">
+  <section class="hero-photo-bg clip-diagonal-bottom" style="padding: 7rem 1.5rem 10rem;overflow:hidden;">
     <!-- Red corner accent -->
-    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:#bd1e2d;"></div>
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:#bd1e2d;z-index:2;"></div>
 
     <div style="max-width:1100px;margin:0 auto;position:relative;">
 

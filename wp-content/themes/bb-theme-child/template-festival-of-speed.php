@@ -172,11 +172,8 @@ get_header();
   <section class="hero-photo-bg clip-diagonal-bottom" style="overflow:hidden;display:flex;align-items:stretch;min-height:580px;">
 
     <!-- Left: text content -->
-    <div style="flex:1 1 480px;padding:6rem 2.5rem 8rem 2.5rem;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;">
-      <!-- Gradient left border -->
-      <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--grad);"></div>
-
-      <div style="max-width:560px;padding-left:1rem;">
+    <div style="flex:1 1 480px;padding:6rem 2.5rem 8rem 2.5rem;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;position:relative;z-index:1;text-align:right;">
+      <div style="max-width:560px;width:100%;">
 
         <!-- Pre-title -->
         <p class="reveal-1" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.35em;font-size:1.1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin:0 0 1rem;">
@@ -187,7 +184,7 @@ get_header();
         <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:400px;width:100%;height:auto;display:block;margin:0 0 1.5rem;">
 
         <!-- Event meta -->
-        <div class="reveal-3" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.75rem;flex-wrap:wrap;">
+        <div class="reveal-3" style="display:flex;align-items:center;justify-content:flex-end;gap:1.5rem;margin-bottom:1.75rem;flex-wrap:wrap;">
           <div style="display:flex;align-items:center;gap:0.5rem;">
             <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
             <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">May 23–25</span>
@@ -205,7 +202,7 @@ get_header();
         </p>
 
         <!-- CTAs -->
-        <div class="reveal-5" style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <div class="reveal-5" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:flex-end;">
           <a href="#registration-link" class="btn-primary">Buy Driver Entry</a>
           <a href="#registration-link" class="btn-outline">Buy Spectator Tickets</a>
         </div>

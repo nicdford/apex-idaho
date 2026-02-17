@@ -102,8 +102,8 @@
       </div>
 
       <div class="apex-footer__social">
-        <?php $fb = get_theme_mod( 'fl_social_facebook' ); ?>
-        <?php $ig = get_theme_mod( 'fl_social_instagram' ); ?>
+        <?php $fb = get_theme_mod( 'fl-social-facebook' ); ?>
+        <?php $ig = get_theme_mod( 'fl-social-instagram' ); ?>
 
         <?php if ( $fb ) : ?>
           <a href="<?php echo esc_url( $fb ); ?>" target="_blank" rel="noopener" aria-label="Facebook">

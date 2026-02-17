@@ -21,6 +21,10 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p ${{ secrets.SITEGROUND_SSH_PORT }} ${{ secrets.SITEGROUND_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist
+        working-directory: wp-content/themes/bb-theme-child
+
       - name: Deploy via rsync
         run: |
           rsync -avz --delete \

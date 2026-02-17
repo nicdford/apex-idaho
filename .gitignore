@@ -49,3 +49,6 @@ wp-config.php
 
 .ds_store
 .env
+
+# Composer vendor directories
+wp-content/themes/bb-theme-child/vendor/

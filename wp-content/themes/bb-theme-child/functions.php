@@ -4,6 +4,14 @@
 define('FL_CHILD_THEME_DIR', get_stylesheet_directory());
 define('FL_CHILD_THEME_URL', get_stylesheet_directory_uri());
 
+// Carbon Fields
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 // Classes
 require_once 'classes/class-fl-child-theme.php';
 
@@ -111,4 +119,49 @@ function get_order_by_id($order_id)
 function order_has_coupon($coupon, $order)
 {
   return in_array($coupon, $order->get_coupon_codes());
+}
+
+/**
+ * Sponsor Custom Post Type
+ */
+add_action('init', 'register_sponsor_post_type');
+function register_sponsor_post_type()
+{
+    register_post_type('sponsor', [
+        'labels' => [
+            'name'          => 'Sponsors',
+            'singular_name' => 'Sponsor',
+            'add_new_item'  => 'Add New Sponsor',
+            'edit_item'     => 'Edit Sponsor',
+            'all_items'     => 'All Sponsors',
+        ],
+        'public'       => false,
+        'show_ui'      => true,
+        'show_in_menu' => true,
+        'supports'     => ['title'],
+        'menu_icon'    => 'dashicons-star-filled',
+    ]);
+}
+
+/**
+ * Carbon Fields setup
+ */
+add_action('after_setup_theme', 'apex_boot_carbon_fields');
+function apex_boot_carbon_fields()
+{
+    if ( class_exists( '\Carbon_Fields\Carbon_Fields' ) ) {
+        \Carbon_Fields\Carbon_Fields::boot();
+    }
+}
+
+add_action('carbon_fields_register_fields', 'apex_register_sponsor_fields');
+function apex_register_sponsor_fields()
+{
+    Container::make('post_meta', 'Sponsor Details')
+        ->where('post_type', '=', 'sponsor')
+        ->add_fields([
+            Field::make('image', 'sponsor_logo', 'Logo'),
+            Field::make('text', 'sponsor_url', 'Website URL')
+                ->set_attribute('placeholder', 'https://'),
+        ]);
 }

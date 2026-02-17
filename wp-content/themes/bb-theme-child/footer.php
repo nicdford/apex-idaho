@@ -87,9 +87,34 @@
 }
 </style>
 
-<div style="max-width:1176px;margin:0 auto;padding:0 1.5rem;">
-  <?php echo do_shortcode('[fl_builder_insert_layout id=120]'); ?>
+<?php
+$sponsors = new WP_Query([
+    'post_type'      => 'sponsor',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish',
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC',
+]);
+
+if ( $sponsors->have_posts() ) : ?>
+<div style="max-width:1176px;margin:0 auto;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2rem;">
+    <?php while ( $sponsors->have_posts() ) : $sponsors->the_post();
+        $logo_id  = carbon_get_post_meta( get_the_ID(), 'sponsor_logo' );
+        $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+        $site_url = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
+        if ( ! $logo_url ) continue;
+        $tag_open  = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';
+        $tag_close = $site_url ? '</a>' : '</span>';
+    ?>
+        <?php echo $tag_open; ?>
+            <img src="<?php echo esc_url( $logo_url ); ?>"
+                 alt="<?php echo esc_attr( get_the_title() ); ?>"
+                 style="max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;"
+                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+        <?php echo $tag_close; ?>
+    <?php endwhile; wp_reset_postdata(); ?>
 </div>
+<?php endif; ?>
 
 <footer class="apex-footer" role="contentinfo">
   <div class="apex-footer__grad-bar"></div>

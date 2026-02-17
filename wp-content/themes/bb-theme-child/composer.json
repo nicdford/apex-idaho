@@ -1,0 +1,11 @@
+{
+    "name": "apex-idaho/bb-theme-child",
+    "description": "APEX Idaho Child Theme",
+    "require": {
+        "htmlburger/carbon-fields": "^3.6"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "vendor-dir": "vendor"
+    }
+}

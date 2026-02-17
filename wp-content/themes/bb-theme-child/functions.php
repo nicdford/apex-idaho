@@ -11,7 +11,11 @@ require_once 'classes/class-fl-child-theme.php';
 add_action('wp_enqueue_scripts', 'FLChildTheme::enqueue_scripts', 1000);
 
 // Force 16px root font size — overrides BB theme's html { font-size: 10px }
+// Added to both wp_head and wp_footer to catch BB plugin's cached CSS loaded in footer
 add_action('wp_head', function() {
+    echo '<style>html { font-size: 16px !important; }</style>';
+}, 999);
+add_action('wp_footer', function() {
     echo '<style>html { font-size: 16px !important; }</style>';
 }, 999);
 

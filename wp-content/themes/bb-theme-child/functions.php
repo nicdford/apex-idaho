@@ -10,38 +10,6 @@ require_once 'classes/class-fl-child-theme.php';
 // Actions
 add_action('wp_enqueue_scripts', 'FLChildTheme::enqueue_scripts', 1000);
 
-// Force Beaver Builder to enqueue frontend assets on all pages
-// Required so fl_builder_insert_layout shortcode renders correctly in the global footer
-add_action('wp_enqueue_scripts', function() {
-    if (!class_exists('FLBuilderModel')) return;
-
-    $upload_dir = wp_upload_dir();
-    $cache_dir  = trailingslashit($upload_dir['basedir']) . 'bb-plugin/cache/';
-    $cache_url  = trailingslashit($upload_dir['baseurl']) . 'bb-plugin/cache/';
-
-    // Find the cached CSS file for layout 120 (BB appends a version hash to the filename)
-    $files = glob($cache_dir . '120-*.css');
-    if (!empty($files)) {
-        $file = $files[0];
-        wp_enqueue_style(
-            'fl-builder-layout-120',
-            $cache_url . basename($file),
-            [],
-            filemtime($file)
-        );
-    }
-
-    // Enqueue BB's core layout stylesheet
-    if (defined('FL_BUILDER_URL')) {
-        wp_enqueue_style(
-            'fl-builder-layout',
-            FL_BUILDER_URL . 'css/fl-builder-layout.min.css',
-            [],
-            FL_BUILDER_VERSION
-        );
-    }
-}, 11);
-
 // Force 16px root font size — overrides BB theme's html { font-size: 10px }
 // Added to both wp_head and wp_footer to catch BB plugin's cached CSS loaded in footer
 add_action('wp_head', function() {

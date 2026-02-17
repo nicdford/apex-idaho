@@ -25,25 +25,36 @@ get_header();
     position: relative;
     background-color: #ffffff;
   }
-  .hero-photo-bg::before {
+
+  .hero-img-wrap {
+    position: relative;
+    flex: 1 1 480px;
+    min-height: 420px;
+    overflow: hidden;
+    clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .hero-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+  }
+  .hero-img-wrap::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('<?php echo get_stylesheet_directory_uri(); ?>/images/festival-of-speed-hero.jpg');
-    background-size: cover;
-    background-position: center 40%;
-    opacity: 0.12;
-    z-index: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.5) 0%, transparent 30%),
+                linear-gradient(to top, rgba(255,255,255,0.3) 0%, transparent 30%);
   }
-  .hero-photo-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,0.97) 45%, rgba(255,255,255,0.55) 100%),
-                linear-gradient(to top,   rgba(255,255,255,0.9)  0%,  transparent 50%);
-    z-index: 0;
+
+  @media (max-width: 768px) {
+    .hero-img-wrap {
+      clip-path: none;
+      min-height: 260px;
+      flex: 1 1 100%;
+    }
   }
-  .hero-photo-bg > * { position: relative; z-index: 1; }
 
   /* ── Diagonal cuts ── */
   .clip-diagonal-bottom { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
@@ -158,50 +169,55 @@ get_header();
   <!-- ═══════════════════════════════════════════
        HERO
   ═══════════════════════════════════════════ -->
-  <section class="hero-photo-bg clip-diagonal-bottom" style="padding:7rem 1.5rem 10rem;overflow:hidden;">
-    <!-- Gradient corner accent -->
-    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--grad);z-index:2;"></div>
+  <section class="hero-photo-bg clip-diagonal-bottom" style="overflow:hidden;display:flex;align-items:stretch;min-height:580px;">
 
-    <div style="max-width:1100px;margin:0 auto;position:relative;">
+    <!-- Left: text content -->
+    <div style="flex:1 1 480px;padding:6rem 2.5rem 8rem 2.5rem;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;">
+      <!-- Gradient left border -->
+      <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--grad);"></div>
 
-      <!-- Pre-title -->
-      <p class="reveal-1" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.35em;font-size:1.1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin-bottom:1rem;">
-        APEX Idaho Presents
-      </p>
+      <div style="max-width:560px;padding-left:1rem;">
 
-      <!-- Logo -->
-      <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:420px;width:100%;height:auto;display:block;margin:0 0 0.25rem;">
+        <!-- Pre-title -->
+        <p class="reveal-1" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.35em;font-size:1.1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;margin:0 0 1rem;">
+          APEX Idaho Presents
+        </p>
 
-      <!-- Event meta -->
-      <div class="reveal-3" style="display:flex;align-items:center;gap:1.5rem;margin:1.5rem 0 2rem;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:0.5rem;">
-          <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">May 23–25</span>
+        <!-- Logo -->
+        <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:400px;width:100%;height:auto;display:block;margin:0 0 1.5rem;">
+
+        <!-- Event meta -->
+        <div class="reveal-3" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.75rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">May 23–25</span>
+          </div>
+          <div style="width:1px;height:20px;background:rgba(0,0,0,0.15);"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">Twin Falls, ID</span>
+          </div>
         </div>
-        <div style="width:1px;height:20px;background:rgba(0,0,0,0.15);"></div>
-        <div style="display:flex;align-items:center;gap:0.5rem;">
-          <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.2rem;">&#9632;</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:0.15em;color:#111;font-size:1.3rem;text-transform:uppercase;">Twin Falls, ID</span>
+
+        <!-- Tagline -->
+        <p class="reveal-4" style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.4rem;color:rgba(0,0,0,0.55);line-height:1.5;margin:0 0 2rem;">
+          Three days of drift, grip, and full-throttle competition at one of Idaho's premier motorsport events. All skill levels welcome.
+        </p>
+
+        <!-- CTAs -->
+        <div class="reveal-5" style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#registration-link" class="btn-primary">Buy Driver Entry</a>
+          <a href="#registration-link" class="btn-outline">Buy Spectator Tickets</a>
         </div>
+
       </div>
-
-      <!-- Tagline -->
-      <p class="reveal-4" style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:1.5rem;color:rgba(0,0,0,0.55);max-width:520px;line-height:1.5;margin-bottom:2.5rem;">
-        Three days of drift, grip, and full-throttle competition at one of Idaho's premier motorsport events. All skill levels welcome.
-      </p>
-
-      <!-- CTAs -->
-      <div class="reveal-5" style="display:flex;gap:1rem;flex-wrap:wrap;">
-        <a href="#registration-link" class="btn-primary">Buy Driver Entry</a>
-        <a href="#registration-link" class="btn-outline">Buy Spectator Tickets</a>
-      </div>
-
     </div>
 
-    <!-- Decorative ghost text -->
-    <div style="position:absolute;bottom:-2rem;right:-1rem;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,18rem);line-height:1;color:rgba(0,0,0,0.03);pointer-events:none;user-select:none;">
-      FOS
+    <!-- Right: photo -->
+    <div class="hero-img-wrap">
+      <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/festival-of-speed-hero.jpg" alt="Festival of Speed action shot">
     </div>
+
   </section>
 
 

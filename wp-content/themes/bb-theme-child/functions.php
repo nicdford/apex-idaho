@@ -161,8 +161,10 @@ function apex_register_sponsor_fields()
         ->where('post_type', '=', 'sponsor')
         ->add_fields([
             Field::make('image', 'sponsor_logo', 'Logo'),
-            Field::make('checkbox', 'sponsor_invert_logo', 'Invert logo to black')
-                ->set_help_text('Check this if the logo is white/light and needs to appear dark.'),
+            Field::make('checkbox', 'sponsor_to_black', 'Convert to black')
+                ->set_help_text('Converts all non-transparent pixels to pure black (brightness(0)).'),
+            Field::make('checkbox', 'sponsor_invert', 'Invert colors')
+                ->set_help_text('Inverts all colors (invert(1)). Useful for dark logos on light backgrounds.'),
             Field::make('text', 'sponsor_url', 'Website URL')
                 ->set_attribute('placeholder', 'https://'),
         ]);

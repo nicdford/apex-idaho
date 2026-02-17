@@ -99,12 +99,14 @@ $sponsors = new WP_Query([
 if ( $sponsors->have_posts() ) : ?>
 <div style="max-width:1176px;margin:0 auto;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2rem;">
     <?php while ( $sponsors->have_posts() ) : $sponsors->the_post();
-        $logo_id     = carbon_get_post_meta( get_the_ID(), 'sponsor_logo' );
-        $logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
-        $invert      = carbon_get_post_meta( get_the_ID(), 'sponsor_invert_logo' );
-        $site_url    = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
+        $logo_id  = carbon_get_post_meta( get_the_ID(), 'sponsor_logo' );
+        $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+        $to_black = carbon_get_post_meta( get_the_ID(), 'sponsor_to_black' );
+        $invert   = carbon_get_post_meta( get_the_ID(), 'sponsor_invert' );
+        $site_url = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
         if ( ! $logo_url ) continue;
-        $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $invert ? 'filter:brightness(0);' : '' );
+        $filters   = array_filter( [ $to_black ? 'brightness(0)' : '', $invert ? 'invert(1)' : '' ] );
+        $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $filters ? 'filter:' . implode( ' ', $filters ) . ';' : '' );
         $tag_open  = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';
         $tag_close = $site_url ? '</a>' : '</span>';
     ?>

@@ -10,6 +10,11 @@ require_once 'classes/class-fl-child-theme.php';
 // Actions
 add_action('wp_enqueue_scripts', 'FLChildTheme::enqueue_scripts', 1000);
 
+// Force 16px root font size — overrides BB theme's html { font-size: 10px }
+add_action('wp_head', function() {
+    echo '<style>html { font-size: 16px !important; }</style>';
+}, 999);
+
 /**
  * Auto Complete all WooCommerce orders.
  */

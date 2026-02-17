@@ -55,7 +55,7 @@
   .apex-header__main {
     max-width: 1176px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;

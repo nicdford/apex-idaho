@@ -208,9 +208,7 @@ tailwind.config = {
       </p>
 
       <!-- Main title -->
-      <h1 class="reveal-2" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,9rem);line-height:0.9;color:white;margin:0 0 0.25rem;">
-        Festival<br>of Speed
-      </h1>
+      <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:420px;width:100%;height:auto;display:block;margin:0 0 0.25rem;">
 
       <!-- Event meta -->
       <div class="reveal-3" style="display:flex;align-items:center;gap:1.5rem;margin:1.5rem 0 2rem;flex-wrap:wrap;">

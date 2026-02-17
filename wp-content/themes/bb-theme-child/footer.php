@@ -87,7 +87,9 @@
 }
 </style>
 
-<?php echo do_shortcode('[fl_builder_insert_layout id=120]'); ?>
+<div style="max-width:1176px;margin:0 auto;padding:0 1.5rem;">
+  <?php echo do_shortcode('[fl_builder_insert_layout id=120]'); ?>
+</div>
 
 <footer class="apex-footer" role="contentinfo">
   <div class="apex-footer__grad-bar"></div>

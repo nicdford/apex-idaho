@@ -119,8 +119,10 @@ if ( $sponsors->have_posts() ) : ?>
                  alt="<?php echo esc_attr( get_the_title() ); ?>"
                  data-filter="<?php echo esc_attr( $filter_val ); ?>"
                  style="max-height:60px;width:auto;display:block;transition:filter 0.2s ease;<?php echo $filter_val ? 'filter:' . esc_attr( $filter_val ) . ';' : ''; ?>"
+                 <?php if ( ! $invert ) : ?>
                  onmouseover="this.style.filter='none'"
-                 onmouseout="this.style.filter=this.dataset.filter">
+                 onmouseout="this.style.filter=this.dataset.filter"
+                 <?php endif; ?>
         <?php echo $tag_close; ?>
     <?php endwhile; wp_reset_postdata(); ?>
 </div>

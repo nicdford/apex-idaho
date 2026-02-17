@@ -8,3 +8,8 @@ template: bb-theme
 */
 
 /* Add your custom styles here... */
+
+/* Restore browser default root font size (BB theme sets this to 10px) */
+html {
+  font-size: 16px;
+}

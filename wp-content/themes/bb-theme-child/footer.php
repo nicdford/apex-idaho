@@ -104,7 +104,7 @@ if ( $sponsors->have_posts() ) : ?>
         $invert      = carbon_get_post_meta( get_the_ID(), 'sponsor_invert_logo' );
         $site_url    = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
         if ( ! $logo_url ) continue;
-        $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $invert ? 'filter:invert(1);' : '' );
+        $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $invert ? 'filter:brightness(0);' : '' );
         $tag_open  = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';
         $tag_close = $site_url ? '</a>' : '</span>';
     ?>

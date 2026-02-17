@@ -110,15 +110,17 @@ if ( $sponsors->have_posts() ) : ?>
             $to_black === 'brightness' ? 'brightness(0)' : '',
             $invert                    ? 'invert(1)'     : '',
         ] );
-        $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $filters ? 'filter:' . implode( ' ', $filters ) . ';' : '' );
-        $tag_open  = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';
-        $tag_close = $site_url ? '</a>' : '</span>';
+        $filter_val = $filters ? implode( ' ', $filters ) : '';
+        $tag_open   = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';
+        $tag_close  = $site_url ? '</a>' : '</span>';
     ?>
         <?php echo $tag_open; ?>
             <img src="<?php echo esc_url( $logo_url ); ?>"
                  alt="<?php echo esc_attr( get_the_title() ); ?>"
-                 style="<?php echo esc_attr( $img_style ); ?>"
-                 onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
+                 data-filter="<?php echo esc_attr( $filter_val ); ?>"
+                 style="max-height:60px;width:auto;display:block;transition:filter 0.2s ease;<?php echo $filter_val ? 'filter:' . esc_attr( $filter_val ) . ';' : ''; ?>"
+                 onmouseover="this.style.filter='none'"
+                 onmouseout="this.style.filter=this.dataset.filter">
         <?php echo $tag_close; ?>
     <?php endwhile; wp_reset_postdata(); ?>
 </div>

@@ -154,6 +154,45 @@ function apex_boot_carbon_fields()
     }
 }
 
+add_action('add_meta_boxes', 'apex_sponsor_preview_meta_box');
+function apex_sponsor_preview_meta_box()
+{
+    add_meta_box(
+        'sponsor_logo_preview',
+        'Logo Preview',
+        'apex_render_sponsor_preview',
+        'sponsor',
+        'side',
+        'high'
+    );
+}
+
+function apex_render_sponsor_preview($post)
+{
+    $logo_id  = carbon_get_post_meta($post->ID, 'sponsor_logo');
+    $logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'medium') : '';
+
+    if (!$logo_url) {
+        echo '<p style="color:#999;margin:0;">No logo uploaded yet.</p>';
+        return;
+    }
+
+    $to_black = carbon_get_post_meta($post->ID, 'sponsor_to_black');
+    $invert   = carbon_get_post_meta($post->ID, 'sponsor_invert');
+
+    $filters = array_filter([
+        $to_black === 'grayscale'  ? 'grayscale(1)'  : '',
+        $to_black === 'brightness' ? 'brightness(0)' : '',
+        $invert                    ? 'invert(1)'     : '',
+    ]);
+    $filter_str = $filters ? 'filter:' . implode(' ', $filters) . ';' : '';
+
+    echo '<div style="background:#e0e0e0;padding:1rem;text-align:center;border-radius:2px;">';
+    echo '<img src="' . esc_url($logo_url) . '" style="max-width:100%;max-height:80px;' . esc_attr($filter_str) . '">';
+    echo '</div>';
+    echo '<p style="color:#999;font-size:11px;margin:6px 0 0;">Save to refresh preview.</p>';
+}
+
 add_action('carbon_fields_register_fields', 'apex_register_sponsor_fields');
 function apex_register_sponsor_fields()
 {

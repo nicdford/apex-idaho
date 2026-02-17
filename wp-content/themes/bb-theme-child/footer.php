@@ -101,15 +101,14 @@ if ( $sponsors->have_posts() ) : ?>
     <?php while ( $sponsors->have_posts() ) : $sponsors->the_post();
         $logo_id  = carbon_get_post_meta( get_the_ID(), 'sponsor_logo' );
         $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
-        $to_black   = carbon_get_post_meta( get_the_ID(), 'sponsor_to_black' );
-        $invert     = carbon_get_post_meta( get_the_ID(), 'sponsor_invert' );
-        $brightness = carbon_get_post_meta( get_the_ID(), 'sponsor_brightness' );
-        $site_url   = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
+        $to_black = carbon_get_post_meta( get_the_ID(), 'sponsor_to_black' );
+        $invert   = carbon_get_post_meta( get_the_ID(), 'sponsor_invert' );
+        $site_url = carbon_get_post_meta( get_the_ID(), 'sponsor_url' );
         if ( ! $logo_url ) continue;
         $filters = array_filter( [
-            $to_black                          ? 'grayscale(1)'                                    : '',
-            $invert                            ? 'invert(1)'                                       : '',
-            $brightness !== '' && $brightness !== null ? 'brightness(' . (float) $brightness . ')' : '',
+            $to_black === 'grayscale'  ? 'grayscale(1)'  : '',
+            $to_black === 'brightness' ? 'brightness(0)' : '',
+            $invert                    ? 'invert(1)'     : '',
         ] );
         $img_style = 'max-height:60px;width:auto;display:block;opacity:0.75;transition:opacity 0.2s ease;' . ( $filters ? 'filter:' . implode( ' ', $filters ) . ';' : '' );
         $tag_open  = $site_url ? '<a href="' . esc_url( $site_url ) . '" target="_blank" rel="noopener">' : '<span>';

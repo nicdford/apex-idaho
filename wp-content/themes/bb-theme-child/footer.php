@@ -14,7 +14,7 @@
 }
 .apex-footer a { text-decoration: none; transition: color 0.2s ease; }
 .apex-footer__inner {
-  max-width: 1100px;
+  max-width: 1176px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }

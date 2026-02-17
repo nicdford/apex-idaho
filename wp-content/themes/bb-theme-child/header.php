@@ -34,7 +34,7 @@
     padding: 0.4rem 1.5rem;
   }
   .apex-header__topbar-inner {
-    max-width: <?php echo (int) FLTheme::get_setting('fl-content-width'); ?>px;
+    max-width: 1176px;
     margin: 0 auto;
     display: flex;
     justify-content: flex-end;
@@ -53,7 +53,7 @@
 
   /* Main header row */
   .apex-header__main {
-    max-width: <?php echo (int) FLTheme::get_setting('fl-content-width'); ?>px;
+    max-width: 1176px;
     margin: 0 auto;
     padding: 0 1.5rem;
     display: flex;

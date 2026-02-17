@@ -181,7 +181,7 @@ get_header();
         </p>
 
         <!-- Logo -->
-        <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:400px;width:100%;height:auto;display:block;margin:0 0 1.5rem;">
+        <img class="reveal-2" src="https://apex-idaho.com/wp-content/uploads/2024/02/MVFOS-Stacked.png" alt="Magic Valley Festival of Speed" style="max-width:400px;width:100%;height:auto;display:block;margin:0 auto 1.5rem;">
 
         <!-- Event meta -->
         <div class="reveal-3" style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:1.75rem;flex-wrap:wrap;">

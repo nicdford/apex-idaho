@@ -96,11 +96,9 @@
     <div class="apex-footer__top">
 
       <div class="apex-footer__logo">
-        <?php if ( has_custom_logo() ) : ?>
-          <?php the_custom_logo(); ?>
-        <?php else : ?>
-          <span class="apex-footer__logo-text"><?php bloginfo( 'name' ); ?></span>
-        <?php endif; ?>
+        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+          <img src="https://apex-idaho.com/wp-content/uploads/2023/07/APEX_Idaho_logo-2-300x77.png" alt="APEX Idaho" style="height:48px;width:auto;display:block;">
+        </a>
       </div>
 
       <div class="apex-footer__social">

@@ -92,6 +92,8 @@
   padding: 2rem 0;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,0.06);
+  max-width: 1128px;
+  margin: 0 auto;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }

@@ -252,7 +252,7 @@
               'Media'               => '/media/',
               'Shop'                => '/shop/',
               'About'               => '/about/',
-              'Official Tech &amp; Rules' => '/tech-rules/',
+              'Official Tech &amp; Rules' => '/tech/',
             ];
             echo '<ul class="apex-header__nav">';
             foreach ( $links as $label => $path ) {

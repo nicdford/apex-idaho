@@ -1,6 +1,5 @@
 services:
   db:
-    container_name: ${NAME}-db
     # We use a mariadb image which supports both amd64 & arm64 architecture
     image: mariadb:10.6.4-focal
     # If you really want to use MySQL, uncomment the following line
@@ -18,12 +17,11 @@ services:
       - 3306
       - 33060
   wordpress:
-    container_name: ${NAME}-wordpress
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
     ports:
-      - 80:80
+      - ${PORT}:80
     restart: always
     environment:
       - WORDPRESS_DB_HOST=db

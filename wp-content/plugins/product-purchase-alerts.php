@@ -131,6 +131,8 @@ class Product_Purchase_Alerts {
             /* ── Row actions ── */
             .ppa-row-actions { display: flex; gap: 6px; justify-content: flex-end; }
             .ppa-row-actions a { text-decoration: none; padding: 4px 10px; border-radius: 3px; font-size: 12px; transition: background 0.15s, color 0.15s; }
+            .ppa-row-actions .ppa-action-test { color: #2271b1; background: #f0f6fc; }
+            .ppa-row-actions .ppa-action-test:hover { background: #dce9f5; }
             .ppa-row-actions .ppa-action-edit { color: #2271b1; }
             .ppa-row-actions .ppa-action-edit:hover { background: #f0f6fc; }
             .ppa-row-actions .ppa-action-toggle { color: #50575e; }
@@ -151,6 +153,17 @@ class Product_Purchase_Alerts {
     public function handle_form_submission(): void {
         if (!current_user_can('manage_woocommerce')) {
             return;
+        }
+
+        // Send test email
+        if (isset($_GET['ppa_test'], $_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'ppa_test')) {
+            $alerts = self::get_alerts();
+            $index = absint($_GET['ppa_test']);
+            if (isset($alerts[$index])) {
+                $this->send_test_email($alerts[$index]);
+            }
+            wp_safe_redirect(admin_url('admin.php?page=product-purchase-alerts&ppa_msg=tested'));
+            exit;
         }
 
         // Delete alert
@@ -289,6 +302,32 @@ class Product_Purchase_Alerts {
     }
 
     /**
+     * Send a test email with sample placeholder data.
+     */
+    private function send_test_email(array $alert): void {
+        $product = wc_get_product($alert['product_id']);
+        $product_name = $product ? $product->get_name() : 'Sample Product';
+
+        $placeholders = [
+            '{product_name}'    => $product_name,
+            '{order_id}'        => '12345',
+            '{order_total}'     => '$99.00',
+            '{customer_name}'   => 'Jane Doe',
+            '{customer_email}'  => 'jane@example.com',
+            '{quantity}'        => '1',
+            '{order_date}'      => current_time('F j, Y g:i a'),
+        ];
+
+        $subject = '[TEST] ' . strtr($alert['subject'], $placeholders);
+        $message = "--- THIS IS A TEST EMAIL ---\n\n" . strtr($alert['message'], $placeholders);
+        $headers = ['Content-Type: text/plain; charset=UTF-8'];
+
+        foreach ($alert['emails'] as $email) {
+            wp_mail($email, $subject, $message, $headers);
+        }
+    }
+
+    /**
      * Render the admin settings page.
      */
     public function render_settings_page(): void {
@@ -302,6 +341,7 @@ class Product_Purchase_Alerts {
             'saved'   => 'Alert saved.',
             'deleted' => 'Alert deleted.',
             'toggled' => 'Alert updated.',
+            'tested'  => 'Test email sent to all recipients.',
             'error'   => 'Please select a product and enter at least one valid email address.',
         ];
         $msg_key = $_GET['ppa_msg'] ?? '';
@@ -376,6 +416,7 @@ class Product_Purchase_Alerts {
                                     </td>
                                     <td class="ppa-col-actions">
                                         <div class="ppa-row-actions">
+                                            <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_test=' . $i), 'ppa_test')); ?>" class="ppa-action-test">Send Test</a>
                                             <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_edit=' . $i)); ?>" class="ppa-action-edit">Edit</a>
                                             <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_toggle=' . $i), 'ppa_toggle')); ?>" class="ppa-action-toggle">
                                                 <?php echo $alert['enabled'] ? 'Disable' : 'Enable'; ?>

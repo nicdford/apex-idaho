@@ -53,10 +53,11 @@ class Product_Purchase_Alerts {
             return;
         }
 
-        wp_enqueue_style('ppa-admin', false);
-        wp_enqueue_script('select2');
-        wp_enqueue_style('select2');
+        wp_enqueue_script('wc-enhanced-select');
+        wp_enqueue_style('woocommerce_admin_styles');
 
+        wp_register_style('ppa-admin', false, [], '1.1.0');
+        wp_enqueue_style('ppa-admin');
         wp_add_inline_style('ppa-admin', '
             /* ── Page layout ── */
             .ppa-wrap { max-width: 960px; }
@@ -433,7 +434,11 @@ class Product_Purchase_Alerts {
 
                 <div class="ppa-field">
                     <label for="ppa_product_id">Product</label>
-                    <select name="ppa_product_id" id="ppa_product_id" class="ppa-product-search">
+                    <select class="wc-product-search" name="ppa_product_id" id="ppa_product_id"
+                            data-placeholder="Search for a product&hellip;"
+                            data-action="woocommerce_json_search_products_and_variations"
+                            data-allow_clear="true"
+                            style="width: 100%;">
                         <?php if ($product_id): ?>
                             <option value="<?php echo esc_attr($product_id); ?>" selected><?php echo esc_html($selected_product_name); ?></option>
                         <?php endif; ?>
@@ -489,24 +494,6 @@ class Product_Purchase_Alerts {
 
         <script>
         jQuery(function($) {
-            $('.ppa-product-search').select2({
-                ajax: {
-                    url: '<?php echo esc_url(admin_url('admin-ajax.php')); ?>',
-                    dataType: 'json',
-                    delay: 300,
-                    data: function(params) {
-                        return { action: 'ppa_search_products', q: params.term };
-                    },
-                    processResults: function(data) {
-                        return { results: data };
-                    }
-                },
-                minimumInputLength: 2,
-                placeholder: 'Search for a product...',
-                allowClear: true
-            });
-
-            // Click-to-copy placeholders
             $('.ppa-placeholders code').on('click', function() {
                 var text = $(this).data('placeholder');
                 navigator.clipboard.writeText(text).then(function() {
@@ -520,35 +507,5 @@ class Product_Purchase_Alerts {
         <?php
     }
 }
-
-/**
- * AJAX handler for product search (used by Select2).
- */
-add_action('wp_ajax_ppa_search_products', function () {
-    if (!current_user_can('manage_woocommerce')) {
-        wp_send_json([]);
-    }
-
-    $term = sanitize_text_field($_GET['q'] ?? '');
-    if (strlen($term) < 2) {
-        wp_send_json([]);
-    }
-
-    $products = wc_get_products([
-        'status' => 'publish',
-        's'      => $term,
-        'limit'  => 20,
-    ]);
-
-    $results = [];
-    foreach ($products as $product) {
-        $results[] = [
-            'id'   => $product->get_id(),
-            'text' => $product->get_name() . ' (#' . $product->get_id() . ')',
-        ];
-    }
-
-    wp_send_json($results);
-});
 
 new Product_Purchase_Alerts();

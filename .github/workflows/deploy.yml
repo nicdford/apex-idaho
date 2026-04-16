@@ -25,12 +25,19 @@ jobs:
         run: composer install --no-dev --no-interaction --prefer-dist
         working-directory: wp-content/themes/bb-theme-child
 
-      - name: Deploy via rsync
+      - name: Deploy themes via rsync
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
             wp-content/themes/ \
             ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/themes/
+
+      - name: Deploy plugins via rsync
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
+            wp-content/plugins/ \
+            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/
 
       - name: Notify Slack
         if: always()

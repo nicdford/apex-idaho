@@ -58,20 +58,89 @@ class Product_Purchase_Alerts {
         wp_enqueue_style('select2');
 
         wp_add_inline_style('ppa-admin', '
-            .ppa-alerts-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-            .ppa-alerts-table th { text-align: left; padding: 10px 12px; border-bottom: 2px solid #c3c4c7; }
-            .ppa-alerts-table td { padding: 10px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
-            .ppa-alerts-table tr:hover td { background: #f6f7f7; }
-            .ppa-alert-form { background: #fff; border: 1px solid #c3c4c7; padding: 20px; margin-top: 16px; max-width: 680px; }
-            .ppa-alert-form label { display: block; font-weight: 600; margin-bottom: 4px; }
-            .ppa-alert-form .field { margin-bottom: 16px; }
-            .ppa-alert-form input[type="text"],
-            .ppa-alert-form textarea,
-            .ppa-alert-form select { width: 100%; }
-            .ppa-alert-form textarea { min-height: 80px; }
-            .ppa-status-enabled { color: #00a32a; font-weight: 600; }
-            .ppa-status-disabled { color: #b32d2e; }
-            .ppa-badge { display: inline-block; background: #f0f0f1; border-radius: 3px; padding: 2px 8px; margin: 2px 3px 2px 0; font-size: 12px; }
+            /* ── Page layout ── */
+            .ppa-wrap { max-width: 960px; }
+            .ppa-header { display: flex; align-items: center; justify-content: space-between; margin: 0 0 20px; }
+            .ppa-header h1 { margin: 0; }
+            .ppa-desc { color: #646970; margin: -12px 0 24px; }
+
+            /* ── Card ── */
+            .ppa-card { background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; padding: 24px 28px; margin-bottom: 24px; }
+            .ppa-card h2 { margin: 0 0 20px; padding: 0 0 14px; border-bottom: 1px solid #e0e0e0; font-size: 15px; }
+
+            /* ── Form fields ── */
+            .ppa-field { margin-bottom: 20px; }
+            .ppa-field:last-of-type { margin-bottom: 0; }
+            .ppa-field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+            .ppa-field .ppa-help { display: block; color: #646970; font-size: 12px; margin-top: 6px; line-height: 1.5; }
+            .ppa-field input[type="text"],
+            .ppa-field textarea { width: 100%; max-width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid #8c8f94; border-radius: 4px; box-sizing: border-box; }
+            .ppa-field input[type="text"]:focus,
+            .ppa-field textarea:focus { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; outline: none; }
+            .ppa-field textarea { min-height: 90px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; }
+            .ppa-field select { padding: 6px 8px; font-size: 13px; border-radius: 4px; min-width: 240px; }
+            .ppa-field-row { display: flex; gap: 20px; }
+            .ppa-field-row .ppa-field { flex: 1; }
+
+            /* Select2 overrides */
+            .ppa-field .select2-container { width: 100% !important; }
+            .ppa-field .select2-container--default .select2-selection--single { height: 38px; border: 1px solid #8c8f94; border-radius: 4px; padding: 4px 8px; }
+            .ppa-field .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 28px; padding-left: 0; color: #2c3338; }
+            .ppa-field .select2-container--default .select2-selection--single .select2-selection__arrow { height: 36px; }
+            .ppa-field .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #a7aaad; }
+            .ppa-field .select2-container--default.select2-container--focus .select2-selection--single { border-color: #2271b1; box-shadow: 0 0 0 1px #2271b1; }
+
+            /* ── Form actions ── */
+            .ppa-actions { display: flex; align-items: center; gap: 10px; padding-top: 20px; margin-top: 24px; border-top: 1px solid #e0e0e0; }
+
+            /* ── Placeholders reference ── */
+            .ppa-placeholders { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+            .ppa-placeholders code { background: #f0f0f1; padding: 3px 8px; border-radius: 3px; font-size: 12px; cursor: pointer; transition: background 0.15s; border: 1px solid transparent; }
+            .ppa-placeholders code:hover { background: #e2e4e7; border-color: #c3c4c7; }
+            .ppa-copied-tip { font-size: 11px; color: #00a32a; margin-left: 4px; opacity: 0; transition: opacity 0.2s; }
+            .ppa-copied-tip.show { opacity: 1; }
+
+            /* ── Alerts table ── */
+            .ppa-table { border-collapse: collapse; width: 100%; }
+            .ppa-table thead th { text-align: left; padding: 12px 14px; font-size: 13px; font-weight: 600; color: #1d2327; border-bottom: 1px solid #c3c4c7; }
+            .ppa-table tbody td { padding: 14px; vertical-align: middle; border-bottom: 1px solid #f0f0f1; }
+            .ppa-table tbody tr:last-child td { border-bottom: none; }
+            .ppa-table tbody tr:hover td { background: #f6f7f7; }
+            .ppa-table .ppa-col-product { min-width: 180px; }
+            .ppa-table .ppa-col-actions { white-space: nowrap; text-align: right; }
+            .ppa-product-name { font-weight: 600; color: #1d2327; display: block; }
+            .ppa-product-id { color: #a7aaad; font-size: 12px; }
+            .ppa-product-missing { color: #b32d2e; font-style: italic; }
+
+            /* ── Email badges ── */
+            .ppa-badges { display: flex; flex-wrap: wrap; gap: 4px; }
+            .ppa-badge { display: inline-flex; align-items: center; background: #f0f0f1; border-radius: 12px; padding: 3px 10px; font-size: 12px; color: #2c3338; }
+
+            /* ── Status pill ── */
+            .ppa-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+            .ppa-status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+            .ppa-status-dot.active { background: #00a32a; }
+            .ppa-status-dot.disabled { background: #cc1818; }
+            .ppa-status.active { color: #1d2327; }
+            .ppa-status.disabled { color: #646970; }
+
+            /* ── Trigger label ── */
+            .ppa-trigger-label { font-size: 13px; color: #50575e; }
+
+            /* ── Row actions ── */
+            .ppa-row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+            .ppa-row-actions a { text-decoration: none; padding: 4px 10px; border-radius: 3px; font-size: 12px; transition: background 0.15s, color 0.15s; }
+            .ppa-row-actions .ppa-action-edit { color: #2271b1; }
+            .ppa-row-actions .ppa-action-edit:hover { background: #f0f6fc; }
+            .ppa-row-actions .ppa-action-toggle { color: #50575e; }
+            .ppa-row-actions .ppa-action-toggle:hover { background: #f0f0f1; }
+            .ppa-row-actions .ppa-action-delete { color: #b32d2e; }
+            .ppa-row-actions .ppa-action-delete:hover { background: #fcf0f1; }
+
+            /* ── Empty state ── */
+            .ppa-empty { text-align: center; padding: 48px 24px; }
+            .ppa-empty .dashicons { font-size: 48px; width: 48px; height: 48px; color: #c3c4c7; margin-bottom: 12px; }
+            .ppa-empty p { color: #646970; font-size: 14px; margin: 0 0 16px; }
         ');
     }
 
@@ -235,10 +304,13 @@ class Product_Purchase_Alerts {
             'error'   => 'Please select a product and enter at least one valid email address.',
         ];
         $msg_key = $_GET['ppa_msg'] ?? '';
+        $trigger_labels = [
+            'completed' => 'Order completed',
+            'payment'   => 'Payment received',
+            'both'      => 'Payment & completed',
+        ];
         ?>
-        <div class="wrap">
-            <h1>Purchase Alerts</h1>
-            <p>Send email notifications when specific products are purchased.</p>
+        <div class="wrap ppa-wrap">
 
             <?php if (isset($messages[$msg_key])): ?>
                 <div class="notice notice-<?php echo $msg_key === 'error' ? 'error' : 'success'; ?> is-dismissible">
@@ -246,8 +318,15 @@ class Product_Purchase_Alerts {
                 </div>
             <?php endif; ?>
 
-            <?php if (!$show_form): ?>
-                <p><a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_add=1')); ?>" class="button button-primary">Add New Alert</a></p>
+            <div class="ppa-header">
+                <h1>Purchase Alerts</h1>
+                <?php if (!$show_form): ?>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_add=1')); ?>" class="button button-primary">Add New Alert</a>
+                <?php endif; ?>
+            </div>
+
+            <?php if (!$show_form && empty($alerts)): ?>
+                <p class="ppa-desc">Send email notifications when specific products are purchased.</p>
             <?php endif; ?>
 
             <?php if ($show_form): ?>
@@ -255,65 +334,71 @@ class Product_Purchase_Alerts {
             <?php endif; ?>
 
             <?php if (!empty($alerts)): ?>
-                <table class="ppa-alerts-table widefat striped">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Recipients</th>
-                            <th>Trigger</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($alerts as $i => $alert): ?>
-                            <?php $product = wc_get_product($alert['product_id']); ?>
+                <div class="ppa-card">
+                    <table class="ppa-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <?php if ($product): ?>
-                                        <strong><?php echo esc_html($product->get_name()); ?></strong>
-                                        <br><small>ID: <?php echo esc_html($alert['product_id']); ?></small>
-                                    <?php else: ?>
-                                        <em>Product #<?php echo esc_html($alert['product_id']); ?> (not found)</em>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php foreach ($alert['emails'] as $email): ?>
-                                        <span class="ppa-badge"><?php echo esc_html($email); ?></span>
-                                    <?php endforeach; ?>
-                                </td>
-                                <td><?php echo $alert['trigger'] === 'payment' ? 'Payment received' : 'Order completed'; ?></td>
-                                <td>
-                                    <?php if ($alert['enabled']): ?>
-                                        <span class="ppa-status-enabled">Active</span>
-                                    <?php else: ?>
-                                        <span class="ppa-status-disabled">Disabled</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_edit=' . $i)); ?>">Edit</a>
-                                    &nbsp;|&nbsp;
-                                    <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_toggle=' . $i), 'ppa_toggle')); ?>">
-                                        <?php echo $alert['enabled'] ? 'Disable' : 'Enable'; ?>
-                                    </a>
-                                    &nbsp;|&nbsp;
-                                    <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_delete=' . $i), 'ppa_delete')); ?>"
-                                       onclick="return confirm('Delete this alert?');"
-                                       style="color: #b32d2e;">Delete</a>
-                                </td>
+                                <th class="ppa-col-product">Product</th>
+                                <th>Recipients</th>
+                                <th>Trigger</th>
+                                <th>Status</th>
+                                <th class="ppa-col-actions"></th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($alerts as $i => $alert): ?>
+                                <?php $product = wc_get_product($alert['product_id']); ?>
+                                <tr>
+                                    <td class="ppa-col-product">
+                                        <?php if ($product): ?>
+                                            <span class="ppa-product-name"><?php echo esc_html($product->get_name()); ?></span>
+                                            <span class="ppa-product-id">#<?php echo esc_html($alert['product_id']); ?></span>
+                                        <?php else: ?>
+                                            <span class="ppa-product-missing">Product #<?php echo esc_html($alert['product_id']); ?> (not found)</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <div class="ppa-badges">
+                                            <?php foreach ($alert['emails'] as $email): ?>
+                                                <span class="ppa-badge"><?php echo esc_html($email); ?></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="ppa-trigger-label"><?php echo esc_html($trigger_labels[$alert['trigger']] ?? $trigger_labels['completed']); ?></span>
+                                    </td>
+                                    <td>
+                                        <span class="ppa-status <?php echo $alert['enabled'] ? 'active' : 'disabled'; ?>">
+                                            <span class="ppa-status-dot <?php echo $alert['enabled'] ? 'active' : 'disabled'; ?>"></span>
+                                            <?php echo $alert['enabled'] ? 'Active' : 'Disabled'; ?>
+                                        </span>
+                                    </td>
+                                    <td class="ppa-col-actions">
+                                        <div class="ppa-row-actions">
+                                            <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_edit=' . $i)); ?>" class="ppa-action-edit">Edit</a>
+                                            <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_toggle=' . $i), 'ppa_toggle')); ?>" class="ppa-action-toggle">
+                                                <?php echo $alert['enabled'] ? 'Disable' : 'Enable'; ?>
+                                            </a>
+                                            <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=product-purchase-alerts&ppa_delete=' . $i), 'ppa_delete')); ?>"
+                                               onclick="return confirm('Delete this alert?');"
+                                               class="ppa-action-delete">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php elseif (!$show_form): ?>
-                <p><em>No alerts configured yet.</em></p>
+                <div class="ppa-card">
+                    <div class="ppa-empty">
+                        <span class="dashicons dashicons-bell"></span>
+                        <p>No alerts yet. Create one to get notified when a product is purchased.</p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts&ppa_add=1')); ?>" class="button button-primary">Add Your First Alert</a>
+                    </div>
+                </div>
             <?php endif; ?>
 
-            <hr>
-            <h3>Template Placeholders</h3>
-            <p>Use these in the subject and message fields:</p>
-            <code>{product_name}</code> <code>{order_id}</code> <code>{order_total}</code>
-            <code>{customer_name}</code> <code>{customer_email}</code> <code>{quantity}</code> <code>{order_date}</code>
         </div>
         <?php
     }
@@ -337,7 +422,7 @@ class Product_Purchase_Alerts {
             }
         }
         ?>
-        <div class="ppa-alert-form">
+        <div class="ppa-card">
             <h2><?php echo $alert ? 'Edit Alert' : 'New Alert'; ?></h2>
             <form method="post">
                 <?php wp_nonce_field('ppa_save_alert'); ?>
@@ -346,43 +431,59 @@ class Product_Purchase_Alerts {
                     <input type="hidden" name="ppa_edit_index" value="<?php echo esc_attr($index); ?>">
                 <?php endif; ?>
 
-                <div class="field">
+                <div class="ppa-field">
                     <label for="ppa_product_id">Product</label>
-                    <select name="ppa_product_id" id="ppa_product_id" class="ppa-product-search" style="width:100%">
+                    <select name="ppa_product_id" id="ppa_product_id" class="ppa-product-search">
                         <?php if ($product_id): ?>
                             <option value="<?php echo esc_attr($product_id); ?>" selected><?php echo esc_html($selected_product_name); ?></option>
                         <?php endif; ?>
                     </select>
+                    <span class="ppa-help">Start typing to search your WooCommerce products.</span>
                 </div>
 
-                <div class="field">
-                    <label for="ppa_emails">Email Recipients <small>(one per line or comma-separated)</small></label>
+                <div class="ppa-field">
+                    <label for="ppa_emails">Email Recipients</label>
                     <textarea name="ppa_emails" id="ppa_emails" rows="3" placeholder="person@example.com&#10;another@example.com"><?php echo esc_textarea($emails); ?></textarea>
+                    <span class="ppa-help">One email per line, or separate with commas. All listed recipients will be notified.</span>
                 </div>
 
-                <div class="field">
-                    <label for="ppa_trigger">Send When</label>
-                    <select name="ppa_trigger" id="ppa_trigger">
-                        <option value="completed" <?php selected($trigger, 'completed'); ?>>Order completed</option>
-                        <option value="payment" <?php selected($trigger, 'payment'); ?>>Payment received</option>
-                        <option value="both" <?php selected($trigger, 'both'); ?>>Both (payment received & order completed)</option>
-                    </select>
+                <div class="ppa-field-row">
+                    <div class="ppa-field">
+                        <label for="ppa_trigger">Send When</label>
+                        <select name="ppa_trigger" id="ppa_trigger">
+                            <option value="completed" <?php selected($trigger, 'completed'); ?>>Order completed</option>
+                            <option value="payment" <?php selected($trigger, 'payment'); ?>>Payment received</option>
+                            <option value="both" <?php selected($trigger, 'both'); ?>>Both</option>
+                        </select>
+                    </div>
+                    <div class="ppa-field">
+                        <label for="ppa_subject">Email Subject</label>
+                        <input type="text" name="ppa_subject" id="ppa_subject" value="<?php echo esc_attr($subject); ?>">
+                    </div>
                 </div>
 
-                <div class="field">
-                    <label for="ppa_subject">Email Subject</label>
-                    <input type="text" name="ppa_subject" id="ppa_subject" value="<?php echo esc_attr($subject); ?>">
-                </div>
-
-                <div class="field">
+                <div class="ppa-field">
                     <label for="ppa_message">Email Message</label>
                     <textarea name="ppa_message" id="ppa_message" rows="6"><?php echo esc_textarea($message); ?></textarea>
+                    <span class="ppa-help">
+                        Available placeholders (click to copy):
+                        <span class="ppa-copied-tip" id="ppa-copied-tip">Copied!</span>
+                    </span>
+                    <div class="ppa-placeholders">
+                        <code data-placeholder="{product_name}">{product_name}</code>
+                        <code data-placeholder="{order_id}">{order_id}</code>
+                        <code data-placeholder="{order_total}">{order_total}</code>
+                        <code data-placeholder="{customer_name}">{customer_name}</code>
+                        <code data-placeholder="{customer_email}">{customer_email}</code>
+                        <code data-placeholder="{quantity}">{quantity}</code>
+                        <code data-placeholder="{order_date}">{order_date}</code>
+                    </div>
                 </div>
 
-                <p>
-                    <button type="submit" class="button button-primary"><?php echo $alert ? 'Update Alert' : 'Add Alert'; ?></button>
+                <div class="ppa-actions">
+                    <button type="submit" class="button button-primary"><?php echo $alert ? 'Save Changes' : 'Create Alert'; ?></button>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=product-purchase-alerts')); ?>" class="button">Cancel</a>
-                </p>
+                </div>
             </form>
         </div>
 
@@ -403,6 +504,16 @@ class Product_Purchase_Alerts {
                 minimumInputLength: 2,
                 placeholder: 'Search for a product...',
                 allowClear: true
+            });
+
+            // Click-to-copy placeholders
+            $('.ppa-placeholders code').on('click', function() {
+                var text = $(this).data('placeholder');
+                navigator.clipboard.writeText(text).then(function() {
+                    var $tip = $('#ppa-copied-tip');
+                    $tip.addClass('show');
+                    setTimeout(function() { $tip.removeClass('show'); }, 1200);
+                });
             });
         });
         </script>

@@ -224,6 +224,7 @@ if ( $sponsor_items ) :
       <?php
       $nav_links = [
         'Events'          => '/events/',
+        'Sponsors'        => '/sponsors/',
         'Media'           => '/media/',
         'Shop'            => '/shop/',
         'About'           => '/about/',

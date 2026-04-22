@@ -249,6 +249,7 @@
           'fallback_cb'    => function() {
             $links = [
               'Events'              => '/events/',
+              'Sponsors'            => '/sponsors/',
               'Media'               => '/media/',
               'Shop'                => '/shop/',
               'About'               => '/about/',
@@ -303,6 +304,7 @@
         <?php
         $links = [
           'Events'                => '/events/',
+          'Sponsors'              => '/sponsors/',
           'Media'                 => '/media/',
           'Shop'                  => '/shop/',
           'About'                 => '/about/',

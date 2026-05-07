@@ -156,6 +156,31 @@ function attendee_export_render_page()
                 <?php wp_nonce_field('attendee_export_run', 'attendee_export_nonce'); ?>
                 <input type="hidden" name="event_id" value="<?php echo esc_attr($event_id); ?>" />
 
+                <h2>Sort By</h2>
+                <select name="sort_by">
+                    <option value="holder_name">Attendee Name</option>
+                    <option value="holder_email">Attendee Email</option>
+                    <option value="purchaser_name">Purchaser Name</option>
+                    <option value="ticket">Ticket</option>
+                    <option value="order_status">Order Status</option>
+                    <option value="order_id">Order ID</option>
+                </select>
+                <select name="sort_dir">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+                <?php if (!empty($meta_keys)) : ?>
+                    <p style="margin-top:6px;">
+                        <em>Or sort by an attendee meta field:</em>
+                        <select name="sort_meta">
+                            <option value="">— none —</option>
+                            <?php foreach ($meta_keys as $slug => $label) : ?>
+                                <option value="<?php echo esc_attr($slug); ?>"><?php echo esc_html($label); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </p>
+                <?php endif; ?>
+
                 <h2>Filter by Order Status</h2>
                 <p>Leave all unchecked to include every status.</p>
                 <?php foreach ($statuses as $status => $count) : ?>
@@ -245,6 +270,25 @@ add_action('admin_init', function () {
         $attendees = array_filter($attendees, function ($a) use ($statuses) {
             $s = isset($a['order_status']) && $a['order_status'] !== '' ? $a['order_status'] : '(none)';
             return in_array($s, $statuses, true);
+        });
+    }
+
+    $sort_by   = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
+    $sort_meta = isset($_POST['sort_meta']) ? sanitize_text_field($_POST['sort_meta']) : '';
+    $sort_dir  = (isset($_POST['sort_dir']) && $_POST['sort_dir'] === 'desc') ? 'desc' : 'asc';
+
+    if ($sort_meta || $sort_by) {
+        $attendees = array_values($attendees);
+        usort($attendees, function ($a, $b) use ($sort_by, $sort_meta, $sort_dir) {
+            if ($sort_meta) {
+                $av = attendee_export_meta_value($a['attendee_meta'][$sort_meta] ?? null);
+                $bv = attendee_export_meta_value($b['attendee_meta'][$sort_meta] ?? null);
+            } else {
+                $av = isset($a[$sort_by]) && is_scalar($a[$sort_by]) ? (string) $a[$sort_by] : '';
+                $bv = isset($b[$sort_by]) && is_scalar($b[$sort_by]) ? (string) $b[$sort_by] : '';
+            }
+            $cmp = strnatcasecmp($av, $bv);
+            return $sort_dir === 'desc' ? -$cmp : $cmp;
         });
     }
 

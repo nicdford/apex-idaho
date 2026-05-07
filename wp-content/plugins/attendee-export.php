@@ -13,14 +13,32 @@ if (!defined('ABSPATH')) {
 
 add_action('admin_menu', function () {
     add_submenu_page(
-        'tec-tickets',
+        null,
         'Attendee Export',
         'Attendee Export',
         'manage_options',
         'attendee-export',
         'attendee_export_render_page'
     );
-});
+}, 9);
+
+add_action('admin_menu', function () {
+    global $submenu;
+    $parents = ['tec-tickets', 'tribe-common', 'edit.php?post_type=tribe_events'];
+    foreach ($parents as $parent) {
+        if (!empty($submenu[$parent])) {
+            add_submenu_page(
+                $parent,
+                'Attendee Export',
+                'Attendee Export',
+                'manage_options',
+                'attendee-export',
+                'attendee_export_render_page'
+            );
+            return;
+        }
+    }
+}, 999);
 
 function attendee_export_get_events_with_tickets()
 {

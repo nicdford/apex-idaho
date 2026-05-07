@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 add_action('admin_menu', function () {
     add_submenu_page(
-        'tribe-common',
+        'tec-tickets',
         'Attendee Export',
         'Attendee Export',
         'manage_options',

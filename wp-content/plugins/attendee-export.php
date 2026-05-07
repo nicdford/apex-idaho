@@ -129,7 +129,7 @@ function attendee_export_config_from_post()
     ];
 }
 
-function attendee_export_run($config)
+function attendee_export_run($config, $preset_name = '')
 {
     $event_id = (int) ($config['event_id'] ?? 0);
     if (!$event_id) {
@@ -196,7 +196,12 @@ function attendee_export_run($config)
         $headers[] = $meta_labels[$m] ?? $m;
     }
 
-    $filename = 'attendees-event-' . $event_id . '-' . date('Ymd-His') . '.csv';
+    if ($preset_name !== '') {
+        $slug = sanitize_title($preset_name);
+        $filename = ($slug !== '' ? $slug : 'attendees') . '-' . date('Ymd-His') . '.csv';
+    } else {
+        $filename = 'attendees-event-' . $event_id . '-' . date('Ymd-His') . '.csv';
+    }
     nocache_headers();
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
@@ -232,7 +237,8 @@ add_action('admin_init', function () {
 
     if ($action === 'download') {
         check_admin_referer('attendee_export_run', 'attendee_export_nonce');
-        attendee_export_run(attendee_export_config_from_post());
+        $preset_name = isset($_GET['edit_preset']) ? sanitize_text_field(wp_unslash($_GET['edit_preset'])) : '';
+        attendee_export_run(attendee_export_config_from_post(), $preset_name);
     }
 
     if ($action === 'save_preset') {
@@ -256,18 +262,18 @@ add_action('admin_init', function () {
     }
 
     if (isset($_GET['run_preset'])) {
-        check_admin_referer('attendee_export_preset_' . $_GET['run_preset']);
-        $name = sanitize_text_field(rawurldecode($_GET['run_preset']));
+        check_admin_referer('attendee_export_preset');
+        $name = sanitize_text_field(wp_unslash($_GET['run_preset']));
         $presets = attendee_export_get_presets();
         if (!isset($presets[$name])) {
             wp_die('Preset not found');
         }
-        attendee_export_run($presets[$name]);
+        attendee_export_run($presets[$name], $name);
     }
 
     if (isset($_GET['delete_preset'])) {
-        check_admin_referer('attendee_export_preset_' . $_GET['delete_preset']);
-        $name = sanitize_text_field(rawurldecode($_GET['delete_preset']));
+        check_admin_referer('attendee_export_preset');
+        $name = sanitize_text_field(wp_unslash($_GET['delete_preset']));
         attendee_export_delete_preset($name);
         wp_safe_redirect(add_query_arg(['page' => 'attendee-export', 'deleted' => rawurlencode($name)], admin_url('admin.php')));
         exit;
@@ -348,9 +354,9 @@ function attendee_export_render_page()
                         if (!empty($cfg['statuses'])) $summary[] = implode('/', $cfg['statuses']);
                         if (!empty($cfg['fields'])) $summary[] = count($cfg['fields']) . ' fields';
                         if (!empty($cfg['meta_fields'])) $summary[] = count($cfg['meta_fields']) . ' meta';
-                        $run_url    = wp_nonce_url(add_query_arg(['page' => 'attendee-export', 'run_preset' => rawurlencode($name)], admin_url('admin.php')), 'attendee_export_preset_' . rawurlencode($name));
+                        $run_url    = wp_nonce_url(add_query_arg(['page' => 'attendee-export', 'run_preset' => rawurlencode($name)], admin_url('admin.php')), 'attendee_export_preset');
                         $edit_url   = add_query_arg(['page' => 'attendee-export', 'edit_preset' => rawurlencode($name)], admin_url('admin.php'));
-                        $delete_url = wp_nonce_url(add_query_arg(['page' => 'attendee-export', 'delete_preset' => rawurlencode($name)], admin_url('admin.php')), 'attendee_export_preset_' . rawurlencode($name));
+                        $delete_url = wp_nonce_url(add_query_arg(['page' => 'attendee-export', 'delete_preset' => rawurlencode($name)], admin_url('admin.php')), 'attendee_export_preset');
                     ?>
                         <tr>
                             <td><strong><?php echo esc_html($name); ?></strong></td>

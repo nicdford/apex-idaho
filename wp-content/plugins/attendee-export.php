@@ -110,6 +110,13 @@ function attendee_export_render_page()
     $attendees = $event_id ? tribe_tickets_get_attendees($event_id) : [];
     $meta_keys = attendee_export_collect_meta_keys($attendees);
 
+    $statuses = [];
+    foreach ($attendees as $a) {
+        $s = isset($a['order_status']) && $a['order_status'] !== '' ? $a['order_status'] : '(none)';
+        $statuses[$s] = isset($statuses[$s]) ? $statuses[$s] + 1 : 1;
+    }
+    ksort($statuses);
+
     $base_fields = [
         'order_id'      => 'Order ID',
         'ticket'        => 'Ticket',
@@ -148,6 +155,16 @@ function attendee_export_render_page()
             <form method="post">
                 <?php wp_nonce_field('attendee_export_run', 'attendee_export_nonce'); ?>
                 <input type="hidden" name="event_id" value="<?php echo esc_attr($event_id); ?>" />
+
+                <h2>Filter by Order Status</h2>
+                <p>Leave all unchecked to include every status.</p>
+                <?php foreach ($statuses as $status => $count) : ?>
+                    <label style="display:inline-block;min-width:200px;margin:4px 0;">
+                        <input type="checkbox" name="statuses[]" value="<?php echo esc_attr($status); ?>"
+                            <?php checked($status === 'completed'); ?> />
+                        <?php echo esc_html($status); ?> <span style="color:#888;">(<?php echo (int) $count; ?>)</span>
+                    </label>
+                <?php endforeach; ?>
 
                 <h2>Filter by Ticket</h2>
                 <p>Leave all unchecked to include every ticket.</p>
@@ -220,6 +237,14 @@ add_action('admin_init', function () {
         $attendees = array_filter($attendees, function ($a) use ($ticket_ids) {
             $tid = isset($a['product_id']) ? (int) $a['product_id'] : 0;
             return in_array($tid, $ticket_ids, true);
+        });
+    }
+
+    $statuses = isset($_POST['statuses']) ? array_map('sanitize_text_field', (array) $_POST['statuses']) : [];
+    if (!empty($statuses)) {
+        $attendees = array_filter($attendees, function ($a) use ($statuses) {
+            $s = isset($a['order_status']) && $a['order_status'] !== '' ? $a['order_status'] : '(none)';
+            return in_array($s, $statuses, true);
         });
     }
 

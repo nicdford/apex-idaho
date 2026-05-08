@@ -16,6 +16,16 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
     }
     return '';
 }
+
+function apex_partner_focal( $slug ) {
+    $post = get_page_by_path( $slug, OBJECT, 'media_partner' );
+    if ( ! $post ) return '50% 25%';
+    $x = get_post_meta( $post->ID, '_apex_focal_x', true );
+    $y = get_post_meta( $post->ID, '_apex_focal_y', true );
+    if ( $x === '' ) $x = 50;
+    if ( $y === '' ) $y = 25;
+    return intval( $x ) . '% ' . intval( $y ) . '%';
+}
 ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -552,7 +562,7 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
           <div class="partner-card__photo">
             <?php $photo = apex_partner_photo('danielle-choutdara'); ?>
             <?php if ( $photo ) : ?>
-              <img src="<?php echo esc_url($photo); ?>" alt="Danielle Choutdara">
+              <img src="<?php echo esc_url($photo); ?>" alt="Danielle Choutdara" style="object-position: <?php echo esc_attr( apex_partner_focal('danielle-choutdara') ); ?>;">
             <?php else : ?>
               <div class="partner-card__avatar">DC</div>
             <?php endif; ?>
@@ -580,7 +590,7 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
           <div class="partner-card__photo">
             <?php $photo = apex_partner_photo('lyndon-hunter'); ?>
             <?php if ( $photo ) : ?>
-              <img src="<?php echo esc_url($photo); ?>" alt="Lyndon Hunter">
+              <img src="<?php echo esc_url($photo); ?>" alt="Lyndon Hunter" style="object-position: <?php echo esc_attr( apex_partner_focal('lyndon-hunter') ); ?>;">
             <?php else : ?>
               <div class="partner-card__avatar">LH</div>
             <?php endif; ?>
@@ -612,7 +622,7 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
           <div class="partner-card__photo">
             <?php $photo = apex_partner_photo('mathew-perez'); ?>
             <?php if ( $photo ) : ?>
-              <img src="<?php echo esc_url($photo); ?>" alt="Mathew Perez">
+              <img src="<?php echo esc_url($photo); ?>" alt="Mathew Perez" style="object-position: <?php echo esc_attr( apex_partner_focal('mathew-perez') ); ?>;">
             <?php else : ?>
               <div class="partner-card__avatar">MP</div>
             <?php endif; ?>
@@ -644,7 +654,7 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
           <div class="partner-card__photo">
             <?php $photo = apex_partner_photo('orion-martin'); ?>
             <?php if ( $photo ) : ?>
-              <img src="<?php echo esc_url($photo); ?>" alt="Orion Martin">
+              <img src="<?php echo esc_url($photo); ?>" alt="Orion Martin" style="object-position: <?php echo esc_attr( apex_partner_focal('orion-martin') ); ?>;">
             <?php else : ?>
               <div class="partner-card__avatar">OM</div>
             <?php endif; ?>
@@ -676,7 +686,7 @@ function apex_partner_photo( $slug, $size = 'medium_large' ) {
           <div class="partner-card__photo">
             <?php $photo = apex_partner_photo('jordan-van-diest'); ?>
             <?php if ( $photo ) : ?>
-              <img src="<?php echo esc_url($photo); ?>" alt="Jordan Van Diest">
+              <img src="<?php echo esc_url($photo); ?>" alt="Jordan Van Diest" style="object-position: <?php echo esc_attr( apex_partner_focal('jordan-van-diest') ); ?>;">
             <?php else : ?>
               <div class="partner-card__avatar">JV</div>
             <?php endif; ?>

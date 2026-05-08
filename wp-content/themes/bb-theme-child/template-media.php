@@ -502,10 +502,79 @@ function apex_partner_focal( $slug ) {
     white-space: nowrap;
   }
 
+  /* ── Media Package Callout ── */
+  .media-package-callout {
+    background: var(--grad);
+    padding: 2.5rem 1.5rem;
+  }
+  .media-package-callout__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .media-package-callout__text { flex: 1 1 380px; color: #fff; }
+  .media-package-callout__eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin: 0 0 0.5rem;
+  }
+  .media-package-callout__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1.05;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .media-package-callout__sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+    max-width: 560px;
+  }
+  .media-package-callout__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #111;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.95rem 1.6rem;
+    border-radius: 2px;
+    transition: transform 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+  }
+  .media-package-callout__cta:hover {
+    background: #000;
+    transform: translateY(-2px);
+    color: #fff;
+  }
+  .media-package-callout__cta-arrow {
+    transition: transform 0.2s ease;
+  }
+  .media-package-callout__cta:hover .media-package-callout__cta-arrow {
+    transform: translateX(4px);
+  }
+
   @media (max-width: 640px) {
     .media-partners-grid { grid-template-columns: 1fr; }
     .rules-grid { grid-template-columns: 1fr; }
     .media-contact__inner { flex-direction: column; }
+    .media-package-callout__inner { flex-direction: column; align-items: flex-start; }
   }
 </style>
 
@@ -523,6 +592,24 @@ function apex_partner_focal( $slug ) {
       <a href="#partners" class="btn-primary">Media Partners</a>
       <a href="#become" class="btn-outline">Become a Media Partner</a>
     </nav>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       MEDIA PACKAGE CALLOUT
+  ═══════════════════════════════════ -->
+  <section class="media-package-callout">
+    <div class="media-package-callout__inner">
+      <div class="media-package-callout__text">
+        <p class="media-package-callout__eyebrow">For Drivers</p>
+        <h2 class="media-package-callout__title">Want pro shots of your car on track?</h2>
+        <p class="media-package-callout__sub">Book the APEX Idaho Media Package and get your run captured by our team — high-quality photos delivered after the event.</p>
+      </div>
+      <a class="media-package-callout__cta" href="<?php echo esc_url( home_url( '/product/media-package/' ) ); ?>">
+        Book Media Package
+        <span class="media-package-callout__cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 
 
@@ -727,13 +814,18 @@ function apex_partner_focal( $slug ) {
         <!-- Caleb Aerials -->
         <div class="partner-card">
           <div class="partner-card__photo">
-            <div class="partner-card__avatar">CA</div>
+            <?php $photo = apex_partner_photo('caleb-anderson'); ?>
+            <?php if ( $photo ) : ?>
+              <img src="<?php echo esc_url($photo); ?>" alt="Caleb Anderson" style="object-position: <?php echo esc_attr( apex_partner_focal('caleb-anderson') ); ?>;">
+            <?php else : ?>
+              <div class="partner-card__avatar">CA</div>
+            <?php endif; ?>
           </div>
           <div class="partner-card__body">
             <div class="partner-card__accent"></div>
             <div class="partner-card__specialty">Drone</div>
-            <h3 class="partner-card__name">Caleb Aerials</h3>
-            <p class="partner-card__biz">Aerial Specialist</p>
+            <h3 class="partner-card__name">Caleb Anderson</h3>
+            <p class="partner-card__biz">Caleb Aerials</p>
             <div class="partner-card__links">
               <a class="partner-card__link" href="https://www.instagram.com/caleb.aerials" target="_blank" rel="noopener">
                 <span class="partner-card__link-icon icon-instagram"></span>
@@ -754,7 +846,12 @@ function apex_partner_focal( $slug ) {
         <!-- John Dow II -->
         <div class="partner-card">
           <div class="partner-card__photo">
-            <div class="partner-card__avatar">JD</div>
+            <?php $photo = apex_partner_photo('john-dow-ii'); ?>
+            <?php if ( $photo ) : ?>
+              <img src="<?php echo esc_url($photo); ?>" alt="John Dow II" style="object-position: <?php echo esc_attr( apex_partner_focal('john-dow-ii') ); ?>;">
+            <?php else : ?>
+              <div class="partner-card__avatar">JD</div>
+            <?php endif; ?>
           </div>
           <div class="partner-card__body">
             <div class="partner-card__accent"></div>
@@ -781,7 +878,12 @@ function apex_partner_focal( $slug ) {
         <!-- John Kisiel -->
         <div class="partner-card">
           <div class="partner-card__photo">
-            <div class="partner-card__avatar">JK</div>
+            <?php $photo = apex_partner_photo('john-kisiel'); ?>
+            <?php if ( $photo ) : ?>
+              <img src="<?php echo esc_url($photo); ?>" alt="John Kisiel" style="object-position: <?php echo esc_attr( apex_partner_focal('john-kisiel') ); ?>;">
+            <?php else : ?>
+              <div class="partner-card__avatar">JK</div>
+            <?php endif; ?>
           </div>
           <div class="partner-card__body">
             <div class="partner-card__accent"></div>

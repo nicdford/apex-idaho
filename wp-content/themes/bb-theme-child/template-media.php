@@ -237,6 +237,12 @@ function apex_partner_focal( $slug ) {
     display: block;
     color: inherit;
   }
+  .partner-card:hover,
+  .partner-card:focus,
+  .partner-card:hover *,
+  .partner-card:focus * {
+    text-decoration: none !important;
+  }
   .partner-card:hover {
     border-color: rgba(232,25,125,0.3);
     box-shadow: 0 8px 30px rgba(232,25,125,0.1);

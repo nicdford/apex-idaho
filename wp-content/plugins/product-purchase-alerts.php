@@ -282,6 +282,8 @@ class Product_Purchase_Alerts {
         $product_name = $product ? $product->get_name() : $item->get_name();
         $customer_name = trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name());
 
+        $car_photo = $item->get_meta('Car photo');
+
         $placeholders = [
             '{product_name}'    => $product_name,
             '{order_id}'        => $order->get_id(),
@@ -290,6 +292,7 @@ class Product_Purchase_Alerts {
             '{customer_email}'  => $order->get_billing_email(),
             '{quantity}'        => $item->get_quantity(),
             '{order_date}'      => $order->get_date_created() ? $order->get_date_created()->date_i18n('F j, Y g:i a') : '',
+            '{car_photo}'       => $car_photo ?: '(none uploaded)',
         ];
 
         $subject = strtr($alert['subject'], $placeholders);
@@ -316,6 +319,7 @@ class Product_Purchase_Alerts {
             '{customer_email}'  => 'jane@example.com',
             '{quantity}'        => '1',
             '{order_date}'      => current_time('F j, Y g:i a'),
+            '{car_photo}'       => home_url('/wp-content/uploads/sample-car-photo.jpg'),
         ];
 
         $subject = '[TEST] ' . strtr($alert['subject'], $placeholders);
@@ -523,6 +527,7 @@ class Product_Purchase_Alerts {
                         <code data-placeholder="{customer_email}">{customer_email}</code>
                         <code data-placeholder="{quantity}">{quantity}</code>
                         <code data-placeholder="{order_date}">{order_date}</code>
+                        <code data-placeholder="{car_photo}">{car_photo}</code>
                     </div>
                 </div>
 

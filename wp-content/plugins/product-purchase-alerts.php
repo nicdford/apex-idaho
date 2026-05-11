@@ -283,16 +283,18 @@ class Product_Purchase_Alerts {
         $customer_name = trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name());
 
         $car_photo = $item->get_meta('Car photo');
+        $car_description = $item->get_meta('Car description');
 
         $placeholders = [
-            '{product_name}'    => $product_name,
-            '{order_id}'        => $order->get_id(),
-            '{order_total}'     => $order->get_formatted_order_total(),
-            '{customer_name}'   => $customer_name,
-            '{customer_email}'  => $order->get_billing_email(),
-            '{quantity}'        => $item->get_quantity(),
-            '{order_date}'      => $order->get_date_created() ? $order->get_date_created()->date_i18n('F j, Y g:i a') : '',
-            '{car_photo}'       => $car_photo ?: '(none uploaded)',
+            '{product_name}'      => $product_name,
+            '{order_id}'          => $order->get_id(),
+            '{order_total}'       => $order->get_formatted_order_total(),
+            '{customer_name}'     => $customer_name,
+            '{customer_email}'    => $order->get_billing_email(),
+            '{quantity}'          => $item->get_quantity(),
+            '{order_date}'        => $order->get_date_created() ? $order->get_date_created()->date_i18n('F j, Y g:i a') : '',
+            '{car_photo}'         => $car_photo ?: '(none uploaded)',
+            '{car_description}'   => $car_description ?: '(no description provided)',
         ];
 
         $subject = strtr($alert['subject'], $placeholders);
@@ -319,7 +321,8 @@ class Product_Purchase_Alerts {
             '{customer_email}'  => 'jane@example.com',
             '{quantity}'        => '1',
             '{order_date}'      => current_time('F j, Y g:i a'),
-            '{car_photo}'       => home_url('/wp-content/uploads/sample-car-photo.jpg'),
+            '{car_photo}'         => home_url('/wp-content/uploads/sample-car-photo.jpg'),
+            '{car_description}'   => 'Red 2018 Mustang GT, black wheels, #42 on driver door',
         ];
 
         $subject = '[TEST] ' . strtr($alert['subject'], $placeholders);
@@ -528,6 +531,7 @@ class Product_Purchase_Alerts {
                         <code data-placeholder="{quantity}">{quantity}</code>
                         <code data-placeholder="{order_date}">{order_date}</code>
                         <code data-placeholder="{car_photo}">{car_photo}</code>
+                        <code data-placeholder="{car_description}">{car_description}</code>
                     </div>
                 </div>
 

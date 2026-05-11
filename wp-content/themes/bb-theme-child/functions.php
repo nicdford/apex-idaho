@@ -308,82 +308,114 @@ add_action('woocommerce_before_single_product', function () {
     });
 });
 
-// Render the upload field on the Media Package product page
+// Render the upload + description fields on the Media Package product page
 add_action('woocommerce_before_add_to_cart_button', function () {
     global $product;
     if (!$product || !apex_is_media_package_product($product->get_id())) return;
     ?>
     <div class="apex-car-photo-field" style="margin:1.25rem 0;padding:1rem;border:1px solid #e8197d;background:#fff5fa;">
-        <label for="apex_car_photo" style="display:block;font-weight:600;margin-bottom:0.5rem;">
-            Upload a photo of your car <span style="color:#e8197d;">*</span>
-        </label>
-        <p style="font-size:0.9rem;color:#555;margin:0 0 0.5rem;">
-            Required. JPG, PNG, HEIC, or WEBP. Max 10 MB.
+        <p style="font-weight:600;margin:0 0 0.75rem;">
+            Help our team spot your car on track <span style="color:#e8197d;">*</span>
         </p>
+        <p style="font-size:0.9rem;color:#555;margin:0 0 1rem;">
+            Upload a photo <strong>or</strong> describe your car below — at least one is required.
+        </p>
+
+        <label for="apex_car_photo" style="display:block;font-weight:600;margin-bottom:0.4rem;font-size:0.95rem;">
+            Photo of your car
+        </label>
+        <p style="font-size:0.85rem;color:#666;margin:0 0 0.4rem;">JPG, PNG, HEIC, or WEBP. Max 10 MB.</p>
         <input type="file" id="apex_car_photo" name="apex_car_photo"
-               accept="image/jpeg,image/png,image/webp,image/heic,image/heif" required>
+               accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+               style="margin-bottom:1rem;">
+
+        <label for="apex_car_description" style="display:block;font-weight:600;margin-bottom:0.4rem;font-size:0.95rem;">
+            Or describe your car
+        </label>
+        <p style="font-size:0.85rem;color:#666;margin:0 0 0.4rem;">e.g. "Red 2018 Mustang GT, black wheels, #42 on driver door"</p>
+        <textarea id="apex_car_description" name="apex_car_description" rows="3"
+                  maxlength="500" style="width:100%;padding:0.5rem;"></textarea>
     </div>
     <?php
 });
 
-// Validate the upload when the product is added to cart
+// Validate: require photo OR description
 add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $quantity) {
     if (!apex_is_media_package_product($product_id)) return $passed;
 
-    if (empty($_FILES['apex_car_photo']) || empty($_FILES['apex_car_photo']['tmp_name'])) {
-        wc_add_notice(__('Please upload a photo of your car to book the Media Package.'), 'error');
+    $has_photo = !empty($_FILES['apex_car_photo']) && !empty($_FILES['apex_car_photo']['tmp_name']);
+    $description = isset($_POST['apex_car_description']) ? trim(wp_unslash($_POST['apex_car_description'])) : '';
+
+    if (!$has_photo && $description === '') {
+        wc_add_notice(__('Please upload a photo of your car or describe it so our team can find you on track.'), 'error');
         return false;
     }
 
-    $file = $_FILES['apex_car_photo'];
+    if ($has_photo) {
+        $file = $_FILES['apex_car_photo'];
 
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        wc_add_notice(__('There was a problem uploading your photo. Please try again.'), 'error');
-        return false;
-    }
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            wc_add_notice(__('There was a problem uploading your photo. Please try again or use the description field instead.'), 'error');
+            return false;
+        }
 
-    if ($file['size'] > 10 * 1024 * 1024) {
-        wc_add_notice(__('Your photo is larger than 10 MB. Please upload a smaller file.'), 'error');
-        return false;
-    }
+        if ($file['size'] > 10 * 1024 * 1024) {
+            wc_add_notice(__('Your photo is larger than 10 MB. Please upload a smaller file.'), 'error');
+            return false;
+        }
 
-    $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
-    $type = wp_check_filetype($file['name']);
-    $mime = !empty($type['type']) ? $type['type'] : mime_content_type($file['tmp_name']);
-    if (!in_array($mime, $allowed, true)) {
-        wc_add_notice(__('Photo must be a JPG, PNG, WEBP, or HEIC image.'), 'error');
-        return false;
+        $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+        $type = wp_check_filetype($file['name']);
+        $mime = !empty($type['type']) ? $type['type'] : mime_content_type($file['tmp_name']);
+        if (!in_array($mime, $allowed, true)) {
+            wc_add_notice(__('Photo must be a JPG, PNG, WEBP, or HEIC image.'), 'error');
+            return false;
+        }
     }
 
     return $passed;
 }, 10, 3);
 
-// Move the upload into wp-content/uploads and attach URL to cart item data
+// Move the upload and stash both photo + description on the cart item
 add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product_id) {
     if (!apex_is_media_package_product($product_id)) return $cart_item_data;
-    if (empty($_FILES['apex_car_photo']) || empty($_FILES['apex_car_photo']['tmp_name'])) return $cart_item_data;
 
-    require_once ABSPATH . 'wp-admin/includes/file.php';
-    require_once ABSPATH . 'wp-admin/includes/media.php';
-    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $stored_anything = false;
 
-    $overrides = ['test_form' => false];
-    $uploaded = wp_handle_upload($_FILES['apex_car_photo'], $overrides);
+    if (!empty($_FILES['apex_car_photo']) && !empty($_FILES['apex_car_photo']['tmp_name'])) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
 
-    if (!empty($uploaded['url']) && empty($uploaded['error'])) {
-        $cart_item_data['apex_car_photo'] = [
-            'url'  => esc_url_raw($uploaded['url']),
-            'file' => $uploaded['file'],
-            'name' => sanitize_file_name(basename($uploaded['file'])),
-        ];
-        // Make each upload a unique cart item so two bookings can each have their own photo
+        $uploaded = wp_handle_upload($_FILES['apex_car_photo'], ['test_form' => false]);
+
+        if (!empty($uploaded['url']) && empty($uploaded['error'])) {
+            $cart_item_data['apex_car_photo'] = [
+                'url'  => esc_url_raw($uploaded['url']),
+                'file' => $uploaded['file'],
+                'name' => sanitize_file_name(basename($uploaded['file'])),
+            ];
+            $stored_anything = true;
+        }
+    }
+
+    if (!empty($_POST['apex_car_description'])) {
+        $description = sanitize_textarea_field(wp_unslash($_POST['apex_car_description']));
+        if ($description !== '') {
+            $cart_item_data['apex_car_description'] = $description;
+            $stored_anything = true;
+        }
+    }
+
+    if ($stored_anything) {
+        // Unique key so each booking is its own cart line
         $cart_item_data['unique_key'] = md5(microtime() . wp_rand());
     }
 
     return $cart_item_data;
 }, 10, 2);
 
-// Display the uploaded photo in cart/checkout
+// Display the photo / description in cart/checkout
 add_filter('woocommerce_get_item_data', function ($item_data, $cart_item) {
     if (!empty($cart_item['apex_car_photo']['url'])) {
         $item_data[] = [
@@ -391,13 +423,22 @@ add_filter('woocommerce_get_item_data', function ($item_data, $cart_item) {
             'value' => '<a href="' . esc_url($cart_item['apex_car_photo']['url']) . '" target="_blank" rel="noopener">' . esc_html($cart_item['apex_car_photo']['name']) . '</a>',
         ];
     }
+    if (!empty($cart_item['apex_car_description'])) {
+        $item_data[] = [
+            'key'   => __('Car description'),
+            'value' => esc_html($cart_item['apex_car_description']),
+        ];
+    }
     return $item_data;
 }, 10, 2);
 
-// Persist the photo URL onto the order line item
+// Persist both onto the order line item
 add_action('woocommerce_checkout_create_order_line_item', function ($item, $cart_item_key, $values, $order) {
     if (!empty($values['apex_car_photo']['url'])) {
         $item->add_meta_data(__('Car photo'), $values['apex_car_photo']['url']);
+    }
+    if (!empty($values['apex_car_description'])) {
+        $item->add_meta_data(__('Car description'), $values['apex_car_description']);
     }
 }, 10, 4);
 

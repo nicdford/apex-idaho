@@ -400,3 +400,11 @@ add_action('woocommerce_checkout_create_order_line_item', function ($item, $cart
         $item->add_meta_data(__('Car photo'), $values['apex_car_photo']['url']);
     }
 }, 10, 4);
+
+// Render the "Car photo" meta value as a clickable link in admin, cart, checkout, and emails
+add_filter('woocommerce_order_item_display_meta_value', function ($value, $meta, $item) {
+    if (is_object($meta) && $meta->key === 'Car photo' && filter_var($value, FILTER_VALIDATE_URL)) {
+        return '<a href="' . esc_url($value) . '" target="_blank" rel="noopener">' . esc_html($value) . '</a>';
+    }
+    return $value;
+}, 10, 3);

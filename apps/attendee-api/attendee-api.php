@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 const ATTENDEE_API_KEY_OPTION = 'attendee_api_key';
-const ATTENDEE_API_NS         = 'attendee-api/v1';
+const ATTENDEE_API_NS         = 'apex-attendee/v1';
 
 add_action('admin_menu', function () {
     add_options_page(

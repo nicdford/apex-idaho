@@ -48,10 +48,10 @@ rsync -avzn -e "$SSH" \
     "$REMOTE/wp-content/plugins/"
 
 echo
-echo "=== DRY RUN: attendee-api plugin (additive) ==="
+echo "=== DRY RUN: Pitwall plugin (additive) ==="
 rsync -avzn -e "$SSH" \
-    apps/attendee-api/ \
-    "$REMOTE/wp-content/plugins/attendee-api/"
+    apps/pitwall-wp/ \
+    "$REMOTE/wp-content/plugins/pitwall/"
 
 echo
 echo "Dry run complete. Nothing was transferred."

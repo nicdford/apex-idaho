@@ -39,12 +39,12 @@ jobs:
             apps/wordpress/wp-content/plugins/ \
             ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/
 
-      - name: Deploy attendee-api plugin via rsync
+      - name: Deploy Pitwall plugin via rsync
         run: |
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
-            apps/attendee-api/ \
-            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/attendee-api/
+            apps/pitwall-wp/ \
+            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/pitwall/
 
       - name: Notify Slack
         if: always()

@@ -2,7 +2,7 @@
 #   fly secrets set DISCORD_TOKEN=... DISCORD_CLIENT_ID=... ANTHROPIC_API_KEY=... WP_BASE_URL=... WP_API_KEY=... ALLOWED_CHANNEL_IDS=... DISCORD_GUILD_ID=...
 # Then `fly deploy`.
 
-app = "apex-discord-bot"
+app = "pitwall-bot"
 primary_region = "sea"
 
 [build]

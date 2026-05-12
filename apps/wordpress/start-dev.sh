@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure the attendee-api plugin (which lives at apps/attendee-api/ as a sibling
-# of apps/discord-bot/) is visible inside this WP install via a local symlink.
+# Ensure the Pitwall plugin (which lives at apps/pitwall-wp/ as a sibling of
+# apps/pitwall-bot/) is visible inside this WP install via a local symlink.
 # The symlink is gitignored.
-PLUGIN_LINK="wp-content/plugins/attendee-api"
+PLUGIN_LINK="wp-content/plugins/pitwall"
 if [ ! -e "$PLUGIN_LINK" ]; then
-    ln -s ../../../attendee-api "$PLUGIN_LINK"
-    echo "Linked attendee-api plugin -> apps/attendee-api"
+    ln -s ../../../pitwall-wp "$PLUGIN_LINK"
+    echo "Linked Pitwall plugin -> apps/pitwall-wp"
 fi
 
 # If PORT is already set in the environment or .env, use it.

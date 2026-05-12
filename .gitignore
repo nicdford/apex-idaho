@@ -36,13 +36,13 @@ wp-config.php
 # Composer vendor directories
 /apps/wordpress/wp-content/themes/bb-theme-child/vendor/
 
-# Local symlink that links the attendee-api source into the WP plugins dir for local dev.
+# Local symlink that links the Pitwall plugin source into the WP plugins dir for local dev.
 # Created by apps/wordpress/start-dev.sh; never committed.
-/apps/wordpress/wp-content/plugins/attendee-api
+/apps/wordpress/wp-content/plugins/pitwall
 
 # Bot build artifacts
-/apps/discord-bot/node_modules/
-/apps/discord-bot/dist/
+/apps/pitwall-bot/node_modules/
+/apps/pitwall-bot/dist/
 
 .ds_store
 .env

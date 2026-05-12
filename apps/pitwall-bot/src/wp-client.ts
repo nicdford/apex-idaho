@@ -1,7 +1,7 @@
 import { env } from "./env.js";
 
 async function call(path: string, params: Record<string, string | number | boolean | undefined> = {}) {
-  const url = new URL(`${env.wpBaseUrl}/wp-json/apex-attendee/v1${path}`);
+  const url = new URL(`${env.wpBaseUrl}/wp-json/pitwall/v1${path}`);
   for (const [k, v] of Object.entries(params)) {
     if (v === undefined || v === "" || v === null) continue;
     url.searchParams.set(k, String(v));

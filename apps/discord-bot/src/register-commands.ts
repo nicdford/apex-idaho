@@ -1,0 +1,37 @@
+import { REST, Routes, SlashCommandBuilder } from "discord.js";
+import { env } from "./env.js";
+
+const commands = [
+  new SlashCommandBuilder()
+    .setName("ask")
+    .setDescription("Ask about attendees, tickets, or registrations")
+    .addStringOption((o) =>
+      o.setName("question").setDescription("Your question").setRequired(true)
+    )
+    .toJSON(),
+  new SlashCommandBuilder()
+    .setName("reset")
+    .setDescription("Clear your conversation history with the bot")
+    .toJSON(),
+];
+
+async function main() {
+  const rest = new REST({ version: "10" }).setToken(env.discordToken);
+  if (env.discordGuildId) {
+    await rest.put(
+      Routes.applicationGuildCommands(env.discordClientId, env.discordGuildId),
+      { body: commands }
+    );
+    console.log(`Registered ${commands.length} guild commands.`);
+  } else {
+    await rest.put(Routes.applicationCommands(env.discordClientId), {
+      body: commands,
+    });
+    console.log(`Registered ${commands.length} global commands (may take up to 1h to appear).`);
+  }
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

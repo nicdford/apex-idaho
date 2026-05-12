@@ -1,0 +1,30 @@
+# Run `fly launch --no-deploy --copy-config` to create the app, then set secrets:
+#   fly secrets set DISCORD_TOKEN=... DISCORD_CLIENT_ID=... ANTHROPIC_API_KEY=... WP_BASE_URL=... WP_API_KEY=... ALLOWED_CHANNEL_IDS=... DISCORD_GUILD_ID=...
+# Then `fly deploy`.
+
+app = "apex-discord-bot"
+primary_region = "sea"
+
+[build]
+
+[env]
+  PORT = "8080"
+  ANTHROPIC_MODEL = "claude-sonnet-4-6"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

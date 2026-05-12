@@ -1,54 +1,49 @@
 # Wordpress - ignore core, configuration, examples, uploads and logs.
 # https://github.com/github/gitignore/blob/main/WordPress.gitignore
+# Paths anchored under apps/wordpress/ since the WP install was moved there.
 
 # Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
+/apps/wordpress/wp-admin/
+/apps/wordpress/wp-content/index.php
+/apps/wordpress/wp-content/languages
+/apps/wordpress/wp-content/plugins/index.php
+/apps/wordpress/wp-content/themes/index.php
+/apps/wordpress/wp-includes/
+/apps/wordpress/index.php
+/apps/wordpress/license.txt
+/apps/wordpress/readme.html
+/apps/wordpress/wp-*.php
+/apps/wordpress/xmlrpc.php
 
 # Configuration
 wp-config.php
 
 # Example themes
-/wp-content/themes/twenty*/
+/apps/wordpress/wp-content/themes/twenty*/
 
 # Example plugin
-/wp-content/plugins/hello.php
+/apps/wordpress/wp-content/plugins/hello.php
 
 # Uploads
-/wp-content/uploads/
+/apps/wordpress/wp-content/uploads/
 
 # Log files
 *.log
 
 # htaccess
-/.htaccess
+/apps/wordpress/.htaccess
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
+# Composer vendor directories
+/apps/wordpress/wp-content/themes/bb-theme-child/vendor/
 
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# Local symlink that links the attendee-api source into the WP plugins dir for local dev.
+# Created by apps/wordpress/start-dev.sh; never committed.
+/apps/wordpress/wp-content/plugins/attendee-api
+
+# Bot build artifacts
+/apps/discord-bot/node_modules/
+/apps/discord-bot/dist/
 
 .ds_store
 .env
-
-# Composer vendor directories
-wp-content/themes/bb-theme-child/vendor/
+/scripts/.deploy.env

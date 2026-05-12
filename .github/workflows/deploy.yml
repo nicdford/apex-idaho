@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Sync themes to SiteGround
+    name: Sync themes and plugins to SiteGround
     runs-on: ubuntu-latest
 
     steps:
@@ -23,21 +23,28 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction --prefer-dist
-        working-directory: wp-content/themes/bb-theme-child
+        working-directory: apps/wordpress/wp-content/themes/bb-theme-child
 
       - name: Deploy themes via rsync
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
-            wp-content/themes/ \
+            apps/wordpress/wp-content/themes/ \
             ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/themes/
 
       - name: Deploy plugins via rsync
         run: |
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
-            wp-content/plugins/ \
+            apps/wordpress/wp-content/plugins/ \
             ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/
+
+      - name: Deploy attendee-api plugin via rsync
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
+            apps/attendee-api/ \
+            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/attendee-api/
 
       - name: Notify Slack
         if: always()

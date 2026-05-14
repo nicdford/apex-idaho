@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Pitwall">
+  <rect width="512" height="512" rx="96" fill="#0A1628"/>
+  <g>
+    <rect x="96"  y="156" width="280" height="40" rx="12" fill="#00D4FF"/>
+    <rect x="136" y="236" width="280" height="40" rx="12" fill="#FFFFFF"/>
+    <rect x="96"  y="316" width="280" height="40" rx="12" fill="#00D4FF"/>
+  </g>
+  <circle cx="416" cy="176" r="14" fill="#FF4D4D"/>
+</svg>

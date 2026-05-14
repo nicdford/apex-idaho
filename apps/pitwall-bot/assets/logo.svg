@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-label="Pitwall">
+  <rect width="1200" height="320" fill="none"/>
+
+  <!-- Mark -->
+  <g transform="translate(40,40)">
+    <rect width="240" height="240" rx="48" fill="#0A1628"/>
+    <rect x="44"  y="72"  width="132" height="20" rx="6" fill="#00D4FF"/>
+    <rect x="62"  y="110" width="132" height="20" rx="6" fill="#FFFFFF"/>
+    <rect x="44"  y="148" width="132" height="20" rx="6" fill="#00D4FF"/>
+    <circle cx="196" cy="82" r="8" fill="#FF4D4D"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="320" y="200"
+        font-family="Inter, -apple-system, 'Helvetica Neue', Arial, sans-serif"
+        font-size="160"
+        font-weight="800"
+        letter-spacing="-4"
+        fill="#0A1628">PITWALL</text>
+</svg>

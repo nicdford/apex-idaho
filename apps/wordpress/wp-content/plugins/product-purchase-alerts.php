@@ -48,7 +48,7 @@ class Product_Purchase_Alerts {
     /**
      * Enqueue Select2 for the product dropdown (WooCommerce ships it).
      */
-    public function enqueue_admin_assets($hook): void {
+    public function enqueue_admin_assets(string $hook): void {
         if ($hook !== 'woocommerce_page_product-purchase-alerts') {
             return;
         }

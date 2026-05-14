@@ -449,3 +449,43 @@ add_filter('woocommerce_order_item_display_meta_value', function ($value, $meta,
     }
     return $value;
 }, 10, 3);
+
+// WP core's iframe_header() dispatches admin_enqueue_scripts with a null hook, which
+// crashes any callback that types its first arg as `string` (no `?string`). Examples
+// seen: Event Tickets' vendored Harbor Feature_Manager_Page. Wrap such callbacks so
+// null becomes "" — keeps third-party plugins working without patching vendor code.
+add_action('admin_init', function () {
+    global $wp_filter;
+    if (empty($wp_filter['admin_enqueue_scripts'])) {
+        return;
+    }
+    foreach ($wp_filter['admin_enqueue_scripts']->callbacks as $priority => $callbacks) {
+        foreach ($callbacks as $id => $cb) {
+            $fn = $cb['function'];
+            try {
+                $ref = is_array($fn)
+                    ? new ReflectionMethod($fn[0], $fn[1])
+                    : (is_string($fn) || $fn instanceof Closure ? new ReflectionFunction($fn) : null);
+            } catch (Throwable $e) {
+                continue;
+            }
+            if (!$ref) {
+                continue;
+            }
+            $params = $ref->getParameters();
+            if (!$params) {
+                continue;
+            }
+            $type = $params[0]->getType();
+            if (!$type instanceof ReflectionNamedType) {
+                continue;
+            }
+            if ($type->allowsNull() || $type->getName() !== 'string') {
+                continue;
+            }
+            $wp_filter['admin_enqueue_scripts']->callbacks[$priority][$id]['function'] = function ($hook = null) use ($fn) {
+                return call_user_func($fn, $hook ?? '');
+            };
+        }
+    }
+}, 1);

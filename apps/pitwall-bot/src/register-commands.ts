@@ -13,6 +13,21 @@ const commands = [
     .setName("reset")
     .setDescription("Clear your conversation history with the bot")
     .toJSON(),
+  new SlashCommandBuilder()
+    .setName("setevent")
+    .setDescription("Lock this channel to a specific event so /ask defaults to it")
+    .addStringOption((o) =>
+      o
+        .setName("event")
+        .setDescription("Start typing the event name")
+        .setRequired(true)
+        .setAutocomplete(true)
+    )
+    .toJSON(),
+  new SlashCommandBuilder()
+    .setName("clearevent")
+    .setDescription("Remove this channel's event lock")
+    .toJSON(),
 ];
 
 async function main() {

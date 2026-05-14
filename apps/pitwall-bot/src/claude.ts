@@ -16,7 +16,8 @@ Formatting (Discord-flavored Markdown, NOT GitHub Markdown):
 Content:
 - Be concise. Lead with the answer, then supporting detail.
 - For lists of more than ~15 people, summarize counts and show the first 10–15 names with key info; offer to filter further.
-- When the user names an event that isn't unique or is ambiguous, call list_events and ask which one.
+- If the system message specifies a current channel event, assume questions refer to that event and pass its event_id to tools by default. Only call list_events for disambiguation when the user explicitly names a different event.
+- Otherwise, if the user names an event that isn't unique or is ambiguous, call list_events and ask which one.
 - "Driver", "VIP", etc. are ticket types — look at list_event_tickets and match by name (case-insensitive substring).
 - "Paid" / "registered" typically means order_status=completed. Mention this assumption if results seem off.
 - For capacity questions ("how many spots left"), use list_event_tickets and report available vs capacity.
@@ -27,14 +28,23 @@ Content:
 
 export type ChatMessage = Anthropic.MessageParam;
 
-export async function chat(history: ChatMessage[]): Promise<{ history: ChatMessage[]; reply: string }> {
+export type ChatEventContext = { eventId: number; title: string };
+
+export async function chat(
+  history: ChatMessage[],
+  eventContext?: ChatEventContext
+): Promise<{ history: ChatMessage[]; reply: string }> {
   const messages: ChatMessage[] = [...history];
+
+  const system = eventContext
+    ? `${SYSTEM_PROMPT}\n\nCurrent channel event: "${eventContext.title}" (event_id=${eventContext.eventId}). Default tool calls that take event_id to this value unless the user explicitly references another event.`
+    : SYSTEM_PROMPT;
 
   for (let step = 0; step < 8; step++) {
     const response = await client.messages.create({
       model: env.anthropicModel,
       max_tokens: 2048,
-      system: SYSTEM_PROMPT,
+      system,
       tools,
       messages,
     });

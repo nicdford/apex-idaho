@@ -19,6 +19,20 @@ async function call(path: string, params: Record<string, string | number | boole
   return res.json();
 }
 
+export type EventSummary = { id: number; title: string; start: string | null; end: string | null };
+
+let eventsCache: { at: number; data: EventSummary[] } | null = null;
+const EVENTS_CACHE_TTL_MS = 30_000;
+
+export async function listEventsCached(): Promise<EventSummary[]> {
+  if (eventsCache && Date.now() - eventsCache.at < EVENTS_CACHE_TTL_MS) {
+    return eventsCache.data;
+  }
+  const data = (await call("/events")) as EventSummary[];
+  eventsCache = { at: Date.now(), data };
+  return data;
+}
+
 export const wp = {
   listEvents: () => call("/events"),
   listEventTickets: (eventId: number) => call(`/events/${eventId}/tickets`),

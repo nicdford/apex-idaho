@@ -36,10 +36,14 @@ export async function listEventsCached(): Promise<EventSummary[]> {
 export const wp = {
   listEvents: () => call("/events"),
   listEventTickets: (eventId: number) => call(`/events/${eventId}/tickets`),
-  listEventAttendees: (eventId: number, opts: { ticketId?: number; status?: string; includeMeta?: boolean } = {}) =>
+  listEventAttendees: (
+    eventId: number,
+    opts: { ticketId?: number; status?: string; checkedIn?: boolean; includeMeta?: boolean } = {}
+  ) =>
     call(`/events/${eventId}/attendees`, {
       ticket_id: opts.ticketId,
       status: opts.status,
+      checked_in: opts.checkedIn == null ? undefined : opts.checkedIn ? 1 : 0,
       include_meta: opts.includeMeta ? 1 : undefined,
     }),
   searchAttendees: (q: string, opts: { eventId?: number; includeMeta?: boolean } = {}) =>

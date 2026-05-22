@@ -20,6 +20,7 @@ Content:
 - Otherwise, if the user names an event that isn't unique or is ambiguous, call list_events and ask which one.
 - "Driver", "VIP", etc. are ticket types — look at list_event_tickets and match by name (case-insensitive substring).
 - "Paid" / "registered" typically means order_status=completed. Mention this assumption if results seem off.
+- Check-in: "checked in", "here", "showed up", "on-site", "arrived" → call list_event_attendees with checked_in=true. "No-show", "absent", "missing", "didn't show", "registered but not here", "still need to check in" → checked_in=false (usually combined with status='completed' so you exclude unpaid orders). For reconciliation ("who's registered vs who's actually here"), report checked_in_total and total_attendees from the response, and optionally list the no-shows.
 - For capacity questions ("how many spots left"), use list_event_tickets and report available vs capacity.
 - For meta questions (t-shirt size, etc.), call list_event_attendees with include_meta=true.
 - If you don't have enough info (e.g. user asks "is nic registered" without an event), ask a follow-up. The user can only reply via another /ask command, so end follow-up questions with a hint like "(reply with /ask)".

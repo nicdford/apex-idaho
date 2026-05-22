@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pitwall
 Description: AI-powered event logistics for WordPress. Read-only REST API exposing Event Tickets attendees, tickets, and capacity for the Pitwall bot.
-Version: 0.2.0
+Version: 0.3.0
 Author: Nic D. Ford
 Author URI: https://nicdford.com
 */
@@ -106,6 +106,7 @@ add_action('rest_api_init', function () {
             'event_id'     => ['validate_callback' => fn($v) => is_numeric($v)],
             'ticket_id'    => ['required' => false],
             'status'       => ['required' => false],
+            'checked_in'   => ['required' => false],
             'include_meta' => ['required' => false],
         ],
     ]);
@@ -201,6 +202,40 @@ function pitwall_route_event_tickets(WP_REST_Request $req)
     ]);
 }
 
+function pitwall_attendee_checked_in($a)
+{
+    if (array_key_exists('check_in', $a)) {
+        $v = $a['check_in'];
+        if (is_bool($v)) {
+            return $v;
+        }
+        if (is_numeric($v)) {
+            return (int) $v === 1;
+        }
+        if (is_string($v) && $v !== '') {
+            return in_array(strtolower($v), ['1', 'true', 'yes', 'checkedin', 'checked_in'], true);
+        }
+    }
+    $attendee_id = isset($a['attendee_id']) ? (int) $a['attendee_id'] : 0;
+    if ($attendee_id <= 0) {
+        return false;
+    }
+    $keys = [
+        '_tribe_wooticket_checkedin',
+        '_tribe_tpp_checkedin',
+        '_tribe_rsvp_checkedin',
+        '_tec_tickets_commerce_checkedin',
+        '_tribe_eddticket_checkedin',
+    ];
+    foreach ($keys as $k) {
+        $v = get_post_meta($attendee_id, $k, true);
+        if ($v === '1' || $v === 1 || $v === true || (is_string($v) && strtolower($v) === 'yes')) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function pitwall_format_attendee($a, $include_meta)
 {
     $row = [
@@ -214,6 +249,7 @@ function pitwall_format_attendee($a, $include_meta)
         'purchaser_email' => $a['purchaser_email'] ?? null,
         'order_status'    => $a['order_status'] ?? null,
         'security_code'   => $a['security_code'] ?? null,
+        'checked_in'      => pitwall_attendee_checked_in($a),
     ];
     if ($include_meta && !empty($a['attendee_meta']) && is_array($a['attendee_meta'])) {
         $meta = [];
@@ -235,7 +271,7 @@ function pitwall_format_attendee($a, $include_meta)
     return $row;
 }
 
-function pitwall_filter_attendees($attendees, $ticket_id, $status)
+function pitwall_filter_attendees($attendees, $ticket_id, $status, $checked_in = null)
 {
     if ($ticket_id) {
         $ticket_id = (int) $ticket_id;
@@ -244,6 +280,10 @@ function pitwall_filter_attendees($attendees, $ticket_id, $status)
     if ($status) {
         $statuses = array_map('trim', explode(',', $status));
         $attendees = array_filter($attendees, fn($a) => in_array($a['order_status'] ?? '', $statuses, true));
+    }
+    if ($checked_in !== null) {
+        $want = (bool) $checked_in;
+        $attendees = array_filter($attendees, fn($a) => pitwall_attendee_checked_in($a) === $want);
     }
     return array_values($attendees);
 }
@@ -258,8 +298,22 @@ function pitwall_route_event_attendees(WP_REST_Request $req)
     $status       = $req->get_param('status');
     $include_meta = filter_var($req->get_param('include_meta'), FILTER_VALIDATE_BOOLEAN);
 
+    $checked_in_raw = $req->get_param('checked_in');
+    $checked_in = null;
+    if ($checked_in_raw !== null && $checked_in_raw !== '') {
+        $checked_in = filter_var($checked_in_raw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
+
     $attendees = tribe_tickets_get_attendees($event_id);
-    $attendees = pitwall_filter_attendees($attendees, $ticket_id, $status);
+    $total = count($attendees);
+    $checked_in_total = 0;
+    foreach ($attendees as $a) {
+        if (pitwall_attendee_checked_in($a)) {
+            $checked_in_total++;
+        }
+    }
+
+    $attendees = pitwall_filter_attendees($attendees, $ticket_id, $status, $checked_in);
 
     $out = [];
     foreach ($attendees as $a) {
@@ -267,10 +321,12 @@ function pitwall_route_event_attendees(WP_REST_Request $req)
     }
 
     return rest_ensure_response([
-        'event_id'    => $event_id,
-        'event_title' => get_the_title($event_id),
-        'count'       => count($out),
-        'attendees'   => $out,
+        'event_id'         => $event_id,
+        'event_title'      => get_the_title($event_id),
+        'count'            => count($out),
+        'total_attendees'  => $total,
+        'checked_in_total' => $checked_in_total,
+        'attendees'        => $out,
     ]);
 }
 

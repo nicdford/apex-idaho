@@ -23,13 +23,14 @@ export const tools: Anthropic.Tool[] = [
   {
     name: "list_event_attendees",
     description:
-      "List attendees for an event. Filter by ticket_id (for driver-only / VIP-only views) and/or status (comma-separated, e.g. 'completed,processing'). Set include_meta=true to include attendee meta fields like t-shirt size.",
+      "List attendees for an event. Filter by ticket_id (for driver-only / VIP-only views), status (comma-separated, e.g. 'completed,processing'), and/or checked_in (true = only checked-in attendees, false = registered but NOT yet checked in — use for no-show / reconciliation questions). Each attendee row includes a `checked_in` boolean; the response also includes `total_attendees` and `checked_in_total` counts (computed before filtering). Set include_meta=true to include attendee meta fields like t-shirt size.",
     input_schema: {
       type: "object",
       properties: {
         event_id: { type: "number" },
         ticket_id: { type: "number", description: "Optional: only attendees on this ticket type" },
         status: { type: "string", description: "Optional: comma-separated order statuses (e.g. 'completed' or 'completed,processing')" },
+        checked_in: { type: "boolean", description: "Optional: true = only checked-in, false = only NOT checked-in (registered but absent). Omit for all." },
         include_meta: { type: "boolean", description: "Include attendee meta fields. Default false." },
       },
       required: ["event_id"],
@@ -61,6 +62,7 @@ export async function runTool(name: string, input: Record<string, unknown>): Pro
       return await wp.listEventAttendees(Number(input.event_id), {
         ticketId: input.ticket_id != null ? Number(input.ticket_id) : undefined,
         status: input.status as string | undefined,
+        checkedIn: typeof input.checked_in === "boolean" ? input.checked_in : undefined,
         includeMeta: Boolean(input.include_meta),
       });
     case "search_attendees":

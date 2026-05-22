@@ -1,5 +1,7 @@
 # Run `fly launch --no-deploy --copy-config` to create the app, then set secrets:
 #   fly secrets set DISCORD_TOKEN=... DISCORD_CLIENT_ID=... ANTHROPIC_API_KEY=... WP_BASE_URL=... WP_API_KEY=... ALLOWED_CHANNEL_IDS=... DISCORD_GUILD_ID=...
+# Optional: pre-bind Discord channels to WP events (survives restarts; /setevent still overrides at runtime):
+#   fly secrets set PITWALL_CHANNEL_EVENT_MAP="1234567890:42,9876543210:57"
 # Then `fly deploy`.
 
 app = "basket-pitwall-bot"

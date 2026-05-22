@@ -4,7 +4,7 @@ import { env } from "./env.js";
 import { chat } from "./claude.js";
 import { getHistory, setHistory, clearHistory } from "./conversation.js";
 import {
-  getEventContext,
+  resolveEventContext,
   setEventContext,
   clearEventContext,
 } from "./event-context.js";
@@ -99,7 +99,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   try {
     const history = getHistory(interaction.user.id, interaction.channelId);
     const next = [...history, { role: "user" as const, content: question }];
-    const eventContext = getEventContext(interaction.channelId);
+    const eventContext = await resolveEventContext(interaction.channelId);
     const { history: updated, reply } = await chat(next, eventContext);
     setHistory(interaction.user.id, interaction.channelId, updated);
 

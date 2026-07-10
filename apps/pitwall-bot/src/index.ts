@@ -40,7 +40,22 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
   if (!interaction.isChatInputCommand()) return;
 
-  if (env.allowedChannelIds.length && !env.allowedChannelIds.includes(interaction.channelId)) {
+  const isDm = !interaction.inGuild();
+  if (isDm) {
+    if (
+      !env.allowedDmUserIds.length ||
+      !env.allowedDmUserIds.includes(interaction.user.id)
+    ) {
+      await interaction.reply({
+        content: "You're not authorized to DM this bot.",
+        flags: MessageFlags.Ephemeral,
+      });
+      return;
+    }
+  } else if (
+    env.allowedChannelIds.length &&
+    !env.allowedChannelIds.includes(interaction.channelId)
+  ) {
     await interaction.reply({
       content: "This bot isn't authorized in this channel.",
       flags: MessageFlags.Ephemeral,

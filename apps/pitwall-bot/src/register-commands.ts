@@ -1,10 +1,22 @@
-import { REST, Routes, SlashCommandBuilder } from "discord.js";
+import {
+  InteractionContextType,
+  REST,
+  Routes,
+  SlashCommandBuilder,
+} from "discord.js";
 import { env } from "./env.js";
+
+const ALL_CONTEXTS = [
+  InteractionContextType.Guild,
+  InteractionContextType.BotDM,
+  InteractionContextType.PrivateChannel,
+];
 
 const commands = [
   new SlashCommandBuilder()
     .setName("ask")
     .setDescription("Ask about attendees, tickets, or registrations")
+    .setContexts(ALL_CONTEXTS)
     .addStringOption((o) =>
       o.setName("question").setDescription("Your question").setRequired(true)
     )
@@ -12,10 +24,12 @@ const commands = [
   new SlashCommandBuilder()
     .setName("reset")
     .setDescription("Clear your conversation history with the bot")
+    .setContexts(ALL_CONTEXTS)
     .toJSON(),
   new SlashCommandBuilder()
     .setName("setevent")
     .setDescription("Lock this channel to a specific event so /ask defaults to it")
+    .setContexts(ALL_CONTEXTS)
     .addStringOption((o) =>
       o
         .setName("event")
@@ -27,6 +41,7 @@ const commands = [
   new SlashCommandBuilder()
     .setName("clearevent")
     .setDescription("Remove this channel's event lock")
+    .setContexts(ALL_CONTEXTS)
     .toJSON(),
 ];
 

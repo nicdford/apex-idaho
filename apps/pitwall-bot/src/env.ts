@@ -12,6 +12,10 @@ export const env = {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),
+  allowedDmUserIds: (process.env.ALLOWED_DM_USER_IDS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
   anthropicApiKey: required("ANTHROPIC_API_KEY"),
   anthropicModel: process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6",
   wpBaseUrl: required("WP_BASE_URL").replace(/\/$/, ""),

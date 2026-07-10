@@ -262,10 +262,10 @@ function it_sbs_render_form_850($totals, $start_date, $end_date)
       echo '<div style="' . $style_row . '">';
       echo '<div style="flex:1;">' . esc_html($n . '. ' . $label) . '</div>';
       if ($kind === 'input') {
-        echo '<input type="number" step="0.01" id="' . $id . '" value="' . esc_attr($default) . '" style="width:180px;padding:8px 10px;text-align:right;border:1px solid #bbb;border-radius:6px;" />';
+        echo '<input type="text" inputmode="decimal" id="' . $id . '" data-money="1" value="' . esc_attr($default) . '" style="width:180px;padding:8px 10px;text-align:right;border:1px solid #bbb;border-radius:6px;" />';
       } else {
         $bg = ($n === '11') ? '#fff8c5' : '#f4f4f4';
-        echo '<div id="' . $id . '" style="width:180px;padding:8px 10px;text-align:right;background:' . $bg . ';border:1px solid #ddd;border-radius:6px;">0.00</div>';
+        echo '<div id="' . $id . '" style="width:180px;padding:8px 10px;text-align:right;background:' . $bg . ';border:1px solid #ddd;border-radius:6px;">$0.00</div>';
       }
       echo '</div>';
     }
@@ -288,10 +288,11 @@ function it_sbs_render_form_850($totals, $start_date, $end_date)
   <script>
     (function () {
       const ids = ['line1','line2','line3','line4','line5','line6','line7','line8','line9','line10','line11'];
-      const fmt = n => (isFinite(n) ? n : 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmtMoney = n => '$' + (isFinite(n) ? n : 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmtInput = n => (isFinite(n) && n !== 0 ? n : 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const num = v => {
         if (v === null || v === undefined) return 0;
-        const n = parseFloat(String(v).replace(/,/g, ''));
+        const n = parseFloat(String(v).replace(/[$,\s]/g, ''));
         return isFinite(n) ? n : 0;
       };
       const get = id => {
@@ -301,7 +302,7 @@ function it_sbs_render_form_850($totals, $start_date, $end_date)
       };
       const set = (id, val) => {
         const el = document.getElementById(id);
-        if (el && el.tagName !== 'INPUT') el.textContent = fmt(val);
+        if (el && el.tagName !== 'INPUT') el.textContent = fmtMoney(val);
       };
       function recalc() {
         const l1 = get('line1'), l2 = get('line2'), l4 = get('line4'), l7 = get('line7'), l9 = get('line9'), l10 = get('line10');
@@ -316,9 +317,20 @@ function it_sbs_render_form_850($totals, $start_date, $end_date)
         ['line4','line7','line9','line10'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
         recalc();
       };
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.tagName === 'INPUT') el.addEventListener('input', recalc);
+      document.querySelectorAll('#sbs-form-850 input[data-money]').forEach(el => {
+        // Format any pre-filled default value on load
+        if (el.value !== '') el.value = fmtInput(num(el.value));
+        el.addEventListener('input', recalc);
+        el.addEventListener('focus', () => {
+          const n = num(el.value);
+          el.value = n === 0 ? '' : String(n);
+          el.select();
+        });
+        el.addEventListener('blur', () => {
+          const raw = el.value.trim();
+          el.value = raw === '' ? '' : fmtInput(num(raw));
+          recalc();
+        });
       });
       recalc();
     })();

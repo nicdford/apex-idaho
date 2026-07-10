@@ -1,25 +1,29 @@
-name: Deploy to SiteGround
+name: Deploy to Cloudways
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
-    name: Sync themes and plugins to SiteGround
+    name: Sync themes and plugins to Cloudways
     runs-on: ubuntu-latest
+
+    env:
+      SSHPASS: ${{ secrets.CLOUDWAYS_SSH_PASSWORD }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up SSH
+      - name: Install sshpass and seed known_hosts
         run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
           mkdir -p ~/.ssh
-          echo "${{ secrets.SITEGROUND_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ secrets.SITEGROUND_SSH_PORT }} ${{ secrets.SITEGROUND_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.CLOUDWAYS_SSH_PORT }} ${{ secrets.CLOUDWAYS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction --prefer-dist
@@ -27,24 +31,24 @@ jobs:
 
       - name: Deploy themes via rsync
         run: |
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
+          sshpass -e rsync -avz --delete \
+            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
             apps/wordpress/wp-content/themes/ \
-            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/themes/
+            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/themes/
 
       - name: Deploy plugins via rsync
         run: |
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
+          sshpass -e rsync -avz \
+            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
             apps/wordpress/wp-content/plugins/ \
-            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/
+            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/plugins/
 
       - name: Deploy Pitwall plugin via rsync
         run: |
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SITEGROUND_SSH_PORT }} -o StrictHostKeyChecking=no" \
+          sshpass -e rsync -avz \
+            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
             apps/pitwall-wp/ \
-            ${{ secrets.SITEGROUND_USER }}@${{ secrets.SITEGROUND_HOST }}:${{ secrets.SITEGROUND_PATH }}/wp-content/plugins/pitwall/
+            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/plugins/pitwall/
 
       - name: Notify Slack
         if: always()

@@ -12,43 +12,51 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SSHPASS: ${{ secrets.CLOUDWAYS_SSH_PASSWORD }}
+      LFTP_PASSWORD: ${{ secrets.CLOUDWAYS_SSH_PASSWORD }}
+      LFTP_HOST: ${{ secrets.CLOUDWAYS_HOST }}
+      LFTP_PORT: ${{ secrets.CLOUDWAYS_SSH_PORT }}
+      LFTP_USER: ${{ secrets.CLOUDWAYS_USER }}
+      LFTP_PATH: ${{ secrets.CLOUDWAYS_PATH }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install sshpass and seed known_hosts
+      - name: Install lftp
         run: |
           sudo apt-get update
-          sudo apt-get install -y sshpass
-          mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ secrets.CLOUDWAYS_SSH_PORT }} ${{ secrets.CLOUDWAYS_HOST }} >> ~/.ssh/known_hosts
+          sudo apt-get install -y lftp
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction --prefer-dist
         working-directory: apps/wordpress/wp-content/themes/bb-theme-child
 
-      - name: Deploy themes via rsync
+      - name: Deploy themes (mirror with delete)
         run: |
-          sshpass -e rsync -avz --delete \
-            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
-            apps/wordpress/wp-content/themes/ \
-            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/themes/
+          lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \
+            -e "set sftp:auto-confirm yes; \
+                mirror -R --delete --verbose --parallel=4 \
+                  apps/wordpress/wp-content/themes/ $LFTP_PATH/wp-content/themes/; \
+                bye" \
+            sftp://$LFTP_HOST
 
-      - name: Deploy plugins via rsync
+      - name: Deploy plugins (mirror without delete)
         run: |
-          sshpass -e rsync -avz \
-            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
-            apps/wordpress/wp-content/plugins/ \
-            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/plugins/
+          lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \
+            -e "set sftp:auto-confirm yes; \
+                mirror -R --verbose --parallel=4 \
+                  apps/wordpress/wp-content/plugins/ $LFTP_PATH/wp-content/plugins/; \
+                bye" \
+            sftp://$LFTP_HOST
 
-      - name: Deploy Pitwall plugin via rsync
+      - name: Deploy Pitwall plugin (mirror without delete)
         run: |
-          sshpass -e rsync -avz \
-            -e "ssh -p ${{ secrets.CLOUDWAYS_SSH_PORT }} -o StrictHostKeyChecking=no -o PubkeyAuthentication=no -o PreferredAuthentications=password" \
-            apps/pitwall-wp/ \
-            ${{ secrets.CLOUDWAYS_USER }}@${{ secrets.CLOUDWAYS_HOST }}:${{ secrets.CLOUDWAYS_PATH }}/wp-content/plugins/pitwall/
+          lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \
+            -e "set sftp:auto-confirm yes; \
+                mirror -R --verbose --parallel=4 \
+                  apps/pitwall-wp/ $LFTP_PATH/wp-content/plugins/pitwall/; \
+                bye" \
+            sftp://$LFTP_HOST
 
       - name: Notify Slack
         if: always()

@@ -93,6 +93,7 @@ function it_yearly_sales_by_state()
 
   if ($selected_state === '') {
     it_sbs_render_summary($orders, $selected_product);
+    it_sbs_render_form_850($start_date, $end_date);
   } else {
     it_sbs_render_state_detail($orders, $selected_product, $selected_state, $start_date, $end_date);
   }
@@ -136,7 +137,7 @@ function it_sbs_render_summary($orders, $selected_product)
     echo '<tr><td><a href="' . $link . '">' . $label . '</a></td><td>' . $d['total_orders'] . '</td><td>' . wc_price($d['total_amount']) . '</td><td>' . $d['product_quantity'] . '</td></tr>';
   }
   echo '</tbody></table>';
-  echo '<p style="margin-top:10px"><em>Tip: click a state to see all orders and (for Idaho) generate a Form 850 worksheet.</em></p>';
+  echo '<p style="margin-top:10px"><em>Tip: click a state to see all orders for that state. The Idaho Form 850 worksheet below always covers all states for the selected period.</em></p>';
 }
 
 function it_sbs_render_state_detail($orders, $selected_product, $state, $start_date, $end_date)
@@ -224,11 +225,6 @@ function it_sbs_render_state_detail($orders, $selected_product, $state, $start_d
   echo '<td>' . wc_price($totals['grand']) . '</td>';
   echo '</tr>';
   echo '</tbody></table>';
-
-  // --- Idaho Form 850 worksheet (only for ID) ---
-  if ($state === 'ID') {
-    it_sbs_render_form_850($start_date, $end_date);
-  }
 }
 
 function it_sbs_render_form_850($start_date, $end_date)

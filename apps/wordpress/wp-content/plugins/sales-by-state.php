@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sales by State
 Description: Displays sales by state, drills down into per-state orders, and outputs an Idaho Form 850 (Sales & Use Tax) worksheet.
-Version: 1.6.0
+Version: 1.7.0
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -10,6 +10,8 @@ Author URI: https://nicdford.com
 if (!defined('ABSPATH')) {
   exit;
 }
+
+require_once __DIR__ . '/sales-by-state-calc.php';
 
 add_action('admin_menu', 'it_wp_dashboard_woocommerce_subpage', 9999);
 function it_wp_dashboard_woocommerce_subpage()
@@ -225,16 +227,43 @@ function it_sbs_render_state_detail($orders, $selected_product, $state, $start_d
 
   // --- Idaho Form 850 worksheet (only for ID) ---
   if ($state === 'ID') {
-    it_sbs_render_form_850($totals, $start_date, $end_date);
+    it_sbs_render_form_850($start_date, $end_date);
   }
 }
 
-function it_sbs_render_form_850($totals, $start_date, $end_date)
+function it_sbs_render_form_850($start_date, $end_date)
 {
-  // Line 1 = grand order totals from Idaho customers
-  // Line 2 defaults to shipping + tax already collected (typical nontaxable)
-  $line1_default = number_format($totals['grand'], 2, '.', '');
-  $line2_default = number_format($totals['shipping'] + $totals['tax'], 2, '.', '');
+  // Form 850 needs gross sales across ALL states (not just Idaho), net of refunds,
+  // so it pulls its own dataset rather than reusing the Idaho-filtered order list.
+  $period_orders = wc_get_orders([
+    'limit'        => -1,
+    'date_created' => $start_date . '...' . $end_date,
+    'status'       => ['wc-completed', 'wc-refunded'],
+  ]);
+
+  // Net out refunds (partial or full) so a refunded sale never counts as taxable.
+  $orders_data = [];
+  foreach ($period_orders as $order) {
+    if (!($order instanceof WC_Order)) continue;
+    $orders_data[] = [
+      'state'             => $order->get_billing_state(),
+      'total'             => (float) $order->get_total(),
+      'tax'               => (float) $order->get_total_tax(),
+      'shipping'          => (float) $order->get_shipping_total(),
+      'refunded'          => (float) $order->get_total_refunded(),
+      'tax_refunded'      => (float) $order->get_total_tax_refunded(),
+      'shipping_refunded' => (float) $order->get_total_shipping_refunded(),
+    ];
+  }
+
+  // Line 1 = gross sales everywhere, net of refunds.
+  // Line 2 = nontaxable-to-Idaho portion: out-of-state sales plus shipping/tax
+  // already collected on Idaho orders. Line 3 (net taxable) is unaffected by
+  // including out-of-state sales, since they cancel out between lines 1 and 2 —
+  // this just makes the worksheet's own figures accurate on their own terms.
+  $totals = it_sbs_compute_form_850_totals($orders_data);
+  $line1_default = number_format($totals['line1'], 2, '.', '');
+  $line2_default = number_format($totals['line2'], 2, '.', '');
 
   ?>
   <div id="sbs-form-850" style="margin-top:32px;max-width:820px;border:1px solid #ccd0d4;background:#fff;padding:24px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">

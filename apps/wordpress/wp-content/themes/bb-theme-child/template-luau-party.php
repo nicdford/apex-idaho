@@ -795,30 +795,122 @@ get_header();
   color: var(--lime);
   margin-bottom: 1.5rem;
 }
-/* Event Tickets ships light-theme styles; nudge its text legible here without
-   fighting its layout. */
-.luau-module .tribe-tickets,
+/* ── Event Tickets, re-themed for the dark page ────────────────────────
+   Event Tickets ships a light theme: the form carries a hard white background
+   and near-black type. Recolouring the text alone is what produced washed-out
+   text on a white card, so the background has to be neutralised first. These
+   use !important deliberately — they override a third-party plugin's own
+   stylesheet, and the class names below are Event Tickets' public block
+   classes. If a future ET release renames them, the module simply reverts to
+   its stock light styling rather than breaking.                            */
+.luau-module .tribe-tickets__tickets-form,
+.luau-module .tribe-tickets__tickets-wrapper,
+.luau-module .tribe-tickets__notice,
+.luau-module .tribe-tickets__tickets-footer {
+  background: transparent !important;
+  border-color: rgba(255,255,255,.14) !important;
+}
+.luau-module .tribe-tickets__tickets-form { border: 0 !important; padding: 0 !important; }
+
+/* Our own "Choose your tickets" label already sits above this. */
+.luau-module .tribe-tickets__tickets-title { display: none !important; }
+
 .luau-module .tribe-common,
-.luau-module .tribe-tickets__tickets-title,
 .luau-module .tribe-common h1, .luau-module .tribe-common h2,
 .luau-module .tribe-common h3, .luau-module .tribe-common h4,
 .luau-module .tribe-common p,  .luau-module .tribe-common span,
-.luau-module .tribe-common label,
-.luau-module .tribe-common div { color: #f4f2f8; }
-.luau-module .tribe-common a:not(.tribe-common-c-btn) { color: var(--lime); }
+.luau-module .tribe-common div, .luau-module .tribe-common label { color: #f4f2f8; }
+
+.luau-module .tribe-tickets__tickets-item { border-color: rgba(255,255,255,.14) !important; }
+
+.luau-module .tribe-tickets__tickets-item-content-title {
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.luau-module .tribe-tickets__tickets-item-details-content,
+.luau-module .tribe-tickets__tickets-item-details-content * {
+  color: rgba(255,255,255,.66) !important;
+}
+
+/* Price in the same lime as the tier cards above, so the two read as one set. */
+.luau-module .tribe-tickets__tickets-item-extra-price,
+.luau-module .tribe-tickets__tickets-item-extra-price *,
+.luau-module .tribe-amount,
+.luau-module .tribe-currency-symbol,
+.luau-module .tribe-currency-prefix {
+  color: var(--lime) !important;
+}
+.luau-module .tribe-tickets__tickets-item-extra-available {
+  color: rgba(255,255,255,.5) !important;
+}
+
+/* Quantity stepper: pill, magenta controls, legible number. */
+.luau-module .tribe-tickets__tickets-item-quantity {
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,43,214,.45) !important;
+  border-radius: 999px !important;
+}
+.luau-module .tribe-tickets__tickets-item-quantity-number-input,
+.luau-module .tribe-tickets__tickets-item-quantity-number input,
 .luau-module input[type="number"],
 .luau-module input[type="text"],
 .luau-module input[type="email"],
 .luau-module select,
 .luau-module textarea {
-  background: rgba(0,0,0,.42);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.28);
+  color: #fff !important;
+  background: transparent !important;
+  border: 0 !important;
+  -moz-appearance: textfield;
 }
-.luau-module .tribe-tickets__tickets-item,
-.luau-module .tribe-tickets__ticket {
-  border-color: rgba(255,255,255,.16) !important;
+.luau-module select option { color: #111; }
+.luau-module .tribe-tickets__tickets-item-quantity-add,
+.luau-module .tribe-tickets__tickets-item-quantity-remove {
+  color: var(--magenta) !important;
+  background: transparent !important;
+  border: 0 !important;
+  font-weight: 700;
 }
+.luau-module .tribe-tickets__tickets-item-quantity-add:hover,
+.luau-module .tribe-tickets__tickets-item-quantity-remove:hover { color: #fff !important; }
+
+.luau-module .tribe-tickets__tickets-footer-quantity-label,
+.luau-module .tribe-tickets__tickets-footer-total-label {
+  color: rgba(255,255,255,.6) !important;
+}
+.luau-module .tribe-tickets__tickets-footer-quantity-number,
+.luau-module .tribe-tickets__tickets-footer-total-wrap { color: #fff !important; }
+
+/* Buy button matched to .luau-btn--solid, with a deliberate disabled state
+   (it ships disabled until a quantity is chosen). */
+.luau-module .tribe-common-c-btn,
+.luau-module .tribe-tickets__tickets-buy {
+  background: linear-gradient(115deg, var(--magenta) 0%, #ff7ae3 46%, var(--lime) 100%) !important;
+  color: #14000d !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: .9rem 2.1rem !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  box-shadow: 0 0 22px rgba(255,43,214,.45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.luau-module .tribe-common-c-btn:hover:not(:disabled),
+.luau-module .tribe-tickets__tickets-buy:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 38px rgba(255,43,214,.75);
+}
+.luau-module .tribe-common-c-btn:disabled,
+.luau-module .tribe-tickets__tickets-buy:disabled {
+  background: rgba(255,255,255,.1) !important;
+  color: rgba(255,255,255,.45) !important;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.luau-module .tribe-common a:not(.tribe-common-c-btn) { color: var(--lime); }
 
 .luau-module__fallback {
   padding: 1.4rem;
@@ -1371,12 +1463,12 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
         $luau_schedule = array(
         	array(
         		'label' => 'Roll In',
-        		'name'  => 'Thu &amp; Fri',
+        		'name'  => 'Friday',
         		'slots' => array(
-        			array( 'Thu 4:00 PM', 'Camping opens &mdash; check in and pick your spot' ),
-        			array( 'Fri All Day', 'Paddock setup, tech and registration' ),
-        			array( 'Fri 7:30 PM', 'Luau kickoff: food, drinks and music' ),
-        			array( 'Late',        'Bonfire and bench racing' ),
+        			array( '4:00 PM', 'Gates open &mdash; camping check-in' ),
+        			array( '6:00 PM', 'Paddock setup, tech and registration' ),
+        			array( '7:30 PM', 'Luau kickoff: food, drinks and music' ),
+        			array( 'Late',    'Bonfire and bench racing' ),
         		),
         	),
         	array(

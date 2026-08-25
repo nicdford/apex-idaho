@@ -865,11 +865,22 @@ get_header();
   color: rgba(255,255,255,.5) !important;
 }
 
-/* Quantity stepper: pill, magenta controls, legible number. */
+/* Quantity stepper.
+   Event Tickets ships the pill with zero padding and 12px-wide controls, so the
+   three children fill it edge to edge with about a pixel to spare, and a stray
+   4px bottom margin knocks the glyphs off centre. Rebuild it as a flex row with
+   real padding and round 30px hit areas. */
 .luau-module .tribe-tickets__tickets-item-quantity:not(.tribe-dialog *) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: .3rem !important;
+  padding: .28rem .42rem !important;
+  min-height: 46px;
   background: rgba(255,255,255,.06) !important;
   border: 1px solid rgba(255,43,214,.45) !important;
   border-radius: 999px !important;
+  box-shadow: inset 0 0 18px rgba(255,43,214,.1);
 }
 .luau-module .tribe-tickets__tickets-item-quantity-number-input:not(.tribe-dialog *),
 .luau-module .tribe-tickets__tickets-item-quantity-number input:not(.tribe-dialog *),
@@ -886,13 +897,62 @@ get_header();
 .luau-module select option:not(.tribe-dialog *) { color: #111; }
 .luau-module .tribe-tickets__tickets-item-quantity-add:not(.tribe-dialog *),
 .luau-module .tribe-tickets__tickets-item-quantity-remove:not(.tribe-dialog *) {
-  color: var(--magenta) !important;
-  background: transparent !important;
+  flex: 0 0 auto !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;          /* clears the stray 4px bottom margin */
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
   border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: var(--magenta) !important;
+  font-size: 1.2rem !important;
+  line-height: 1 !important;
   font-weight: 700;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, transform .18s ease;
 }
 .luau-module .tribe-tickets__tickets-item-quantity-add:hover:not(.tribe-dialog *),
-.luau-module .tribe-tickets__tickets-item-quantity-remove:hover:not(.tribe-dialog *) { color: #fff !important; }
+.luau-module .tribe-tickets__tickets-item-quantity-remove:hover:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-add:focus-visible:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-remove:focus-visible:not(.tribe-dialog *) {
+  background: rgba(255,43,214,.24) !important;
+  color: #fff !important;
+}
+.luau-module .tribe-tickets__tickets-item-quantity-add:active:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-remove:active:not(.tribe-dialog *) {
+  transform: scale(.9);
+}
+/* Nothing to remove at zero — say so rather than offering a dead control. */
+.luau-module .tribe-tickets__tickets-item-quantity-remove:disabled:not(.tribe-dialog *) {
+  opacity: .35 !important;
+  cursor: default;
+}
+
+/* The number sits between them and takes the slack. */
+.luau-module .tribe-tickets__tickets-item-quantity-number:not(.tribe-dialog *) {
+  flex: 1 1 auto !important;
+  min-width: 32px;
+  /* ET gives this a 48px height, which alone made the pill 59px tall and oval;
+     matching the 30px controls keeps it a proper pill. */
+  height: 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.luau-module .tribe-tickets__tickets-item-quantity-number-input:not(.tribe-dialog *) {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  text-align: center !important;
+  padding: 0 !important;
+  font-size: 1.12rem !important;
+  font-weight: 700 !important;
+  font-variant-numeric: tabular-nums;
+}
 
 .luau-module .tribe-tickets__tickets-footer-quantity-label:not(.tribe-dialog *),
 .luau-module .tribe-tickets__tickets-footer-total-label:not(.tribe-dialog *) {

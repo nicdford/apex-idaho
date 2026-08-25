@@ -739,6 +739,11 @@ get_header();
 /* ══ TICKETS ════════════════════════════════════════════════════════════ */
 .luau-tickets { background: var(--ink-2); border-block: 1px solid rgba(255,43,214,.24); }
 
+/* The modal lives inside this wrap's stacking context, so the wrap has to
+   out-rank the later sections' wraps (z-index 2) or the gallery and footer
+   paint on top of the open checkout. */
+.luau-tickets .luau-wrap { z-index: 60; }
+
 .luau-tiers {
   margin-top: 3.5rem;
   display: grid;
@@ -820,8 +825,10 @@ get_header();
   border-radius: 24px;
   border: 1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.045);
-  backdrop-filter: blur(10px);
   box-shadow: 0 26px 60px rgba(0,0,0,.5);
+  /* No backdrop-filter or transform here: either one makes this element a
+     containing block for the fixed-position Event Tickets modal, which then
+     anchors to this card instead of the viewport. */
 }
 .luau-module__label {
   font-weight: 700;
@@ -834,93 +841,101 @@ get_header();
 /* ── Event Tickets, re-themed for the dark page ────────────────────────
    Event Tickets ships a light theme: the form carries a hard white background
    and near-black type. Recolouring the text alone is what produced washed-out
-   text on a white card, so the background has to be neutralised first. These
-   use !important deliberately — they override a third-party plugin's own
-   stylesheet, and the class names below are Event Tickets' public block
-   classes. If a future ET release renames them, the module simply reverts to
-   its stock light styling rather than breaking.                            */
-.luau-module .tribe-tickets__tickets-form,
-.luau-module .tribe-tickets__tickets-wrapper,
-.luau-module .tribe-tickets__notice,
-.luau-module .tribe-tickets__tickets-footer {
+   text on a white card, so the background has to be neutralised first.
+
+   Every selector below ends in . The attendee-registration
+   modal is rendered INSIDE this container but on its own white surface, so any
+   dark theming leaks into checkout and turns the whole form invisible. The
+   modal deliberately keeps Event Tickets' stock styling — it is the purchase
+   path, and stock is the well-tested option.
+
+   These use !important deliberately — they override a third-party plugin's own
+   stylesheet, and the class names are Event Tickets' public block classes. If a
+   future ET release renames them, the module reverts to stock light styling
+   rather than breaking.                                                     */
+
+.luau-module .tribe-tickets__tickets-form:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-wrapper:not(.tribe-dialog *),
+.luau-module .tribe-tickets__notice:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-footer:not(.tribe-dialog *) {
   background: transparent !important;
   border-color: rgba(255,255,255,.14) !important;
 }
-.luau-module .tribe-tickets__tickets-form { border: 0 !important; padding: 0 !important; }
+.luau-module .tribe-tickets__tickets-form:not(.tribe-dialog *) { border: 0 !important; padding: 0 !important; }
 
 /* Our own "Choose your tickets" label already sits above this. */
-.luau-module .tribe-tickets__tickets-title { display: none !important; }
+.luau-module .tribe-tickets__tickets-title:not(.tribe-dialog *) { display: none !important; }
 
-.luau-module .tribe-common,
-.luau-module .tribe-common h1, .luau-module .tribe-common h2,
-.luau-module .tribe-common h3, .luau-module .tribe-common h4,
-.luau-module .tribe-common p,  .luau-module .tribe-common span,
-.luau-module .tribe-common div, .luau-module .tribe-common label { color: #f4f2f8; }
+.luau-module .tribe-common:not(.tribe-dialog *),
+.luau-module .tribe-common h1:not(.tribe-dialog *), .luau-module .tribe-common h2:not(.tribe-dialog *),
+.luau-module .tribe-common h3:not(.tribe-dialog *), .luau-module .tribe-common h4:not(.tribe-dialog *),
+.luau-module .tribe-common p:not(.tribe-dialog *), .luau-module .tribe-common span:not(.tribe-dialog *),
+.luau-module .tribe-common div:not(.tribe-dialog *), .luau-module .tribe-common label:not(.tribe-dialog *) { color: #f4f2f8; }
 
-.luau-module .tribe-tickets__tickets-item { border-color: rgba(255,255,255,.14) !important; }
+.luau-module .tribe-tickets__tickets-item:not(.tribe-dialog *) { border-color: rgba(255,255,255,.14) !important; }
 
-.luau-module .tribe-tickets__tickets-item-content-title {
+.luau-module .tribe-tickets__tickets-item-content-title:not(.tribe-dialog *) {
   color: #fff !important;
   font-weight: 700;
   letter-spacing: .01em;
 }
-.luau-module .tribe-tickets__tickets-item-details-content,
-.luau-module .tribe-tickets__tickets-item-details-content * {
+.luau-module .tribe-tickets__tickets-item-details-content:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-details-content *:not(.tribe-dialog *) {
   color: rgba(255,255,255,.66) !important;
 }
 
 /* Price in the same lime as the tier cards above, so the two read as one set. */
-.luau-module .tribe-tickets__tickets-item-extra-price,
-.luau-module .tribe-tickets__tickets-item-extra-price *,
-.luau-module .tribe-amount,
-.luau-module .tribe-currency-symbol,
-.luau-module .tribe-currency-prefix {
+.luau-module .tribe-tickets__tickets-item-extra-price:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-extra-price *:not(.tribe-dialog *),
+.luau-module .tribe-amount:not(.tribe-dialog *),
+.luau-module .tribe-currency-symbol:not(.tribe-dialog *),
+.luau-module .tribe-currency-prefix:not(.tribe-dialog *) {
   color: var(--lime) !important;
 }
-.luau-module .tribe-tickets__tickets-item-extra-available {
+.luau-module .tribe-tickets__tickets-item-extra-available:not(.tribe-dialog *) {
   color: rgba(255,255,255,.5) !important;
 }
 
 /* Quantity stepper: pill, magenta controls, legible number. */
-.luau-module .tribe-tickets__tickets-item-quantity {
+.luau-module .tribe-tickets__tickets-item-quantity:not(.tribe-dialog *) {
   background: rgba(255,255,255,.06) !important;
   border: 1px solid rgba(255,43,214,.45) !important;
   border-radius: 999px !important;
 }
-.luau-module .tribe-tickets__tickets-item-quantity-number-input,
-.luau-module .tribe-tickets__tickets-item-quantity-number input,
-.luau-module input[type="number"],
-.luau-module input[type="text"],
-.luau-module input[type="email"],
-.luau-module select,
-.luau-module textarea {
+.luau-module .tribe-tickets__tickets-item-quantity-number-input:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-number input:not(.tribe-dialog *),
+.luau-module input[type="number"]:not(.tribe-dialog *),
+.luau-module input[type="text"]:not(.tribe-dialog *),
+.luau-module input[type="email"]:not(.tribe-dialog *),
+.luau-module select:not(.tribe-dialog *),
+.luau-module textarea:not(.tribe-dialog *) {
   color: #fff !important;
   background: transparent !important;
   border: 0 !important;
   -moz-appearance: textfield;
 }
-.luau-module select option { color: #111; }
-.luau-module .tribe-tickets__tickets-item-quantity-add,
-.luau-module .tribe-tickets__tickets-item-quantity-remove {
+.luau-module select option:not(.tribe-dialog *) { color: #111; }
+.luau-module .tribe-tickets__tickets-item-quantity-add:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-remove:not(.tribe-dialog *) {
   color: var(--magenta) !important;
   background: transparent !important;
   border: 0 !important;
   font-weight: 700;
 }
-.luau-module .tribe-tickets__tickets-item-quantity-add:hover,
-.luau-module .tribe-tickets__tickets-item-quantity-remove:hover { color: #fff !important; }
+.luau-module .tribe-tickets__tickets-item-quantity-add:hover:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-quantity-remove:hover:not(.tribe-dialog *) { color: #fff !important; }
 
-.luau-module .tribe-tickets__tickets-footer-quantity-label,
-.luau-module .tribe-tickets__tickets-footer-total-label {
+.luau-module .tribe-tickets__tickets-footer-quantity-label:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-footer-total-label:not(.tribe-dialog *) {
   color: rgba(255,255,255,.6) !important;
 }
-.luau-module .tribe-tickets__tickets-footer-quantity-number,
-.luau-module .tribe-tickets__tickets-footer-total-wrap { color: #fff !important; }
+.luau-module .tribe-tickets__tickets-footer-quantity-number:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-footer-total-wrap:not(.tribe-dialog *) { color: #fff !important; }
 
 /* Buy button matched to .luau-btn--solid, with a deliberate disabled state
    (it ships disabled until a quantity is chosen). */
-.luau-module .tribe-common-c-btn,
-.luau-module .tribe-tickets__tickets-buy {
+.luau-module .tribe-common-c-btn:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-buy:not(.tribe-dialog *) {
   background: linear-gradient(115deg, var(--magenta) 0%, #ff7ae3 46%, var(--lime) 100%) !important;
   color: #14000d !important;
   border: 0 !important;
@@ -933,20 +948,20 @@ get_header();
   box-shadow: 0 0 22px rgba(255,43,214,.45);
   transition: transform .25s ease, box-shadow .25s ease;
 }
-.luau-module .tribe-common-c-btn:hover:not(:disabled),
-.luau-module .tribe-tickets__tickets-buy:hover:not(:disabled) {
+.luau-module .tribe-common-c-btn:hover:not(:disabled):not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-buy:hover:not(:disabled):not(.tribe-dialog *) {
   transform: translateY(-2px);
   box-shadow: 0 0 38px rgba(255,43,214,.75);
 }
-.luau-module .tribe-common-c-btn:disabled,
-.luau-module .tribe-tickets__tickets-buy:disabled {
+.luau-module .tribe-common-c-btn:disabled:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-buy:disabled:not(.tribe-dialog *) {
   background: rgba(255,255,255,.1) !important;
   color: rgba(255,255,255,.45) !important;
   box-shadow: none;
   cursor: not-allowed;
 }
 
-.luau-module .tribe-common a:not(.tribe-common-c-btn) { color: var(--lime); }
+.luau-module .tribe-common a:not(.tribe-common-c-btn):not(.tribe-dialog *) { color: var(--lime); }
 
 .luau-module__fallback {
   padding: 1.4rem;
@@ -1534,7 +1549,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       <?php endif; ?>
 
       <!-- Stock Event Tickets purchase module: cart, ARF and checkout unchanged -->
-      <div class="luau-module luau-reveal" style="--d:120ms">
+      <div class="luau-module">
         <p class="luau-module__label">Choose your tickets</p>
         <?php
         if ( '' !== $luau_module ) {

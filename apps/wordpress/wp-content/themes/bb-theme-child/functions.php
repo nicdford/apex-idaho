@@ -761,7 +761,9 @@ function apex_luau_callout_assets()
  * Prepend to the front page. Return the content untouched anywhere else, and
  * only act on the main query in the loop so widgets and excerpts are unaffected.
  */
-add_filter( 'the_content', 'apex_luau_callout_on_front_page', 5 );
+// Priority 20, not 5: Beaver Builder filters the_content at 10 and REPLACES it
+// with the rendered layout, so anything prepended earlier is discarded.
+add_filter( 'the_content', 'apex_luau_callout_on_front_page', 20 );
 function apex_luau_callout_on_front_page( $content )
 {
     if ( is_admin() || ! is_front_page() || ! in_the_loop() || ! is_main_query() ) {

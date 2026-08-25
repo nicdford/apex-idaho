@@ -157,6 +157,24 @@ if ( ! function_exists( 'apex_luau_ticket_stock_label' ) ) {
 $luau_tickets = apex_luau_get_tickets( $luau_post_id );
 
 /**
+ * Tier card copy, owned by this template rather than by the Event Tickets
+ * ticket descriptions, so it can be edited alongside the rest of the page.
+ *
+ * Keyed by ticket ID first (stable across renames), then by exact ticket name.
+ * Any ticket not listed here falls back to its Event Tickets description, so
+ * new tickets still show something sensible.
+ */
+$luau_tier_copy = apply_filters(
+	'apex_luau_tier_copy',
+	array(
+		3219                      => 'Two days on track. Includes camping, food and drinks, plus a 2 day pass for your plus one.',
+		'LUAU2026 Driver Entry'   => 'Two days on track. Includes camping, food and drinks, plus a 2 day pass for your plus one.',
+		3220                      => 'One pass for both days in the pits. Includes camping, food and drinks.',
+		'LUAU2026 Pit Pass Entry' => 'One pass for both days in the pits. Includes camping, food and drinks.',
+	)
+);
+
+/**
  * Shown only when Event Tickets returns nothing for this page (not configured
  * yet, or sales not published). Once tickets exist in Event Tickets, the live
  * objects win and this array is ignored entirely.
@@ -167,12 +185,12 @@ $luau_fallback_tiers = apply_filters(
 		array(
 			'name'  => 'Driver Entry',
 			'price' => '$300',
-			'desc'  => 'Two days on track. Includes camping, food and drinks.',
+			'desc'  => 'Two days on track. Includes camping, food and drinks, plus a 2 day pass for your plus one.',
 		),
 		array(
 			'name'  => '2-Day Pit Pass',
 			'price' => '$50',
-			'desc'  => 'Both days in the pits. Includes camping, food and drinks.',
+			'desc'  => 'One pass for both days in the pits. Includes camping, food and drinks.',
 		),
 	)
 );
@@ -805,6 +823,12 @@ get_header();
 /* Our own "Choose your tickets" label already sits above this. */
 .luau-module .tribe-tickets__tickets-title:not(.tribe-dialog *) { display: none !important; }
 
+/* The tier cards above carry the descriptions now, so hide the module's own
+   copy and its More/Less toggle — otherwise the same page shows two different
+   descriptions for the same ticket. The modal keeps its stock content. */
+.luau-module .tribe-tickets__tickets-item-details-summary:not(.tribe-dialog *),
+.luau-module .tribe-tickets__tickets-item-details-content:not(.tribe-dialog *) { display: none !important; }
+
 .luau-module .tribe-common:not(.tribe-dialog *),
 .luau-module .tribe-common h1:not(.tribe-dialog *), .luau-module .tribe-common h2:not(.tribe-dialog *),
 .luau-module .tribe-common h3:not(.tribe-dialog *), .luau-module .tribe-common h4:not(.tribe-dialog *),
@@ -1270,7 +1294,13 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
         	$luau_out   = ( 'Sold out' === $luau_stock );
         	$luau_low   = ( 0 === strpos( (string) $luau_stock, 'Only ' ) );
         	$luau_price = apex_luau_ticket_price( $luau_ticket );
-        	$luau_desc  = isset( $luau_ticket->description ) ? wp_strip_all_tags( $luau_ticket->description ) : '';
+        	if ( isset( $luau_tier_copy[ $luau_ticket->ID ] ) ) {
+        		$luau_desc = $luau_tier_copy[ $luau_ticket->ID ];
+        	} elseif ( isset( $luau_ticket->name ) && isset( $luau_tier_copy[ $luau_ticket->name ] ) ) {
+        		$luau_desc = $luau_tier_copy[ $luau_ticket->name ];
+        	} else {
+        		$luau_desc = isset( $luau_ticket->description ) ? wp_strip_all_tags( $luau_ticket->description ) : '';
+        	}
         	?>
         	<article class="luau-tier luau-reveal<?php echo $luau_out ? ' luau-tier--out' : ''; ?>" style="--d:<?php echo (int) ( $luau_i * 100 ); ?>ms">
         		<h3 class="luau-tier__name"><?php echo esc_html( $luau_ticket->name ); ?></h3>

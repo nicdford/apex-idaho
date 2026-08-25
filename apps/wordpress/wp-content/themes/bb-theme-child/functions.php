@@ -536,6 +536,33 @@ function apex_luau_template_include( $template )
  * It renders nothing at all when the event is missing, unpublished, or already
  * over — a stale event promo on the homepage is worse than none.
  */
+/**
+ * Renders "September 5-6", "September 5", or "September 30 - October 1".
+ *
+ * Lives here rather than in template-luau-party.php because the homepage
+ * callout needs it too and that template is not loaded on the front page.
+ * The template keeps its own function_exists-guarded copy, which simply does
+ * not redefine when this one is already present.
+ */
+if ( ! function_exists( 'apex_luau_format_date_range' ) ) {
+    function apex_luau_format_date_range( $start, $end )
+    {
+        $s = $start ? strtotime( $start ) : 0;
+        if ( ! $s ) {
+            return '';
+        }
+        $e = $end ? strtotime( $end ) : $s;
+
+        if ( gmdate( 'Y-m-d', $s ) === gmdate( 'Y-m-d', $e ) ) {
+            return date_i18n( 'F j', $s );
+        }
+        if ( gmdate( 'Y-n', $s ) === gmdate( 'Y-n', $e ) ) {
+            return date_i18n( 'F j', $s ) . '–' . date_i18n( 'j', $e );
+        }
+        return date_i18n( 'F j', $s ) . ' – ' . date_i18n( 'F j', $e );
+    }
+}
+
 function apex_luau_callout_should_render()
 {
     $id   = (int) apply_filters( 'apex_luau_post_id', APEX_LUAU_POST_ID );

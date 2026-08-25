@@ -1417,7 +1417,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
   <section class="luau-section">
     <div class="luau-wrap" style="text-align:center;">
       <p class="luau-eyebrow luau-reveal">Last Year</p>
-      <h2 class="luau-h2 luau-reveal" style="--d:80ms">Guns Out, Suns Out</h2>
+      <h2 class="luau-h2 luau-reveal" style="--d:80ms">Suns Out, Guns Out</h2>
 
       <div class="luau-polaroids">
         <?php

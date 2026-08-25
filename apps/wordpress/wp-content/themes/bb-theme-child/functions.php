@@ -489,3 +489,38 @@ add_action('admin_init', function () {
         }
     }
 }, 1);
+
+/* ============================================================
+ * Luau Party landing template
+ * ============================================================ */
+
+/**
+ * Post 2749 is a tribe_events single, not a page, so there is no per-ID slot in
+ * the template hierarchy for it — page-{ID}.php only ever applies to the `page`
+ * post type. Swapping the template on `template_include` is the supported route
+ * for a single CPT post.
+ *
+ * Priority 9999 matters: both The Events Calendar and Beaver Themer set the
+ * template for event singles (this event currently renders through a Themer
+ * layout), and this has to run after them to win.
+ */
+define( 'APEX_LUAU_POST_ID', 2749 );
+
+add_filter( 'template_include', 'apex_luau_template_include', 9999 );
+function apex_luau_template_include( $template )
+{
+    if ( ! is_singular() ) {
+        return $template;
+    }
+
+    $target = (int) apply_filters( 'apex_luau_post_id', APEX_LUAU_POST_ID );
+    if ( (int) get_queried_object_id() !== $target ) {
+        return $template;
+    }
+
+    $custom = locate_template( 'template-luau-party.php' );
+
+    // Fall through to the normal event template if the file is ever missing,
+    // rather than fataling on a live ticket-selling page.
+    return $custom ? $custom : $template;
+}

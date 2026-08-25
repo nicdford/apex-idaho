@@ -17,12 +17,52 @@
 $luau_post_id = get_the_ID();
 
 /**
- * Event particulars. Filterable so they can be moved without touching markup.
+ * Renders "September 5–6", "September 5", or "September 30 – October 1"
+ * depending on how the range falls.
  */
-$luau_start   = apply_filters( 'apex_luau_start_date', '2026-09-05 12:00:00' );
-$luau_dates   = apply_filters( 'apex_luau_date_label', 'September 5–6' );
-$luau_year    = apply_filters( 'apex_luau_year_label', '2026' );
-$luau_venue   = apply_filters( 'apex_luau_venue', 'Magic Valley Speedway' );
+if ( ! function_exists( 'apex_luau_format_date_range' ) ) {
+	function apex_luau_format_date_range( $start, $end ) {
+		$s = $start ? strtotime( $start ) : 0;
+		if ( ! $s ) {
+			return '';
+		}
+		$e = $end ? strtotime( $end ) : $s;
+
+		if ( gmdate( 'Y-m-d', $s ) === gmdate( 'Y-m-d', $e ) ) {
+			return date_i18n( 'F j', $s );
+		}
+		if ( gmdate( 'Y-n', $s ) === gmdate( 'Y-n', $e ) ) {
+			return date_i18n( 'F j', $s ) . '–' . date_i18n( 'j', $e );
+		}
+		return date_i18n( 'F j', $s ) . ' – ' . date_i18n( 'F j', $e );
+	}
+}
+
+/**
+ * Event particulars. When this post is an Events Calendar event the real event
+ * data is the source of truth, so the countdown and date labels cannot drift
+ * from what is actually on sale. The literals are only fallbacks, and every
+ * value stays filterable.
+ */
+$luau_ev_start = '';
+$luau_ev_end   = '';
+if ( function_exists( 'tribe_get_start_date' ) && 'tribe_events' === get_post_type( $luau_post_id ) ) {
+	$luau_ev_start = tribe_get_start_date( $luau_post_id, false, 'Y-m-d H:i:s' );
+	$luau_ev_end   = tribe_get_end_date( $luau_post_id, false, 'Y-m-d H:i:s' );
+}
+
+$luau_venue_default = 'Magic Valley Speedway';
+if ( function_exists( 'tribe_get_venue' ) ) {
+	$luau_tec_venue = tribe_get_venue( $luau_post_id );
+	if ( $luau_tec_venue ) {
+		$luau_venue_default = $luau_tec_venue;
+	}
+}
+
+$luau_start   = apply_filters( 'apex_luau_start_date', $luau_ev_start ? $luau_ev_start : '2026-09-05 08:00:00' );
+$luau_dates   = apply_filters( 'apex_luau_date_label', $luau_ev_start ? apex_luau_format_date_range( $luau_ev_start, $luau_ev_end ) : 'September 5–6' );
+$luau_year    = apply_filters( 'apex_luau_year_label', $luau_ev_start ? date_i18n( 'Y', strtotime( $luau_ev_start ) ) : '2026' );
+$luau_venue   = apply_filters( 'apex_luau_venue', $luau_venue_default );
 $luau_city    = apply_filters( 'apex_luau_venue_city', 'Hollister, Idaho' );
 $luau_map_url = apply_filters( 'apex_luau_map_url', 'https://maps.google.com/?q=Magic+Valley+Speedway+Hollister+Idaho' );
 

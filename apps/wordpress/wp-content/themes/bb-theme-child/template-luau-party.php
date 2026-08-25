@@ -823,11 +823,17 @@ get_header();
 /* Our own "Choose your tickets" label already sits above this. */
 .luau-module .tribe-tickets__tickets-title:not(.tribe-dialog *) { display: none !important; }
 
-/* The tier cards above carry the descriptions now, so hide the module's own
+/* The tier cards above carry the descriptions now, so hide Event Tickets' own
    copy and its More/Less toggle — otherwise the same page shows two different
-   descriptions for the same ticket. The modal keeps its stock content. */
-.luau-module .tribe-tickets__tickets-item-details-summary:not(.tribe-dialog *),
-.luau-module .tribe-tickets__tickets-item-details-content:not(.tribe-dialog *) { display: none !important; }
+   descriptions for the same ticket.
+
+   This is the one place the checkout modal is deliberately included rather than
+   excluded: the stored description is the stale copy, and showing a buyer the
+   wrong inclusions at the point of payment is worse than showing none. The
+   toggle goes with it so there is no button that reveals nothing. Everything
+   else in the modal keeps its stock styling. */
+.luau-module .tribe-tickets__tickets-item-details-summary,
+.luau-module .tribe-tickets__tickets-item-details-content { display: none !important; }
 
 .luau-module .tribe-common:not(.tribe-dialog *),
 .luau-module .tribe-common h1:not(.tribe-dialog *), .luau-module .tribe-common h2:not(.tribe-dialog *),

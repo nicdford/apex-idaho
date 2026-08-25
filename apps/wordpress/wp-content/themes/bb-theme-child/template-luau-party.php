@@ -63,8 +63,8 @@ $luau_start   = apply_filters( 'apex_luau_start_date', $luau_ev_start ? $luau_ev
 $luau_dates   = apply_filters( 'apex_luau_date_label', $luau_ev_start ? apex_luau_format_date_range( $luau_ev_start, $luau_ev_end ) : 'September 5–6' );
 $luau_year    = apply_filters( 'apex_luau_year_label', $luau_ev_start ? date_i18n( 'Y', strtotime( $luau_ev_start ) ) : '2026' );
 $luau_venue   = apply_filters( 'apex_luau_venue', $luau_venue_default );
-$luau_city    = apply_filters( 'apex_luau_venue_city', 'Hollister, Idaho' );
-$luau_map_url = apply_filters( 'apex_luau_map_url', 'https://maps.google.com/?q=Magic+Valley+Speedway+Hollister+Idaho' );
+$luau_city    = apply_filters( 'apex_luau_venue_city', 'Twin Falls, Idaho' );
+$luau_map_url = apply_filters( 'apex_luau_map_url', 'https://maps.google.com/?q=Magic+Valley+Speedway+Twin+Falls+Idaho' );
 
 // Countdown target, resolved in site time then handed to JS as a UTC timestamp.
 $luau_start_ts = 0;
@@ -383,21 +383,26 @@ get_header();
   50%      { opacity: .82; }
 }
 
-/* Palms: parked in the corners, swaying. */
+/* Palm trees stand on the horizon rather than floating in the corners, so
+   they anchor at the bottom edge and sway from the base of the trunk. */
 .luau-palm {
   position: absolute;
-  width: clamp(160px, 24vw, 340px);
+  bottom: -2vh;
+  width: clamp(170px, 27vw, 400px);
   z-index: 1;
   pointer-events: none;
   transform-origin: bottom center;
+  color: var(--lime);
 }
-.luau-palm--tr { right: -3vw; top: -4vw; color: var(--lime);   animation: luau-sway 8s ease-in-out infinite; }
-.luau-palm--bl { left: -5vw; bottom: -5vw; color: var(--violet); animation: luau-sway 11s ease-in-out infinite reverse; transform: scaleX(-1); }
-.luau-palm--br { right: -6vw; bottom: -6vw; color: var(--lime); opacity: .75; animation: luau-sway 9.5s ease-in-out infinite; }
+.luau-palm--left  { left: -5vw;  animation: luau-sway 9s ease-in-out infinite; }
+.luau-palm--right { right: -5vw; transform: scaleX(-1); animation: luau-sway 11.5s ease-in-out infinite reverse; }
+.luau-palm--far   { right: 19vw; width: clamp(110px, 15vw, 215px); opacity: .4; animation: luau-sway 13s ease-in-out infinite; }
 
+/* `rotate` is its own property, so the sway composes with the scaleX(-1)
+   mirror on the right-hand tree instead of overwriting it. */
 @keyframes luau-sway {
-  0%, 100% { rotate: -2.5deg; }
-  50%      { rotate: 3deg; }
+  0%, 100% { rotate: -1.6deg; }
+  50%      { rotate: 2.2deg; }
 }
 
 /* ══ HERO ═══════════════════════════════════════════════════════════════ */
@@ -698,6 +703,37 @@ get_header();
   font-size: 1.05rem;
   line-height: 1.55;
   color: rgba(255,255,255,.62);
+}
+
+/* ── House rule notice ────────────────────────────────────────────────
+   Deliberately not a perk card: it sits under the grid in magenta rather
+   than the lime used for things you get, so it reads as a condition.    */
+.luau-note {
+  margin-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.15rem 1.4rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255,43,214,.55);
+  background: rgba(255,43,214,.08);
+  box-shadow: inset 0 0 32px rgba(255,43,214,.12);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,.86);
+}
+.luau-note__tag {
+  flex: none;
+  padding: .34rem .85rem;
+  border-radius: 999px;
+  background: var(--magenta);
+  color: #14000d;
+  font-weight: 700;
+  font-size: .74rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  box-shadow: 0 0 18px rgba(255,43,214,.55);
 }
 
 /* ══ TICKETS ════════════════════════════════════════════════════════════ */
@@ -1041,8 +1077,11 @@ get_header();
   padding: clamp(6rem, 14vh, 9rem) 1.5rem;
   border-top: 1px solid rgba(255,43,214,.3);
 }
-/* The corner palm sits behind the headline here, so pull it back. */
-.luau-final .luau-palm { opacity: .45; }
+/* Outside the hero the palms are background texture, not subject matter:
+   at full strength the crown washes over ticket prices and headlines. */
+.luau-tickets .luau-palm,
+.luau-final .luau-palm { opacity: .24; }
+.luau-tickets .luau-palm--left { left: -11vw; }
 
 .luau-final__title {
   position: relative;
@@ -1107,18 +1146,114 @@ get_header();
  * Reusable neon line-art pieces. Kept as functions so the same vector can be
  * dropped into several sections without duplicating path data.
  */
+/**
+ * One pinnate palm frond as a single path: an arcing spine plus leaflets
+ * stepped along it. This is the detail that stops a palm reading as a
+ * cannabis leaf — cannabis leaflets radiate from a single point, palm
+ * leaflets run the length of a rib and sweep back toward the tip.
+ *
+ * Everything is emitted as one path (spine + leaflet subpaths) so each frond
+ * costs a single element and a single neon drop-shadow filter, rather than
+ * twenty.
+ */
+if ( ! function_exists( 'apex_luau_frond_path' ) ) {
+	function apex_luau_frond_path( $scale = 1.0 ) {
+		$p = array(
+			array( 0, 0 ),
+			array( 34 * $scale, -18 * $scale ),
+			array( 68 * $scale, -14 * $scale ),
+			array( 92 * $scale,  26 * $scale ),
+		);
+
+		$point = function ( $t ) use ( $p ) {
+			$m = 1 - $t;
+			return array(
+				$m*$m*$m*$p[0][0] + 3*$m*$m*$t*$p[1][0] + 3*$m*$t*$t*$p[2][0] + $t*$t*$t*$p[3][0],
+				$m*$m*$m*$p[0][1] + 3*$m*$m*$t*$p[1][1] + 3*$m*$t*$t*$p[2][1] + $t*$t*$t*$p[3][1],
+			);
+		};
+		$tangent = function ( $t ) use ( $p ) {
+			$m = 1 - $t;
+			return array(
+				3*$m*$m*($p[1][0]-$p[0][0]) + 6*$m*$t*($p[2][0]-$p[1][0]) + 3*$t*$t*($p[3][0]-$p[2][0]),
+				3*$m*$m*($p[1][1]-$p[0][1]) + 6*$m*$t*($p[2][1]-$p[1][1]) + 3*$t*$t*($p[3][1]-$p[2][1]),
+			);
+		};
+
+		$d = sprintf(
+			'M 0,0 C %.1f,%.1f %.1f,%.1f %.1f,%.1f',
+			$p[1][0], $p[1][1], $p[2][0], $p[2][1], $p[3][0], $p[3][1]
+		);
+
+		for ( $i = 0; $i < 9; $i++ ) {
+			$t = 0.10 + $i * 0.095;
+			list( $x, $y )   = $point( $t );
+			list( $tx, $ty ) = $tangent( $t );
+
+			$mag = sqrt( $tx * $tx + $ty * $ty );
+			if ( $mag < 0.001 ) {
+				continue;
+			}
+			$tx /= $mag;
+			$ty /= $mag;
+
+			$leaf  = ( 17 - 9 * $t ) * $scale;   // leaflets shorten toward the tip
+			$sweep = 0.5 * $leaf;                // and rake back along the rib
+
+			foreach ( array( 1, -1 ) as $side ) {
+				$d .= sprintf(
+					' M %.1f,%.1f L %.1f,%.1f',
+					$x,
+					$y,
+					$x + ( -$ty ) * $leaf * $side - $tx * $sweep,
+					$y + (  $tx ) * $leaf * $side - $ty * $sweep
+				);
+			}
+		}
+
+		return $d;
+	}
+}
+
 if ( ! function_exists( 'apex_luau_palm_svg' ) ) {
 	function apex_luau_palm_svg() {
-		$leaf   = 'M100,190 C72,152 56,112 62,68 C84,104 96,142 100,190';
-		$angles = array( -82, -55, -28, 0, 28, 55, 82 );
-		$out    = '<svg class="luau-neon-svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">';
-		foreach ( $angles as $angle ) {
+		// Uneven angles and lengths — a symmetrical crown is the other half of
+		// why the old shape read as a cannabis leaf.
+		$fronds = array(
+			array( -208, 0.88 ),
+			array( -164, 1.02 ),
+			array( -128, 0.92 ),
+			array(  -88, 1.08 ),
+			array(  -50, 0.95 ),
+			array(  -12, 1.00 ),
+			array(   30, 0.84 ),
+		);
+
+		$out = '<svg class="luau-neon-svg" viewBox="0 0 200 320" aria-hidden="true" focusable="false">';
+
+		// Trunk, leaning as it rises.
+		$out .= '<path class="stroke" d="M 112,320 C 108,262 98,198 86,140" stroke-width="7" />';
+
+		// Bark rings.
+		foreach ( array( array( 103, 282 ), array( 99, 242 ), array( 93, 202 ), array( 87, 168 ) ) as $ring ) {
 			$out .= sprintf(
-				'<path class="stroke" d="%s" transform="rotate(%d 100 190)" stroke-width="4" />',
-				$leaf,
-				$angle
+				'<path class="stroke" d="M %d,%d q 7,5 14,-1" stroke-width="3" />',
+				$ring[0],
+				$ring[1]
 			);
 		}
+
+		foreach ( $fronds as $frond ) {
+			$out .= sprintf(
+				'<path class="stroke" d="%s" transform="translate(86,136) rotate(%d)" stroke-width="2.6" />',
+				apex_luau_frond_path( $frond[1] ),
+				$frond[0]
+			);
+		}
+
+		// Coconuts.
+		$out .= '<circle class="fill" cx="95" cy="149" r="5" /><circle class="fill" cx="78" cy="153" r="4.5" />';
+
 		return $out . '</svg>';
 	}
 }
@@ -1218,8 +1353,8 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       </svg>
     </div>
 
-    <div class="luau-palm luau-palm--tr" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
-    <div class="luau-palm luau-palm--br" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
+    <div class="luau-palm luau-palm--right" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
+    <div class="luau-palm luau-palm--far" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-hero__inner">
       <p class="luau-presents">APEX Idaho Presents</p>
@@ -1263,7 +1398,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
     <?php
     $luau_marquee = array(
     	'Food &amp; Drinks Included',
-    	'Camping Thursday, Friday &amp; Saturday',
+    	'Camping Friday, Saturday &amp; Sunday',
     	'Two Days of Track Action',
     	'Hawaiian Shirts Required',
     	$luau_venue,
@@ -1292,7 +1427,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       <p class="luau-eyebrow luau-reveal">The Whole Weekend</p>
       <h2 class="luau-h2 luau-reveal" style="--d:80ms">Entry Covers It</h2>
       <p class="luau-lede luau-reveal" style="--d:160ms;margin-top:1.25rem;">
-        One ticket, two days, zero nickel-and-diming. Roll in Thursday, park up, and stay
+        One ticket, two days, zero nickel-and-diming. Roll in Friday, park up, and stay
         for the whole thing — the food, the drinks and the campsite are already yours.
       </p>
 
@@ -1301,12 +1436,12 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
         $luau_perks = array(
         	array(
         		'title' => 'Food &amp; Drinks Included',
-        		'body'  => 'Hot food off the grill and drinks all weekend, bundled into your entry. No wristband upsells, no cash-only line.',
-        		'icon'  => '<path class="stroke" d="M26,24 L114,24 L70,74 L70,112" /><path class="stroke" d="M46,112 L94,112" /><path class="stroke" d="M84,40 C104,22 118,30 116,48" />',
+        		'body'  => 'Hot food off the grill and non-alcoholic drinks all weekend, bundled into your entry. No wristband upsells, no cash-only line.',
+        		'icon'  => '<path class="stroke" d="M44,46 L54,116 L86,116 L96,46" /><path class="stroke" d="M36,46 L104,46" /><path class="stroke" d="M78,46 L88,20" />',
         	),
         	array(
-        		'title' => 'Camping Thu&ndash;Sat',
-        		'body'  => 'Thursday, Friday and Saturday nights are all open. Tent or rig &mdash; pitch up in the infield and you are already at the track when the gates open.',
+        		'title' => 'Camping Fri&ndash;Sun',
+        		'body'  => 'Friday, Saturday and Sunday nights are all open. Tent or rig &mdash; pitch up in the infield and you are already at the track when the gates open.',
         		'icon'  => '<path class="stroke" d="M70,18 L20,114 L120,114 Z" /><path class="stroke" d="M70,18 L70,114" /><path class="stroke" d="M70,72 L48,114" />',
         	),
         	array(
@@ -1336,6 +1471,11 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
         endforeach;
         ?>
       </div>
+
+      <p class="luau-note luau-reveal" style="--d:480ms">
+        <span class="luau-note__tag">House Rule</span>
+        <span><strong>No alcohol allowed</strong> &mdash; anywhere on the property, including the paddock and the campground. Everything else is on us.</span>
+      </p>
     </div>
   </section>
 
@@ -1343,7 +1483,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
        TICKETS — Event Tickets attached to this page
   ════════════════════════════════════════════════════════════════════ -->
   <section class="luau-section luau-tickets" id="luau-tickets">
-    <div class="luau-palm luau-palm--bl" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
+    <div class="luau-palm luau-palm--left" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-wrap">
       <p class="luau-eyebrow luau-reveal">Tickets</p>
@@ -1460,35 +1600,35 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
 
       <div class="luau-days">
         <?php
+        // Both track days run the same shape and share one vocabulary:
+        // Drivers meeting / Track hot / Lunch break / Track shutdown.
+        // Friday is a roll-in day, so it keeps its own wording.
+        $luau_track_day = array(
+        	array( '8:00 AM',  'Drivers meeting' ),
+        	array( '8:30 AM',  'Track hot' ),
+        	array( '12:00 PM', 'Lunch break' ),
+        	array( '2:00 PM',  'Track hot' ),
+        	array( '4:00 PM',  'Track shutdown' ),
+        );
+
         $luau_schedule = array(
         	array(
         		'label' => 'Roll In',
         		'name'  => 'Friday',
         		'slots' => array(
-        			array( '5:00 PM', 'Gates open &mdash; camping check-in' ),
-        			array( '7:30 PM', 'Luau kickoff: food, drinks and music' ),
+        			array( '5:00 PM', 'Gates open &mdash; camping' ),
+        			array( '7:30 PM', 'Shindig with friends' ),
         		),
         	),
         	array(
         		'label' => 'Day One',
         		'name'  => 'Saturday',
-        		'slots' => array(
-        			array( '8:00 AM',  'Drivers meeting' ),
-        			array( '9:00 AM',  'Practice sessions open' ),
-        			array( '12:00 PM', 'Grill fires up' ),
-        			array( '2:00 PM',  'Tandem runs and open track' ),
-        			array( '8:00 PM',  'Best-shirt contest' ),
-        		),
+        		'slots' => $luau_track_day,
         	),
         	array(
         		'label' => 'Day Two',
         		'name'  => 'Sunday',
-        		'slots' => array(
-        			array( '9:00 AM',  'Open track' ),
-        			array( '12:00 PM', 'Lunch on the grill' ),
-        			array( '2:00 PM',  'Final tandem sessions' ),
-        			array( '5:00 PM',  'Awards and send-off' ),
-        		),
+        		'slots' => $luau_track_day,
         	),
         );
 
@@ -1548,7 +1688,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       <span class="luau-bloom luau-bloom--c"></span>
     </div>
     <div class="luau-grid-floor" aria-hidden="true"></div>
-    <div class="luau-palm luau-palm--tr" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
+    <div class="luau-palm luau-palm--right" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-wrap">
       <p class="luau-eyebrow luau-reveal">Don't Miss It</p>

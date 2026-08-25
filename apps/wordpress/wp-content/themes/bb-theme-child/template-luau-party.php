@@ -1465,7 +1465,7 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
         		'label' => 'Roll In',
         		'name'  => 'Friday',
         		'slots' => array(
-        			array( '4:00 PM', 'Gates open &mdash; camping check-in' ),
+        			array( '5:00 PM', 'Gates open &mdash; camping check-in' ),
         			array( '6:00 PM', 'Paddock setup, tech and registration' ),
         			array( '7:30 PM', 'Luau kickoff: food, drinks and music' ),
         			array( 'Late',    'Bonfire and bench racing' ),

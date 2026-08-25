@@ -344,67 +344,6 @@ get_header();
   filter: drop-shadow(0 0 3px currentColor) drop-shadow(0 0 12px currentColor) drop-shadow(0 0 30px currentColor);
   stroke: currentColor;
 }
-.luau-neon-svg .fill {
-  fill: currentColor;
-  filter: drop-shadow(0 0 8px currentColor);
-}
-
-/* Flamingo: strokes draw themselves in, then hold with a slow neon breathe. */
-.luau-flamingo {
-  position: absolute;
-  left: clamp(-5rem, -2vw, 0rem);
-  top: 52%;
-  transform: translateY(-50%);
-  width: clamp(180px, 26vw, 380px);
-  color: var(--magenta);
-  z-index: 1;
-  pointer-events: none;
-  animation: luau-breathe 5.5s ease-in-out infinite;
-}
-.luau-flamingo .stroke {
-  /* Every path declares pathLength="1000", so one dash length covers any
-     geometry — no repeating-dash gaps regardless of the real curve length. */
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  /* Each path carries its own animation-delay inline so the bird draws itself
-     in anatomical order: silhouette, wing, legs, eye. */
-  animation: luau-draw 2.2s cubic-bezier(.45,.05,.3,1) forwards;
-}
-/* The silhouette is one long contour; give it a slightly softer stroke than the
-   detail lines so the bird doesn't turn into a solid magenta blob. */
-.luau-flamingo .stroke--body { stroke-width: 5.5; }
-.luau-flamingo .stroke--thin { stroke-width: 4.5; }
-.luau-flamingo .fill { opacity: 0; animation: luau-pop .5s 2.1s ease forwards; }
-
-@keyframes luau-draw { to { stroke-dashoffset: 0; } }
-@keyframes luau-pop  { to { opacity: 1; } }
-@keyframes luau-breathe {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: .82; }
-}
-
-/* Palm trees stand on the horizon rather than floating in the corners, so
-   they anchor at the bottom edge and sway from the base of the trunk. */
-.luau-palm {
-  position: absolute;
-  bottom: -2vh;
-  width: clamp(170px, 27vw, 400px);
-  z-index: 1;
-  pointer-events: none;
-  transform-origin: bottom center;
-  color: var(--lime);
-}
-.luau-palm--left  { left: -5vw;  animation: luau-sway 9s ease-in-out infinite; }
-.luau-palm--right { right: -5vw; transform: scaleX(-1); animation: luau-sway 11.5s ease-in-out infinite reverse; }
-.luau-palm--far   { right: 19vw; width: clamp(110px, 15vw, 215px); opacity: .4; animation: luau-sway 13s ease-in-out infinite; }
-
-/* `rotate` is its own property, so the sway composes with the scaleX(-1)
-   mirror on the right-hand tree instead of overwriting it. */
-@keyframes luau-sway {
-  0%, 100% { rotate: -1.6deg; }
-  50%      { rotate: 2.2deg; }
-}
-
 /* ══ HERO ═══════════════════════════════════════════════════════════════ */
 .luau-hero {
   position: relative;
@@ -1092,12 +1031,6 @@ get_header();
   padding: clamp(6rem, 14vh, 9rem) 1.5rem;
   border-top: 1px solid rgba(255,43,214,.3);
 }
-/* Outside the hero the palms are background texture, not subject matter:
-   at full strength the crown washes over ticket prices and headlines. */
-.luau-tickets .luau-palm,
-.luau-final .luau-palm { opacity: .24; }
-.luau-tickets .luau-palm--left { left: -11vw; }
-
 .luau-final__title {
   position: relative;
   z-index: 2;
@@ -1126,24 +1059,11 @@ get_header();
     transition-duration: .01ms !important;
   }
   .luau-page .luau-reveal { opacity: 1; transform: none; }
-  .luau-page .luau-flamingo .stroke { stroke-dashoffset: 0; }
-  .luau-page .luau-flamingo .fill  { opacity: 1; }
 }
 
 /* ══ RESPONSIVE ═════════════════════════════════════════════════════════ */
 @media (max-width: 860px) {
   .luau-section { padding: 4.5rem 1.25rem; }
-
-  /* The bird has to yield to the countdown on narrow screens. `animation:none`
-     is required as well as `opacity` — luau-breathe animates opacity, and a
-     running animation outranks the declared value. */
-  .luau-flamingo {
-    animation: none;
-    opacity: .18;
-    width: 190px;
-    left: -3.5rem;
-    top: 44%;
-  }
 
   /* Less of the script tucked into LUAU, so both stay readable small. */
   .luau-party {
@@ -1161,118 +1081,6 @@ get_header();
  * Reusable neon line-art pieces. Kept as functions so the same vector can be
  * dropped into several sections without duplicating path data.
  */
-/**
- * One pinnate palm frond as a single path: an arcing spine plus leaflets
- * stepped along it. This is the detail that stops a palm reading as a
- * cannabis leaf — cannabis leaflets radiate from a single point, palm
- * leaflets run the length of a rib and sweep back toward the tip.
- *
- * Everything is emitted as one path (spine + leaflet subpaths) so each frond
- * costs a single element and a single neon drop-shadow filter, rather than
- * twenty.
- */
-if ( ! function_exists( 'apex_luau_frond_path' ) ) {
-	function apex_luau_frond_path( $scale = 1.0 ) {
-		$p = array(
-			array( 0, 0 ),
-			array( 34 * $scale, -18 * $scale ),
-			array( 68 * $scale, -14 * $scale ),
-			array( 92 * $scale,  26 * $scale ),
-		);
-
-		$point = function ( $t ) use ( $p ) {
-			$m = 1 - $t;
-			return array(
-				$m*$m*$m*$p[0][0] + 3*$m*$m*$t*$p[1][0] + 3*$m*$t*$t*$p[2][0] + $t*$t*$t*$p[3][0],
-				$m*$m*$m*$p[0][1] + 3*$m*$m*$t*$p[1][1] + 3*$m*$t*$t*$p[2][1] + $t*$t*$t*$p[3][1],
-			);
-		};
-		$tangent = function ( $t ) use ( $p ) {
-			$m = 1 - $t;
-			return array(
-				3*$m*$m*($p[1][0]-$p[0][0]) + 6*$m*$t*($p[2][0]-$p[1][0]) + 3*$t*$t*($p[3][0]-$p[2][0]),
-				3*$m*$m*($p[1][1]-$p[0][1]) + 6*$m*$t*($p[2][1]-$p[1][1]) + 3*$t*$t*($p[3][1]-$p[2][1]),
-			);
-		};
-
-		$d = sprintf(
-			'M 0,0 C %.1f,%.1f %.1f,%.1f %.1f,%.1f',
-			$p[1][0], $p[1][1], $p[2][0], $p[2][1], $p[3][0], $p[3][1]
-		);
-
-		for ( $i = 0; $i < 9; $i++ ) {
-			$t = 0.10 + $i * 0.095;
-			list( $x, $y )   = $point( $t );
-			list( $tx, $ty ) = $tangent( $t );
-
-			$mag = sqrt( $tx * $tx + $ty * $ty );
-			if ( $mag < 0.001 ) {
-				continue;
-			}
-			$tx /= $mag;
-			$ty /= $mag;
-
-			$leaf  = ( 17 - 9 * $t ) * $scale;   // leaflets shorten toward the tip
-			$sweep = 0.5 * $leaf;                // and rake back along the rib
-
-			foreach ( array( 1, -1 ) as $side ) {
-				$d .= sprintf(
-					' M %.1f,%.1f L %.1f,%.1f',
-					$x,
-					$y,
-					$x + ( -$ty ) * $leaf * $side - $tx * $sweep,
-					$y + (  $tx ) * $leaf * $side - $ty * $sweep
-				);
-			}
-		}
-
-		return $d;
-	}
-}
-
-if ( ! function_exists( 'apex_luau_palm_svg' ) ) {
-	function apex_luau_palm_svg() {
-		// Uneven angles and lengths — a symmetrical crown is the other half of
-		// why the old shape read as a cannabis leaf.
-		$fronds = array(
-			array( -208, 0.88 ),
-			array( -164, 1.02 ),
-			array( -128, 0.92 ),
-			array(  -88, 1.08 ),
-			array(  -50, 0.95 ),
-			array(  -12, 1.00 ),
-			array(   30, 0.84 ),
-		);
-
-		$out = '<svg class="luau-neon-svg" viewBox="0 0 200 320" aria-hidden="true" focusable="false">';
-
-		// Trunk, leaning as it rises.
-		$out .= '<path class="stroke" d="M 112,320 C 108,262 98,198 86,140" stroke-width="7" />';
-
-		// Bark rings.
-		foreach ( array( array( 103, 282 ), array( 99, 242 ), array( 93, 202 ), array( 87, 168 ) ) as $ring ) {
-			$out .= sprintf(
-				'<path class="stroke" d="M %d,%d q 7,5 14,-1" stroke-width="3" />',
-				$ring[0],
-				$ring[1]
-			);
-		}
-
-		foreach ( $fronds as $frond ) {
-			$out .= sprintf(
-				'<path class="stroke" d="%s" transform="translate(86,136) rotate(%d)" stroke-width="2.6" />',
-				apex_luau_frond_path( $frond[1] ),
-				$frond[0]
-			);
-		}
-
-		// Coconuts.
-		$out .= '<circle class="fill" cx="95" cy="149" r="5" /><circle class="fill" cx="78" cy="153" r="4.5" />';
-
-		return $out . '</svg>';
-	}
-}
-
 if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
 	function apex_luau_bloom_svg() {
 		$out = '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">';
@@ -1318,58 +1126,6 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       endfor;
       ?>
     </div>
-
-    <!-- Neon flamingo, drawn stroke by stroke on load -->
-    <div class="luau-flamingo" aria-hidden="true">
-      <svg class="luau-neon-svg" viewBox="0 0 260 470" focusable="false">
-        <!--
-          Traced clockwise from the crown: down the back of the head, down the
-          concave side of the S-neck, over the body and tail, under the belly,
-          up the breast, back up the convex side of the neck, then out around
-          the beak to the crown. Three details do the heavy lifting and are
-          worth preserving in any edit: the neck is a true S (two inflections,
-          not a single arc) held to a slender ~17u width, the beak is deep at
-          the base and hooks almost straight down at the tip, and the tail is a
-          broad wedge rather than a spike. Lose those and it reads as a stork.
-        -->
-        <path class="stroke stroke--body" pathLength="1000" style="animation-delay:.15s" d="
-          M 168,38
-          C 186,40 194,52 193,66
-          C 192,80 182,88 170,96
-          C 158,110 142,132 144,156
-          C 148,180 170,192 174,216
-          C 178,238 168,250 160,260
-          C 184,254 206,262 216,280
-          C 228,268 240,254 254,240
-          C 246,264 238,286 230,306
-          C 232,326 220,342 198,350
-          C 174,360 144,358 126,344
-          C 112,333 106,316 110,300
-          C 114,284 126,274 138,266
-          C 150,252 160,232 157,210
-          C 153,188 126,180 126,154
-          C 124,126 140,104 152,92
-          C 151,86 151,81 152,78
-          C 142,84 132,86 124,88
-          C 113,98 106,106 100,116
-          C 104,100 109,84 115,66
-          C 127,54 139,46 151,42
-          C 157,39 162,38 168,38
-          Z" />
-        <!-- folded wing -->
-        <path class="stroke stroke--thin" pathLength="1000" style="animation-delay:1.5s"
-              d="M 168,292 C 190,282 210,292 220,310" />
-        <!-- the one leg it stands on -->
-        <path class="stroke stroke--thin" pathLength="1000" style="animation-delay:1.7s"
-              d="M 162,348 C 158,378 156,412 162,446" />
-        <path class="stroke stroke--thin" pathLength="1000" style="animation-delay:1.95s"
-              d="M 146,450 L 182,450" />
-        <circle class="fill" cx="176" cy="58" r="4.5" />
-      </svg>
-    </div>
-
-    <div class="luau-palm luau-palm--right" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
-    <div class="luau-palm luau-palm--far" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-hero__inner">
       <p class="luau-presents">APEX Idaho Presents</p>
@@ -1498,7 +1254,6 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
        TICKETS — Event Tickets attached to this page
   ════════════════════════════════════════════════════════════════════ -->
   <section class="luau-section luau-tickets" id="luau-tickets">
-    <div class="luau-palm luau-palm--left" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-wrap">
       <p class="luau-eyebrow luau-reveal">Tickets</p>
@@ -1703,7 +1458,6 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       <span class="luau-bloom luau-bloom--c"></span>
     </div>
     <div class="luau-grid-floor" aria-hidden="true"></div>
-    <div class="luau-palm luau-palm--right" aria-hidden="true"><?php echo apex_luau_palm_svg(); ?></div>
 
     <div class="luau-wrap">
       <p class="luau-eyebrow luau-reveal">Don't Miss It</p>
@@ -1788,24 +1542,6 @@ if ( ! function_exists( 'apex_luau_bloom_svg' ) ) {
       var timer = setInterval(function () {
         if (tick()) { clearInterval(timer); }
       }, 1000);
-    }
-  }
-
-  /* ── Pointer-tracked glow on the hero title ─────────────────────────── */
-  if (!reduced && window.matchMedia('(hover: hover)').matches) {
-    var hero  = page.querySelector('.luau-hero');
-    var flam  = page.querySelector('.luau-flamingo');
-    if (hero && flam) {
-      hero.addEventListener('pointermove', function (e) {
-        var r = hero.getBoundingClientRect();
-        var dx = (e.clientX - r.width / 2) / r.width;
-        var dy = (e.clientY - r.top - r.height / 2) / r.height;
-        // Gentle parallax — the flamingo leans away from the cursor.
-        flam.style.translate = (dx * -18).toFixed(1) + 'px ' + (dy * -14).toFixed(1) + 'px';
-      });
-      hero.addEventListener('pointerleave', function () {
-        flam.style.translate = '';
-      });
     }
   }
 

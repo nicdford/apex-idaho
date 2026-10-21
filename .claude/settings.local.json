@@ -3,7 +3,29 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(git commit -m ':*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(wp @live option get:*)",
+      "Bash(wp @live post list:*)",
+      "Bash(wp @live post get:*)",
+      "Bash(wp @live post meta list:*)",
+      "Bash(wp @live term list:*)",
+      "Bash(wp @live user list:*)",
+      "Bash(wp @live plugin list:*)",
+      "Bash(wp @live theme list:*)",
+      "Bash(wp @live core version:*)",
+      "Bash(wp @live db size:*)",
+      "Bash(scripts/wp-live option get:*)",
+      "Bash(scripts/wp-live post list:*)",
+      "Bash(scripts/wp-live post get:*)",
+      "Bash(scripts/wp-live post meta list:*)",
+      "Bash(scripts/wp-live post-type list:*)",
+      "Bash(scripts/wp-live term list:*)",
+      "Bash(scripts/wp-live user list:*)",
+      "Bash(scripts/wp-live plugin list:*)",
+      "Bash(scripts/wp-live theme list:*)",
+      "Bash(scripts/wp-live core version:*)",
+      "Bash(scripts/wp-live db size:*)",
+      "Bash(scripts/wp-live db query \"SELECT:*)"
     ]
   }
 }

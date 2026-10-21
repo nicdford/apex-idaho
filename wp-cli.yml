@@ -1,0 +1,14 @@
+# WP-CLI aliases.
+#
+#   wp @live option get siteurl
+#   wp @live post list --post_type=tribe_events --fields=ID,post_title,post_status
+#
+# @live runs over SSH on Cloudways. The `apex-live` host is defined in
+# ~/.ssh/config (not in this repo, so no credentials live here) — see README.
+#
+# The local Docker site is reached with the wpcli service instead:
+#   docker compose run --rm wpcli wp <args>
+
+@live:
+  ssh: apex-live
+  path: /home/master/applications/xfwyeefnbu/public_html

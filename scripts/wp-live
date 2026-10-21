@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# Run WP-CLI against the live APEX Idaho site (Cloudways) over SSH.
+#
+#   scripts/wp-live option get siteurl
+#   scripts/wp-live post list --post_type=tribe_events --fields=ID,post_title
+#
+# The `wp @live` alias in wp-cli.yml does the same thing, but WP-CLI's --ssh
+# mode needs PHP installed locally to boot its launcher. This wrapper doesn't:
+# it runs wp on the server, where PHP and WP-CLI already live.
+#
+# Host credentials come from the `apex-live` entry in ~/.ssh/config.
+
+set -euo pipefail
+
+SSH_HOST="apex-live"
+WP_PATH="/home/master/applications/xfwyeefnbu/public_html"
+
+if [ "$#" -eq 0 ]; then
+    echo "usage: $(basename "$0") <wp-cli args>" >&2
+    exit 64
+fi
+
+# Quote each argument so it survives the trip through the remote shell.
+remote_args=""
+for arg in "$@"; do
+    remote_args+=" $(printf '%q' "$arg")"
+done
+
+exec ssh "$SSH_HOST" "cd ${WP_PATH} && wp${remote_args}"

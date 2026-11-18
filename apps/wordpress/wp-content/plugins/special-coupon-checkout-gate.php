@@ -12,17 +12,23 @@ if (!defined('ABSPATH')) {
 
 class Special_Coupon_Checkout_Gate {
 
-    // Coupon code (lowercase, as WooCommerce stores it) that unlocks checkout.
-    const COUPON_CODE = 'specialpeeps';
+    // Discount type added to the coupon editor. A coupon of this type unlocks checkout and gives no discount.
+    const BLOCKING_TYPE = 'blocking';
 
-    // Products that cannot be checked out without the coupon.
+    // Products that cannot be checked out without a blocking coupon.
     const GATED_PRODUCT_IDS = [3288];
 
     const GATE_MESSAGE = 'This ticket requires a valid access code. Apply your code to continue to checkout.';
 
     public function __construct() {
+        add_filter('woocommerce_coupon_discount_types', [$this, 'add_discount_type']);
         add_action('woocommerce_check_cart_items', [$this, 'add_cart_notice']);
         add_action('woocommerce_after_checkout_validation', [$this, 'block_checkout'], 10, 2);
+    }
+
+    public function add_discount_type($types) {
+        $types[self::BLOCKING_TYPE] = __('Blocking coupon (unlocks checkout, no discount)', 'special-coupon-checkout-gate');
+        return $types;
     }
 
     private function cart_has_gated_product(): bool {
@@ -38,7 +44,16 @@ class Special_Coupon_Checkout_Gate {
     }
 
     private function gate_is_unlocked(): bool {
-        return WC()->cart && WC()->cart->has_discount(self::COUPON_CODE);
+        if (!WC()->cart) {
+            return false;
+        }
+        foreach (WC()->cart->get_applied_coupons() as $code) {
+            $coupon = new WC_Coupon($code);
+            if ($coupon->get_discount_type() === self::BLOCKING_TYPE) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function add_cart_notice() {

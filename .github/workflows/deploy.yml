@@ -45,7 +45,19 @@ jobs:
           lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \
             -e "set sftp:auto-confirm yes; \
                 mirror -R --verbose --parallel=4 \
+                  --exclude ^tests/ \
                   apps/wordpress/wp-content/plugins/ $LFTP_PATH/wp-content/plugins/; \
+                bye" \
+            sftp://$LFTP_HOST
+
+      # The plugin test suite lives in the repo but should never be on the
+      # server. Earlier deploys uploaded it, so remove any copy left behind.
+      - name: Remove plugin tests from server
+        run: |
+          lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \
+            -e "set sftp:auto-confirm yes; \
+                set cmd:fail-exit no; \
+                rm -r -f $LFTP_PATH/wp-content/plugins/tests; \
                 bye" \
             sftp://$LFTP_HOST
 

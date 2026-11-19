@@ -2,7 +2,7 @@
 /*
 Plugin Name: Daily Sales Email
 Description: Sends daily sales numbers for specified products to specified email addresses.
-Version: 1.3.1
+Version: 1.3.2
 Author: Nic D. Ford
 Author URI: https://nicdford.com
  */
@@ -115,6 +115,7 @@ function dse_settings_page()
     </form>
     <form method="post" action="">
         <input type="hidden" name="dse_send_sales_report_now" value="1" />
+        <?php wp_nonce_field('dse_send_sales_report_now', 'dse_send_sales_report_nonce');?>
         <?php submit_button('Send Sales Report Now');?>
     </form>
 </div>
@@ -126,6 +127,13 @@ add_action('admin_init', 'dse_handle_send_sales_report_now');
 function dse_handle_send_sales_report_now()
 {
     if (isset($_POST['dse_send_sales_report_now']) && $_POST['dse_send_sales_report_now'] == '1') {
+        // admin_init also runs for logged-out requests to admin-ajax.php and
+        // admin-post.php, so require an admin and a valid nonce.
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have permission to send the sales report.', 'dse-text-domain'), 403);
+        }
+        check_admin_referer('dse_send_sales_report_now', 'dse_send_sales_report_nonce');
+
         dse_send_daily_sales_email();
         add_action('admin_notices', 'dse_admin_notice');
     }

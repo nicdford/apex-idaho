@@ -115,49 +115,29 @@ function apex_idaho_social_links_markup( $extra_class = '' ) {
 }
 
 /**
- * The logo image the old header hard-coded, when it exists on this install.
+ * The APEX Idaho logo bundled with the theme (800px wide, transparent PNG,
+ * from the original artwork used by the old site header).
  *
- * @return string URL or ''.
+ * @return string URL.
  */
-function apex_idaho_legacy_logo_url() {
-	$relative = '/2023/07/APEX_Idaho_logo-2-300x77.png';
-	$uploads  = wp_get_upload_dir();
-
-	if ( ! empty( $uploads['basedir'] ) && file_exists( $uploads['basedir'] . $relative ) ) {
-		return $uploads['baseurl'] . $relative;
-	}
-
-	$bb_logo = apex_idaho_legacy_mod( 'fl-logo-image' );
-	return $bb_logo ? $bb_logo : '';
+function apex_idaho_logo_url() {
+	return apex_idaho_asset( 'images/apex-idaho-logo.png' );
 }
 
 /**
- * Linked logo for places where the Site Logo block has nothing to show.
- *
- * Order: Site Logo set in the editor, the logo the old theme used, then a
- * typographic wordmark so the header never renders empty.
+ * Linked logo for when the Site Logo block has nothing to show (e.g. Live
+ * Preview before the theme has been activated and set the Site Logo).
  *
  * @param string $context header|footer.
  * @return string HTML.
  */
 function apex_idaho_logo_fallback_html( $context = 'header' ) {
-	$home = esc_url( home_url( '/' ) );
 	$name = get_bloginfo( 'name' );
-	$url  = apex_idaho_legacy_logo_url();
-
-	if ( $url ) {
-		return sprintf(
-			'<a href="%1$s" class="apex-logo apex-logo--%3$s" rel="home"><img src="%2$s" alt="%4$s" width="300" height="77" decoding="async"></a>',
-			$home,
-			esc_url( $url ),
-			esc_attr( $context ),
-			esc_attr( $name ? $name : 'APEX Idaho' )
-		);
-	}
 
 	return sprintf(
-		'<a href="%1$s" class="apex-wordmark apex-wordmark--%2$s" rel="home" aria-label="%3$s"><span class="apex-wordmark__apex">APEX</span><span class="apex-wordmark__idaho">Idaho</span></a>',
-		$home,
+		'<a href="%1$s" class="custom-logo-link apex-logo apex-logo--%3$s" rel="home"><img class="custom-logo" src="%2$s" alt="%4$s" width="800" height="205" decoding="async"></a>',
+		esc_url( home_url( '/' ) ),
+		esc_url( apex_idaho_logo_url() ),
 		esc_attr( $context ),
 		esc_attr( $name ? $name : 'APEX Idaho' )
 	);

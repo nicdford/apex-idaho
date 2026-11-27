@@ -16,9 +16,9 @@
 				{ "slug": "smoke", "name": "Smoke", "color": "#A0A0AB" },
 				{ "slug": "chalk", "name": "Chalk", "color": "#F2F2F4" },
 				{ "slug": "white", "name": "White", "color": "#FFFFFF" },
-				{ "slug": "red", "name": "APEX Red", "color": "#E10E1E" },
-				{ "slug": "red-bright", "name": "Signal Red (text on dark)", "color": "#FF4B4B" },
-				{ "slug": "red-deep", "name": "Deep Red", "color": "#A50A16" },
+				{ "slug": "red", "name": "APEX Red", "color": "#BE1E2D" },
+				{ "slug": "red-bright", "name": "Signal Red (text on dark)", "color": "#EF4554" },
+				{ "slug": "red-deep", "name": "Deep Red", "color": "#8F1622" },
 				{ "slug": "paper", "name": "Paper", "color": "#F2F1EE" }
 			],
 			"gradients": [
@@ -26,7 +26,7 @@
 				{ "slug": "carbon-fade", "name": "Photo Shade (bottom)", "gradient": "linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,0.92) 100%)" }
 			],
 			"duotone": [
-				{ "slug": "carbon-red", "name": "Carbon and Red", "colors": [ "#0A0A0C", "#E10E1E" ] },
+				{ "slug": "carbon-red", "name": "Carbon and Red", "colors": [ "#0A0A0C", "#BE1E2D" ] },
 				{ "slug": "carbon-chalk", "name": "Carbon and Chalk", "colors": [ "#0A0A0C", "#F2F2F4" ] }
 			]
 		},
@@ -37,8 +37,8 @@
 		"shadow": {
 			"defaultPresets": false,
 			"presets": [
-				{ "slug": "glow", "name": "Red Glow", "shadow": "0 0 48px rgba(225, 14, 30, 0.35)" },
-				{ "slug": "hard", "name": "Hard Offset", "shadow": "10px 10px 0 0 #E10E1E" },
+				{ "slug": "glow", "name": "Red Glow", "shadow": "0 0 48px rgba(190, 30, 45, 0.4)" },
+				{ "slug": "hard", "name": "Hard Offset", "shadow": "10px 10px 0 0 #BE1E2D" },
 				{ "slug": "lift", "name": "Lift", "shadow": "0 24px 48px -24px rgba(0, 0, 0, 0.8)" }
 			]
 		},

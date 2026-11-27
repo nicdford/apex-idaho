@@ -36,7 +36,7 @@ function apex_idaho_render_focal_meta_box( $post ) {
 	<p style="margin:0 0 8px;color:#666;font-size:12px;">Click on the image to set the focal point — this is the spot kept centered when the photo is cropped.</p>
 	<div class="apex-focal-wrap" style="position:relative;display:inline-block;max-width:100%;cursor:crosshair;user-select:none;line-height:0;">
 		<img src="<?php echo esc_url( $img_url ); ?>" style="display:block;max-width:100%;height:auto;" id="apex-focal-img" alt="">
-		<div id="apex-focal-marker" style="position:absolute;width:18px;height:18px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #E10E1E, 0 0 6px rgba(0,0,0,.6);transform:translate(-50%,-50%);pointer-events:none;left:<?php echo esc_attr( $x ); ?>%;top:<?php echo esc_attr( $y ); ?>%;"></div>
+		<div id="apex-focal-marker" style="position:absolute;width:18px;height:18px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #BE1E2D, 0 0 6px rgba(0,0,0,.6);transform:translate(-50%,-50%);pointer-events:none;left:<?php echo esc_attr( $x ); ?>%;top:<?php echo esc_attr( $y ); ?>%;"></div>
 	</div>
 	<p style="margin:8px 0 0;font-size:12px;color:#666;">
 		X: <span id="apex-focal-x-disp"><?php echo esc_html( $x ); ?></span>%

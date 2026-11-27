@@ -133,9 +133,8 @@ function apex_idaho_block_binding_value( array $args ) {
 }
 
 /**
- * The Site Logo block renders nothing until a logo is chosen in the editor.
- * BB stored its logo elsewhere, so on the first activation there is none: fall
- * back to the logo the old header used, then to a wordmark.
+ * The Site Logo block renders nothing until a Site Logo is set. Activation
+ * sets one (below); until then, e.g. in Live Preview, show the bundled logo.
  */
 add_filter( 'render_block_core/site-logo', 'apex_idaho_site_logo_fallback', 10, 2 );
 function apex_idaho_site_logo_fallback( $content, $block ) {
@@ -181,4 +180,56 @@ function apex_idaho_nav_link_current( $content, $block ) {
 	}
 
 	return $content;
+}
+
+/**
+ * On activation, make the APEX Idaho logo the Site Logo if none is set, so the
+ * header and footer show it and editors can swap it in the Site Editor.
+ *
+ * Reuses the logo already in the media library (uploaded for the old theme in
+ * 2023/07) when it is there; otherwise imports the copy bundled with the theme.
+ */
+add_action( 'after_switch_theme', 'apex_idaho_ensure_site_logo' );
+function apex_idaho_ensure_site_logo() {
+	if ( get_theme_mod( 'custom_logo' ) || get_option( 'site_logo' ) ) {
+		return;
+	}
+
+	$uploads = wp_get_upload_dir();
+	$logo_id = 0;
+	foreach ( array( 'APEX_Idaho_logo-2.png', 'APEX_Idaho_logo-2-scaled.png' ) as $file ) {
+		$logo_id = attachment_url_to_postid( $uploads['baseurl'] . '/2023/07/' . $file );
+		if ( $logo_id ) {
+			break;
+		}
+	}
+
+	if ( ! $logo_id ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$tmp = wp_tempnam( 'apex-idaho-logo.png' );
+		if ( $tmp && copy( APEX_IDAHO_DIR . '/assets/images/apex-idaho-logo.png', $tmp ) ) {
+			$id = media_handle_sideload(
+				array(
+					'name'     => 'apex-idaho-logo.png',
+					'tmp_name' => $tmp,
+				),
+				0,
+				'APEX Idaho logo'
+			);
+			if ( is_wp_error( $id ) ) {
+				wp_delete_file( $tmp );
+			} else {
+				$logo_id = (int) $id;
+				update_post_meta( $logo_id, '_wp_attachment_image_alt', 'APEX Idaho' );
+			}
+		}
+	}
+
+	if ( $logo_id ) {
+		set_theme_mod( 'custom_logo', $logo_id );
+		update_option( 'site_logo', $logo_id );
+	}
 }

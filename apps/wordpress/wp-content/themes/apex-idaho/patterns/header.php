@@ -33,7 +33,7 @@ $apex_link = static function ( $path ) {
 
 <!-- wp:group {"align":"full","className":"apex-header__bar","style":{"spacing":{"padding":{"top":"0.7rem","bottom":"0.7rem","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
 <div class="wp-block-group alignfull apex-header__bar" style="padding-top:0.7rem;padding-right:var(--wp--preset--spacing--40);padding-bottom:0.7rem;padding-left:var(--wp--preset--spacing--40)">
-<!-- wp:site-logo {"width":156,"shouldSyncIcon":false} /-->
+<!-- wp:site-logo {"width":172,"shouldSyncIcon":false} /-->
 
 <!-- wp:group {"className":"apex-header__right","style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 <div class="wp-block-group apex-header__right">

@@ -9,11 +9,17 @@ base, one accent (APEX Red), no colour gradients, condensed italic display
 type that leans forward, slanted "parallelogram" buttons, racing stripes,
 checkered flags and timing-sheet tables.
 
-Colours live in `theme.json`: **APEX Red** `#E10E1E` (buttons, badges, stripes,
-red sections; white text on it), **Signal Red** `#FF4B4B` (small red text on
-black, where APEX Red would fall below 4.5:1) and **Deep Red** `#A50A16` (red
-text on light backgrounds). To match the logo's exact red, change those three
-values; everything else reads from them.
+Colours live in `theme.json` and come from the logo: **APEX Red** `#BE1E2D`
+(the logo's red: buttons, badges, stripes, red sections, and red text on light
+backgrounds), **Signal Red** `#EF4554` (a lighter tint for small red text on
+black, where APEX Red would fall below 4.5:1) and **Deep Red** `#8F1622`
+(hover on light backgrounds).
+
+The logo (`assets/images/apex-idaho-logo.png`, from the original artwork) is
+set as the Site Logo when the theme is activated: it reuses the logo already
+in the media library (`uploads/2023/07/APEX_Idaho_logo-2.png`) or imports the
+bundled copy. Change it in Site Editor → Header → logo. Before activation (in
+Live Preview) the header shows the bundled copy.
 
 ## Cutting over from Beaver Builder
 
@@ -33,9 +39,8 @@ switches themes.
    - *Full test:* Live Preview can't exercise the front end (ticket checkout
      modal, cart, checkout). For that, clone the site to a Cloudways staging
      app, activate the theme there and click through with test payments.
-2. **Set the logo.** Site Editor → Header → click the logo → upload. Until
-   then the header falls back to the PNG the old header hard-coded
-   (`uploads/2023/07/APEX_Idaho_logo-2-300x77.png`), then to a text wordmark.
+2. **Logo.** Activation sets the APEX Idaho logo as the Site Logo (see
+   above). Nothing to do unless you want a different file.
 3. **Check every page in the preview**, especially the ones this theme was
    not able to test locally (see below).
 4. **Activate.** Rollback is re-activating *APEX Idaho Child Theme*; nothing

@@ -33,7 +33,7 @@ $apex_link = static function ( $path ) {
 <div class="wp-block-columns alignwide">
 <!-- wp:column {"width":"38%","style":{"spacing":{"blockGap":"var:preset|spacing|30"}}} -->
 <div class="wp-block-column" style="flex-basis:38%">
-<!-- wp:site-logo {"width":200,"shouldSyncIcon":false,"className":"is-footer-logo"} /-->
+<!-- wp:site-logo {"width":220,"shouldSyncIcon":false,"className":"is-footer-logo"} /-->
 
 <!-- wp:paragraph {"textColor":"smoke"} -->
 <p class="has-smoke-color has-text-color">Drift, grip and full-throttle competition across Idaho. Drivers of every skill level, spectators welcome, and a paddock that sticks around after the track goes cold.</p>

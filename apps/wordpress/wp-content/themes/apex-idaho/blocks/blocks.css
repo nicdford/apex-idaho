@@ -27,7 +27,7 @@
 
 .apex-event-card:hover,
 .apex-event-card:focus-within {
-	border-color: rgba(225, 14, 30, 0.6);
+	border-color: rgba(190, 30, 45, 0.6);
 	transform: translateY(-4px);
 }
 
@@ -220,7 +220,7 @@
 }
 
 .apex-event-row:hover {
-	background: rgba(225, 14, 30, 0.09);
+	background: rgba(190, 30, 45, 0.09);
 }
 
 .apex-event-row__pos,

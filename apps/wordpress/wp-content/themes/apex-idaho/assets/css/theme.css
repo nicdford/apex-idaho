@@ -559,7 +559,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .wp-block-table.is-style-apex-timing tbody tr:hover {
-	background: rgba(225, 14, 30, 0.08);
+	background: rgba(190, 30, 45, 0.08);
 }
 
 .wp-block-table.is-style-apex-timing td {
@@ -757,10 +757,9 @@ ul.is-style-apex-diamonds > li::before {
 	min-height: 4.5rem;
 }
 
-.apex-header .wp-block-site-logo img,
-.apex-logo img {
+.apex-header .wp-block-site-logo img {
 	display: block;
-	height: 40px;
+	height: 44px;
 	width: auto;
 }
 
@@ -888,46 +887,12 @@ ul.is-style-apex-diamonds > li::before {
 		min-height: 4rem;
 	}
 
-	.apex-header .wp-block-site-logo img,
-	.apex-logo img {
-		height: 32px;
+	.apex-header .wp-block-site-logo img {
+		height: 34px;
 	}
 
 	.apex-header__cta {
 		display: none !important;
-	}
-}
-
-/* Wordmark fallback when no logo image exists. */
-.apex-wordmark {
-	display: inline-flex;
-	align-items: baseline;
-	gap: 0.18em;
-	font-family: var(--apex-display);
-	font-size: 2rem;
-	font-style: italic;
-	font-weight: 900;
-	line-height: 1;
-	letter-spacing: -0.01em;
-	text-decoration: none !important;
-	text-transform: uppercase;
-	color: var(--apex-chalk) !important;
-}
-
-.apex-wordmark__apex {
-	color: var(--apex-red);
-	padding-right: 0.06em;
-}
-
-.apex-wordmark__idaho {
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	font-size: 0.62em;
-}
-
-@media (max-width: 781px) {
-	.apex-wordmark--header {
-		font-size: 1.6rem;
 	}
 }
 
@@ -1029,7 +994,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-card:hover {
-	border-color: rgba(225, 14, 30, 0.55) !important;
+	border-color: rgba(190, 30, 45, 0.55) !important;
 }
 
 /* Text link with a travelling arrow. */
@@ -1263,9 +1228,9 @@ ul.is-style-apex-diamonds > li::before {
 	margin: 0;
 }
 
-.apex-footer .wp-block-site-logo img,
-.apex-logo--footer img {
-	height: 52px;
+.apex-footer .wp-block-site-logo img {
+	display: block;
+	height: 56px;
 	width: auto;
 }
 
@@ -1312,7 +1277,7 @@ ul.is-style-apex-diamonds > li::before {
 	padding: 1.25rem;
 	border: 1px solid var(--apex-red);
 	border-left-width: 5px;
-	background: rgba(225, 14, 30, 0.06);
+	background: rgba(190, 30, 45, 0.06);
 }
 
 .apex-car-photo-field label {

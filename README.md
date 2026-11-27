@@ -1,6 +1,15 @@
 # Monica Starter Site
 
 Wordpress + Docker + Commonly used tools to build beautiful sites.
+
+## Themes
+
+- `apps/wordpress/wp-content/themes/apex-idaho/`: the Gutenberg block theme
+  that replaces Beaver Builder. Cutover steps, editing guide and dev notes are
+  in its [README](apps/wordpress/wp-content/themes/apex-idaho/README.md).
+- `bb-theme` + `bb-theme-child`: the Beaver Builder theme currently live. Kept
+  deployable for rollback until the switch is done.
+
 ## WP-CLI against the live site
 
 The live site is on Cloudways. `scripts/wp-live` runs WP-CLI there over SSH:

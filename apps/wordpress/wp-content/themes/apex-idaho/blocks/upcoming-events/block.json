@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "apex/upcoming-events",
+	"title": "Upcoming Events",
+	"category": "apex-idaho",
+	"icon": "calendar-alt",
+	"description": "Next events from The Events Calendar as cards, a timing-sheet list, or a scrolling ticker.",
+	"keywords": [ "events", "calendar", "schedule", "tickets" ],
+	"textdomain": "apex-idaho",
+	"attributes": {
+		"count": { "type": "number", "default": 3 },
+		"layout": { "type": "string", "enum": [ "cards", "list", "ticker" ], "default": "cards" },
+		"category": { "type": "string", "default": "" },
+		"showImage": { "type": "boolean", "default": true },
+		"ctaLabel": { "type": "string", "default": "Details & Tickets" },
+		"emptyMessage": { "type": "string", "default": "The next season's schedule drops soon. Follow @apex_idaho for the announcement." }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": { "margin": true }
+	},
+	"editorScript": "apex-idaho-blocks-editor",
+	"style": "apex-idaho-blocks",
+	"render": "file:./render.php"
+}

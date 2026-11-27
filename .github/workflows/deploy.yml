@@ -31,6 +31,12 @@ jobs:
         run: composer install --no-dev --no-interaction --prefer-dist
         working-directory: apps/wordpress/wp-content/themes/bb-theme-child
 
+      # The block theme carries the same Carbon Fields dependency (sponsor
+      # meta). Deployed alongside bb-theme-child; whichever is active is used.
+      - name: Install Composer dependencies (apex-idaho block theme)
+        run: composer install --no-dev --no-interaction --prefer-dist
+        working-directory: apps/wordpress/wp-content/themes/apex-idaho
+
       - name: Deploy themes (mirror with delete)
         run: |
           lftp -u "$LFTP_USER,$LFTP_PASSWORD" -p "$LFTP_PORT" \

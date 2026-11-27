@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+	"version": 3,
+	"title": "Asphalt",
+	"slug": "section-asphalt",
+	"blockTypes": [ "core/group", "core/columns", "core/column", "core/cover" ],
+	"styles": {
+		"color": {
+			"background": "var:preset|color|asphalt",
+			"text": "var:preset|color|chalk"
+		}
+	}
+}

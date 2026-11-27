@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "apex/sponsors",
+	"title": "Sponsor Board",
+	"category": "apex-idaho",
+	"icon": "star-filled",
+	"description": "Logos from the Sponsors post type, as a scrolling board or a grid.",
+	"keywords": [ "sponsors", "partners", "logos", "marquee" ],
+	"textdomain": "apex-idaho",
+	"attributes": {
+		"layout": { "type": "string", "enum": [ "marquee", "grid" ], "default": "marquee" },
+		"showNames": { "type": "boolean", "default": false }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": { "margin": true }
+	},
+	"editorScript": "apex-idaho-blocks-editor",
+	"style": "apex-idaho-blocks",
+	"render": "file:./render.php"
+}

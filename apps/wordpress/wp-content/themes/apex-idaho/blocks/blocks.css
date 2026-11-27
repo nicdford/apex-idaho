@@ -1,0 +1,727 @@
+/**
+ * Styles for the theme's dynamic blocks (apex/*). Loaded only on requests
+ * that render one of them.
+ */
+
+/* ==========================================================================
+   Upcoming events — cards
+   ========================================================================== */
+
+.apex-events__cards {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+	gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.apex-event-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: var(--wp--preset--color--asphalt);
+	border: 1px solid var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
+	transition: border-color 0.25s ease, transform 0.3s var(--wp--custom--ease, ease);
+}
+
+.apex-event-card:hover,
+.apex-event-card:focus-within {
+	border-color: rgba(232, 25, 125, 0.6);
+	transform: translateY(-4px);
+}
+
+.apex-event-card__media {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: var(--wp--preset--color--graphite);
+}
+
+.apex-event-card__media img,
+.apex-event-card__placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	clip-path: polygon(0 0, 100% 0, 100% 82%, 0 100%);
+	transition: transform 0.6s var(--wp--custom--ease, ease);
+}
+
+.apex-event-card:hover .apex-event-card__media img {
+	transform: scale(1.05);
+}
+
+.apex-event-card__placeholder {
+	background:
+		repeating-linear-gradient(-62deg, transparent 0 18px, rgba(255, 255, 255, 0.05) 18px 19px),
+		radial-gradient(120% 120% at 100% 0%, rgba(232, 25, 125, 0.55) 0%, rgba(249, 115, 22, 0.18) 45%, transparent 75%),
+		var(--wp--preset--color--graphite);
+}
+
+.apex-event-card__num {
+	position: absolute;
+	right: 0.75rem;
+	bottom: 0.1rem;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 4.5rem;
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	color: transparent;
+	-webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+}
+
+.apex-event-card__body {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	gap: 0.4rem;
+	padding: 1.5rem 1.5rem 1.35rem;
+}
+
+.apex-event-card__body > p {
+	margin: 0;
+}
+
+.apex-event-card__date {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.45rem;
+	align-self: flex-start;
+	margin: -2.6rem 0 0.6rem !important;
+	padding: 0.45rem 1rem 0.4rem 0.85rem;
+	background: var(--wp--preset--gradient--apex);
+	color: var(--wp--preset--color--carbon);
+	font-family: var(--wp--preset--font-family--display);
+	font-style: italic;
+	text-transform: uppercase;
+	line-height: 1;
+	clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+.has-no-media .apex-event-card__date {
+	margin-top: 0 !important;
+}
+
+.apex-event-card__day {
+	font-size: 1.9rem;
+	font-weight: 900;
+}
+
+.apex-event-card__month {
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+}
+
+.apex-event-card__title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--x-large);
+	line-height: 0.98;
+}
+
+.apex-event-card__title a {
+	color: var(--wp--preset--color--chalk);
+	text-decoration: none;
+}
+
+/* Stretched link: the whole card is the hit area. */
+.apex-event-card__title a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+.apex-event-card__title a:focus-visible {
+	outline: none;
+}
+
+.apex-event-card:focus-within {
+	outline: 3px solid var(--wp--preset--color--caution);
+	outline-offset: 3px;
+}
+
+.apex-event-card__where,
+.apex-event-card__when {
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--smoke);
+}
+
+.apex-event-card__where {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--hot-pink);
+}
+
+.apex-event-card__foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: auto !important;
+	padding-top: 1rem;
+	border-top: 1px solid var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 700;
+	font-style: italic;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.apex-event-card__cost {
+	font-size: 1.1rem;
+}
+
+.apex-event-card__cta {
+	margin-left: auto;
+	color: var(--wp--preset--color--chalk);
+}
+
+.apex-event-card__cta .apex-arrow {
+	display: inline-block;
+	color: var(--wp--preset--color--hot-pink);
+	font-style: normal;
+	transition: transform 0.2s ease;
+}
+
+.apex-event-card:hover .apex-event-card__cta .apex-arrow {
+	transform: translateX(5px);
+}
+
+/* ==========================================================================
+   Upcoming events — timing sheet list
+   ========================================================================== */
+
+.apex-events__rows {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 3px solid var(--wp--preset--color--apex-pink);
+}
+
+.apex-event-row {
+	position: relative;
+	display: grid;
+	grid-template-columns: 3.25rem 8.5rem 1fr auto 2rem;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.1rem 0.75rem;
+	border-bottom: 1px solid var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
+	transition: background 0.2s ease;
+}
+
+.apex-event-row:nth-child(odd) {
+	background: rgba(255, 255, 255, 0.025);
+}
+
+.apex-event-row:hover {
+	background: rgba(232, 25, 125, 0.09);
+}
+
+.apex-event-row__pos,
+.apex-event-row__date,
+.apex-event-row__cost {
+	font-family: var(--wp--preset--font-family--display);
+	font-style: italic;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.apex-event-row__pos {
+	color: var(--wp--preset--color--smoke);
+	font-size: 1.1rem;
+}
+
+.apex-event-row:first-child .apex-event-row__pos {
+	color: var(--wp--preset--color--hot-pink);
+}
+
+.apex-event-row__date {
+	font-size: 1.35rem;
+	color: var(--wp--preset--color--chalk);
+}
+
+.apex-event-row__main {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.apex-event-row__title {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--large);
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--chalk);
+	text-decoration: none;
+	line-height: 1.1;
+}
+
+.apex-event-row__title::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.apex-event-row__venue {
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--smoke);
+}
+
+.apex-event-row__go {
+	color: var(--wp--preset--color--hot-pink);
+	font-size: 1.35rem;
+	transition: transform 0.2s ease;
+}
+
+.apex-event-row:hover .apex-event-row__go {
+	transform: translateX(4px);
+}
+
+@media (max-width: 680px) {
+	.apex-event-row {
+		grid-template-columns: 2.5rem 1fr auto;
+		grid-template-areas: "pos date go" "pos main main" "pos cost cost";
+		row-gap: 0.25rem;
+	}
+
+	.apex-event-row__pos { grid-area: pos; align-self: start; }
+	.apex-event-row__date { grid-area: date; }
+	.apex-event-row__main { grid-area: main; }
+	.apex-event-row__cost { grid-area: cost; }
+	.apex-event-row__go { grid-area: go; }
+}
+
+/* ==========================================================================
+   Upcoming events — ticker items and empty state
+   ========================================================================== */
+
+.apex-events--ticker {
+	display: flex;
+	align-items: center;
+	gap: var(--apex-ticker-gap, 1.5rem);
+	white-space: nowrap;
+}
+
+.apex-ticker-item a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.apex-ticker-item strong {
+	font-weight: 900;
+	margin-right: 0.35em;
+}
+
+.apex-ticker-item__meta {
+	margin-left: 0.45em;
+	font-weight: 600;
+	opacity: 0.85;
+}
+
+.apex-events__empty {
+	position: relative;
+	padding: clamp(1.75rem, 4vw, 3rem);
+	background:
+		repeating-conic-gradient(rgba(255, 255, 255, 0.06) 0 25%, transparent 0 50%) 100% 0 / 28px 28px no-repeat,
+		var(--wp--preset--color--asphalt);
+	border: 1px solid var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
+	border-left: 5px solid var(--wp--preset--color--caution);
+}
+
+.apex-events__empty p {
+	margin: 0;
+}
+
+.apex-events__empty-flag {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--x-large);
+	font-style: italic;
+	font-weight: 900;
+	text-transform: uppercase;
+	line-height: 1;
+	color: var(--wp--preset--color--caution);
+	margin-bottom: 0.5rem !important;
+}
+
+.apex-events__empty-text {
+	color: var(--wp--preset--color--smoke);
+	max-width: 60ch;
+}
+
+/* ==========================================================================
+   Sponsor board
+   ========================================================================== */
+
+.apex-sponsors {
+	background: #fff;
+	color: #0a0a0c;
+}
+
+.apex-sponsors.is-empty {
+	padding: 1.5rem;
+	text-align: center;
+}
+
+.apex-sponsors img {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	filter: var(--apex-logo-filter, none);
+	transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* Reveal the logo's real colours on hover — except inverted logos, which
+   were inverted because their real colours vanish on white. */
+.apex-sponsor:not(.is-inverted):hover img,
+.apex-sponsor:not(.is-inverted) a:focus-visible img {
+	filter: none;
+}
+
+.apex-sponsors__viewport {
+	overflow: hidden;
+	padding: 1.75rem 0;
+	-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+	mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+.apex-sponsors__track {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	gap: clamp(2.5rem, 5vw, 4.5rem);
+	width: max-content;
+	animation: apex-sponsor-scroll var(--apex-marquee-duration, 30s) linear infinite;
+}
+
+.apex-sponsors__track:hover,
+.apex-sponsors__track:focus-within {
+	animation-play-state: paused;
+}
+
+.apex-sponsors__track .apex-sponsor {
+	flex: none;
+}
+
+.apex-sponsors__track img {
+	max-height: 52px;
+}
+
+.apex-sponsors__track a,
+.apex-sponsor__inner {
+	display: flex;
+	align-items: center;
+}
+
+@keyframes apex-sponsor-scroll {
+	to {
+		transform: translateX(calc(-50% - clamp(1.25rem, 2.5vw, 2.25rem)));
+	}
+}
+
+.apex-sponsors--grid {
+	padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.apex-sponsors__grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+	gap: 1px;
+	background: rgba(10, 10, 12, 0.1);
+	border: 1px solid rgba(10, 10, 12, 0.1);
+}
+
+.apex-sponsors__grid .apex-sponsor {
+	background: #fff;
+}
+
+.apex-sponsors__grid .apex-sponsor > a,
+.apex-sponsors__grid .apex-sponsor__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	min-height: 170px;
+	padding: 2rem 1.5rem;
+	text-decoration: none;
+	color: inherit;
+	transition: background 0.2s ease;
+}
+
+.apex-sponsors__grid .apex-sponsor > a:hover {
+	background: #faf6f8;
+}
+
+.apex-sponsors__grid img {
+	max-height: 72px;
+}
+
+.apex-sponsor__name {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: rgba(10, 10, 12, 0.6);
+	text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.apex-sponsors__track {
+		animation: none;
+		flex-wrap: wrap;
+		justify-content: center;
+		width: auto;
+		padding: 0 1.5rem;
+	}
+
+	.apex-sponsors__track [aria-hidden="true"] {
+		display: none;
+	}
+
+	.apex-sponsors__viewport {
+		-webkit-mask-image: none;
+		mask-image: none;
+	}
+}
+
+/* ==========================================================================
+   Countdown
+   ========================================================================== */
+
+.apex-countdown {
+	display: inline-flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	max-width: 100%;
+}
+
+.apex-countdown.aligncenter {
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+.apex-countdown > p {
+	margin: 0;
+}
+
+.apex-countdown__label {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem 0.75rem;
+	font-family: var(--wp--preset--font-family--display);
+	text-transform: uppercase;
+	line-height: 1.1;
+}
+
+.apex-countdown.aligncenter .apex-countdown__label {
+	justify-content: center;
+}
+
+.apex-countdown__kicker {
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	color: var(--wp--preset--color--hot-pink);
+}
+
+.apex-countdown__title {
+	font-size: var(--wp--preset--font-size--large);
+	font-style: italic;
+	font-weight: 800;
+	color: inherit;
+	text-decoration: none;
+}
+
+a.apex-countdown__title:hover {
+	color: var(--wp--preset--color--hot-pink);
+}
+
+.apex-countdown__clock {
+	display: flex;
+	gap: 0.4rem;
+	font-family: var(--wp--preset--font-family--display);
+	font-style: italic;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.apex-countdown__unit {
+	display: grid;
+	justify-items: center;
+	gap: 0.3rem;
+	flex: 1 0 auto;
+	min-width: 4.6rem;
+	padding: 0.75rem 0.85rem 0.6rem;
+	background: rgba(10, 10, 12, 0.72);
+	border-top: 3px solid var(--wp--preset--color--apex-pink);
+	clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.apex-countdown__unit:nth-child(2) { border-top-color: #f04a4f; }
+.apex-countdown__unit:nth-child(3) { border-top-color: #f5602f; }
+.apex-countdown__unit:nth-child(4) { border-top-color: var(--wp--preset--color--ignition); }
+
+.apex-countdown__unit b {
+	white-space: nowrap;
+	font-size: clamp(2rem, 4.5vw, 3rem);
+	font-weight: 900;
+	line-height: 0.9;
+	font-variant-numeric: tabular-nums;
+	color: #fff;
+}
+
+.apex-countdown__unit small {
+	font-size: 0.72rem;
+	font-style: normal;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	color: var(--wp--preset--color--smoke);
+}
+
+.apex-countdown__meta {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--smoke);
+}
+
+.apex-countdown.is-live .apex-countdown__clock {
+	padding: 0.75rem 1.25rem;
+	background: var(--wp--preset--gradient--apex);
+	color: var(--wp--preset--color--carbon);
+	font-size: var(--wp--preset--font-size--x-large);
+}
+
+.apex-countdown.is-empty {
+	padding: 1rem;
+	border: 1px dashed var(--wp--custom--line--strong, rgba(255, 255, 255, 0.18));
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--smoke);
+}
+
+@media (max-width: 480px) {
+	.apex-countdown__unit {
+		min-width: 0;
+		flex: 1;
+		padding-inline: 0.5rem;
+	}
+}
+
+/* ==========================================================================
+   Media partner photo
+   ========================================================================== */
+
+.apex-partner-photo {
+	position: relative;
+	margin: 0;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: var(--wp--preset--color--graphite);
+}
+
+.apex-partner-photo img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: grayscale(0.35) contrast(1.05);
+	transition: filter 0.4s ease, transform 0.6s var(--wp--custom--ease, ease);
+}
+
+.apex-partner:hover .apex-partner-photo img {
+	filter: none;
+	transform: scale(1.04);
+}
+
+.apex-partner-photo.is-placeholder {
+	display: grid;
+	place-items: center;
+	background:
+		repeating-linear-gradient(-62deg, transparent 0 18px, rgba(10, 10, 12, 0.08) 18px 19px),
+		var(--wp--preset--gradient--apex);
+}
+
+.apex-partner-photo__initials {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: clamp(3.5rem, 8vw, 5rem);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	color: var(--wp--preset--color--carbon);
+	letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Cart link
+   ========================================================================== */
+
+.apex-cart-link__a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.55rem 0.5rem;
+	color: var(--wp--preset--color--chalk);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--medium);
+	font-style: italic;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.apex-cart-link__a:hover {
+	color: var(--wp--preset--color--hot-pink);
+}
+
+.apex-cart-link__count {
+	display: inline-grid;
+	place-items: center;
+	min-width: 1.45rem;
+	height: 1.45rem;
+	padding: 0 0.3rem;
+	background: var(--wp--preset--gradient--apex);
+	color: var(--wp--preset--color--carbon);
+	font-size: 0.8rem;
+	font-style: normal;
+	font-weight: 800;
+	letter-spacing: 0;
+	clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+
+.apex-cart-link__count.is-zero {
+	background: var(--wp--preset--color--steel);
+	color: var(--wp--preset--color--chalk);
+}
+
+@media (max-width: 781px) {
+	.apex-cart-link__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		white-space: nowrap;
+	}
+}
+
+.apex-cart-link.is-empty {
+	font-size: var(--wp--preset--font-size--x-small);
+	color: var(--wp--preset--color--smoke);
+}

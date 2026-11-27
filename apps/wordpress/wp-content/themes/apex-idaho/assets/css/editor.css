@@ -1,0 +1,25 @@
+/**
+ * Editor canvas only. theme.css is loaded here too; this file calms things
+ * that are distracting while editing.
+ */
+
+/* Marquees hold still in the editor. */
+.apex-sponsors__track,
+.apex-ticker__track {
+	animation: none !important;
+}
+
+.wp-block-group.is-style-apex-ticker {
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+/* Server-rendered previews are not interactive. */
+.wp-block[data-type^="apex/"] a {
+	pointer-events: none;
+}
+
+/* Keep the sticky header from covering content while editing templates. */
+.editor-styles-wrapper header.wp-block-template-part {
+	position: static;
+}

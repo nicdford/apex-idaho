@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "apex/cart-link",
+	"title": "Cart Link",
+	"category": "apex-idaho",
+	"icon": "cart",
+	"description": "Link to the WooCommerce cart with the item count. Renders nothing when WooCommerce is off.",
+	"keywords": [ "cart", "shop", "woocommerce" ],
+	"textdomain": "apex-idaho",
+	"attributes": {
+		"label": { "type": "string", "default": "Cart" }
+	},
+	"supports": {
+		"html": false,
+		"spacing": { "margin": true }
+	},
+	"editorScript": "apex-idaho-blocks-editor",
+	"style": "apex-idaho-blocks",
+	"render": "file:./render.php"
+}

@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "apex/countdown",
+	"title": "Race Countdown",
+	"category": "apex-idaho",
+	"icon": "clock",
+	"description": "Live countdown to the next event on the calendar, or to a date you set.",
+	"keywords": [ "countdown", "timer", "lights out" ],
+	"textdomain": "apex-idaho",
+	"attributes": {
+		"source": { "type": "string", "enum": [ "next-event", "date" ], "default": "next-event" },
+		"date": { "type": "string", "default": "" },
+		"label": { "type": "string", "default": "Lights out in" },
+		"title": { "type": "string", "default": "" },
+		"url": { "type": "string", "default": "" }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full", "left", "right", "center" ],
+		"spacing": { "margin": true }
+	},
+	"editorScript": "apex-idaho-blocks-editor",
+	"style": "apex-idaho-blocks",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

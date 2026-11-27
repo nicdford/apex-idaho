@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "apex/partner-photo",
+	"title": "Media Partner Photo",
+	"category": "apex-idaho",
+	"icon": "camera",
+	"description": "Featured photo of a Media Partner post, cropped around its focal point, with an initials fallback.",
+	"keywords": [ "media", "photographer", "partner" ],
+	"textdomain": "apex-idaho",
+	"attributes": {
+		"slug": { "type": "string", "default": "" },
+		"initials": { "type": "string", "default": "" },
+		"alt": { "type": "string", "default": "" }
+	},
+	"supports": {
+		"html": false,
+		"spacing": { "margin": true }
+	},
+	"editorScript": "apex-idaho-blocks-editor",
+	"style": "apex-idaho-blocks",
+	"render": "file:./render.php"
+}

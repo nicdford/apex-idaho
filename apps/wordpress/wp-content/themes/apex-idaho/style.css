@@ -1,0 +1,20 @@
+/*
+Theme Name: APEX Idaho
+Theme URI: https://apex-idaho.com
+Author: Nic D. Ford
+Author URI: http://nicdford.com
+Description: Block theme for APEX Idaho. Carbon-black, pink-to-orange, built for the send. Full Site Editing templates, a motorsport pattern library and dynamic blocks for events, sponsors and countdowns, replacing the Beaver Builder child theme.
+Version: 2.0.0
+Requires at least: 6.6
+Tested up to: 7.1
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: apex-idaho
+Tags: block-patterns, block-styles, full-site-editing, wide-blocks, custom-colors, editor-style, one-column
+
+Bundled fonts: Barlow and Barlow Condensed, SIL Open Font License 1.1
+(assets/fonts/OFL.txt).
+
+Styles live in theme.json and assets/css/. This file is only the theme header.
+*/

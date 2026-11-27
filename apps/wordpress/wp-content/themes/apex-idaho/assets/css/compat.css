@@ -1,0 +1,257 @@
+/**
+ * Third-party UI on a dark site.
+ *
+ * Loaded only when The Events Calendar, Event Tickets, WooCommerce or Beaver
+ * Builder is active (see inc/assets.php).
+ *
+ * The Events Calendar and Event Tickets read their colours from --tec-*
+ * custom properties, so they are re-themed by setting those, not by fighting
+ * their selectors. The one exception is the Event Tickets checkout / attendee
+ * modal (.tribe-dialog): it is the purchase path and renders on a white card,
+ * so it is put back on Event Tickets' stock light values. See commit 38ee553
+ * for what happens when dark-page colours leak into that modal.
+ */
+
+/* ==========================================================================
+   The Events Calendar / Event Tickets
+   ========================================================================== */
+
+body,
+body .tribe-common,
+body .tribe-events,
+body .tribe-tickets {
+	--tec-font-family-sans-serif: Barlow, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+	--tec-color-text-primary: #f2f2f4;
+	--tec-color-text-primary-light: rgba(242, 242, 244, 0.72);
+	--tec-color-text-secondary: #a0a0ab;
+	--tec-color-text-disabled: #5a5a66;
+	--tec-color-text-events-title: #f2f2f4;
+	--tec-color-text-event-title: #f2f2f4;
+	--tec-color-text-event-date: #f2f2f4;
+	--tec-color-text-secondary-event-date: #a0a0ab;
+
+	--tec-color-icon-primary: #a0a0ab;
+	--tec-color-icon-primary-alt: #a0a0ab;
+	--tec-color-icon-secondary: #5a5a66;
+	--tec-color-icon-active: #f2f2f4;
+	--tec-color-icon-focus: #ff3d9e;
+	--tec-color-event-icon: #f2f2f4;
+	--tec-color-event-icon-hover: #ff3d9e;
+
+	--tec-color-accent-primary: #e8197d;
+	--tec-color-accent-primary-hover: #ff3d9e;
+	--tec-color-accent-primary-active: #c8106a;
+	--tec-color-accent-primary-background: rgba(232, 25, 125, 0.12);
+	--tec-color-accent-secondary: #f2f2f4;
+	--tec-color-button-primary: #e8197d;
+	--tec-color-button-primary-hover: #ff3d9e;
+	--tec-color-button-primary-active: #c8106a;
+	--tec-color-button-primary-background: rgba(232, 25, 125, 0.12);
+	--tec-color-button-secondary: #f2f2f4;
+
+	--tec-color-link-primary: #f2f2f4;
+	--tec-color-link-accent: #ff3d9e;
+	--tec-color-link-accent-hover: #ff7ab9;
+
+	--tec-color-border-default: #2e2e38;
+	--tec-color-border-secondary: #24242c;
+	--tec-color-border-tertiary: #5a5a66;
+	--tec-color-border-hover: #a0a0ab;
+	--tec-color-border-active: #f2f2f4;
+
+	--tec-color-background: #131317;
+	--tec-color-background-events: transparent;
+	--tec-color-background-transparent: rgba(10, 10, 12, 0.6);
+	--tec-color-background-secondary: #1d1d23;
+	--tec-color-background-secondary-hover: #24242c;
+	--tec-color-background-messages: rgba(255, 255, 255, 0.06);
+	--tec-color-background-primary-multiday: rgba(232, 25, 125, 0.3);
+	--tec-color-background-primary-multiday-hover: rgba(232, 25, 125, 0.42);
+	--tec-color-background-secondary-multiday: rgba(255, 255, 255, 0.14);
+	--tec-color-background-secondary-multiday-hover: rgba(255, 255, 255, 0.22);
+	--tec-color-accent-primary-week-event: rgba(232, 25, 125, 0.16);
+	--tec-color-accent-primary-week-event-hover: rgba(232, 25, 125, 0.26);
+	--tec-color-accent-primary-week-event-featured: rgba(232, 25, 125, 0.08);
+	--tec-color-accent-primary-week-event-featured-hover: rgba(232, 25, 125, 0.18);
+	--tec-color-box-shadow: rgba(0, 0, 0, 0.5);
+	--tec-color-box-shadow-secondary: rgba(0, 0, 0, 0.4);
+	--tec-color-scroll-track: rgba(255, 255, 255, 0.1);
+	--tec-color-scroll-bar: rgba(255, 255, 255, 0.35);
+}
+
+/* The checkout / attendee modal stays on Event Tickets' own light theme. */
+body .tribe-dialog,
+body .tribe-dialog .tribe-common,
+body .tribe-dialog .tribe-tickets {
+	--tec-color-text-primary: #141827;
+	--tec-color-text-primary-light: rgba(20, 24, 39, 0.62);
+	--tec-color-text-secondary: #5d5d5d;
+	--tec-color-text-disabled: #d5d5d5;
+	--tec-color-text-events-title: #141827;
+	--tec-color-text-event-title: #141827;
+	--tec-color-text-event-date: #141827;
+	--tec-color-text-secondary-event-date: #5d5d5d;
+	--tec-color-icon-primary: #5d5d5d;
+	--tec-color-icon-primary-alt: #757575;
+	--tec-color-icon-secondary: #bababa;
+	--tec-color-icon-active: #141827;
+	--tec-color-event-icon: #141827;
+	--tec-color-accent-secondary: #141827;
+	--tec-color-button-secondary: #141827;
+	--tec-color-link-primary: #141827;
+	--tec-color-link-accent: #c8106a;
+	--tec-color-border-default: #d5d5d5;
+	--tec-color-border-secondary: #e4e4e4;
+	--tec-color-border-tertiary: #7d7d7d;
+	--tec-color-border-hover: #5d5d5d;
+	--tec-color-border-active: #141827;
+	--tec-color-background: #fff;
+	--tec-color-background-transparent: rgba(255, 255, 255, 0.6);
+	--tec-color-background-secondary: #f7f6f6;
+	--tec-color-background-secondary-hover: #f0eeee;
+	--tec-color-background-messages: rgba(20, 24, 39, 0.07);
+	--tec-color-box-shadow: rgba(0, 0, 0, 0.14);
+	--tec-color-box-shadow-secondary: rgba(0, 0, 0, 0.1);
+	color: #141827;
+}
+
+/* Theme form styling does not reach into the modal either (theme.css scopes
+   its input rules with :not(.tribe-dialog *)); headings keep their colour. */
+body .tribe-dialog :where(h1, h2, h3, h4, h5, h6) {
+	color: #141827;
+}
+
+/* Legacy (non-variable) single-event markup. */
+.tribe-events-pg-template,
+.tribe-events-single,
+.tribe-events-single .tribe-events-single-event-title,
+.tribe-events-single .tribe-events-schedule,
+.tribe-events-single .tribe-events-content,
+.tribe-events-single .tribe-events-event-meta,
+.tribe-events-single .tribe-events-single-section-title,
+.tribe-events-single .tribe-events-meta-group,
+.tribe-events-single .tribe-events-meta-group dt,
+.tribe-events-single .tribe-events-meta-group dd {
+	color: var(--wp--preset--color--chalk);
+}
+
+.tribe-events-single .tribe-events-event-meta {
+	background: var(--wp--preset--color--asphalt) !important;
+	border-color: var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08)) !important;
+}
+
+.tribe-events-single .tribe-events-schedule h2,
+.tribe-events-single .tribe-events-schedule .tribe-event-date-start,
+.tribe-events-single .tribe-events-schedule .tribe-event-time {
+	color: var(--wp--preset--color--hot-pink);
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.tribe-events-back a,
+.tribe-events-sub-nav a {
+	color: var(--wp--preset--color--chalk);
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+/* Calendar headings in the display face. */
+.tribe-common .tribe-common-h1,
+.tribe-common .tribe-common-h2,
+.tribe-common .tribe-common-h3,
+.tribe-common .tribe-events-calendar-list__event-title,
+.tribe-events .tribe-events-c-top-bar__datepicker-button {
+	font-family: var(--wp--preset--font-family--display);
+	font-style: italic;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.tribe-common .tribe-events-calendar-list__event-date-tag-weekday,
+.tribe-common .tribe-events-calendar-list__month-separator-text {
+	font-family: var(--wp--preset--font-family--display);
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+/* ==========================================================================
+   WooCommerce
+   ========================================================================== */
+
+.woocommerce-store-notice,
+p.demo_store {
+	background: var(--wp--preset--gradient--apex);
+	color: var(--wp--preset--color--carbon);
+}
+
+.wc-block-components-product-price,
+.wc-block-grid__product-price,
+.woocommerce-Price-amount {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 700;
+}
+
+.wc-block-components-product-sale-badge,
+.wc-block-grid__product-onsale {
+	background: var(--wp--preset--gradient--apex) !important;
+	border: 0 !important;
+	color: var(--wp--preset--color--carbon) !important;
+	font-family: var(--wp--preset--font-family--display);
+	font-style: italic;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.wc-block-components-product-image img,
+.wp-block-woocommerce-product-image-gallery img {
+	background: var(--wp--preset--color--asphalt);
+}
+
+.wc-block-components-totals-wrapper,
+.wc-block-components-order-summary,
+.wc-block-cart-items {
+	border-color: var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08)) !important;
+}
+
+/* ==========================================================================
+   Pages still laid out in Beaver Builder
+   ========================================================================== */
+
+/* BB lays out its own full-width rows; don't squeeze them into the
+   content column or the root padding. */
+.wp-block-post-content > .fl-builder-content {
+	max-width: none;
+	margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
+	margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
+}
+
+/* They were designed on white, under the old theme. Until a page is rebuilt
+   with blocks, give it that canvas back so nothing renders light-on-light. */
+.apex-legacy-builder .fl-builder-content {
+	background: #fff;
+	color: #333;
+}
+
+.apex-legacy-builder .fl-builder-content :where(h1, h2, h3, h4, h5, h6) {
+	color: #111;
+}
+
+.apex-legacy-builder .fl-builder-content a:where(:not(.fl-button):not(.wp-element-button)) {
+	color: #c8106a;
+}
+
+.apex-legacy-builder .fl-builder-content :where(input, select, textarea) {
+	background: #fff;
+	color: #111;
+	border-color: #ccc;
+}
+
+/* BB pages carry their own hero; the theme's title band would double it. */
+.apex-legacy-builder .apex-page-hero {
+	display: none;
+}

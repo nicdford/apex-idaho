@@ -35,6 +35,7 @@ wp-config.php
 
 # Composer vendor directories
 /apps/wordpress/wp-content/themes/bb-theme-child/vendor/
+/apps/wordpress/wp-content/themes/apex-idaho/vendor/
 
 # Local symlink that links the Pitwall plugin source into the WP plugins dir for local dev.
 # Created by apps/wordpress/start-dev.sh; never committed.

@@ -1,0 +1,14 @@
+{
+    "name": "apex-idaho/apex-idaho-theme",
+    "description": "APEX Idaho block theme",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "htmlburger/carbon-fields": "^3.6"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "vendor-dir": "vendor"
+    }
+}

@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+	"version": 3,
+	"title": "Paper",
+	"slug": "section-paper",
+	"blockTypes": [ "core/group", "core/columns", "core/column", "core/cover" ],
+	"styles": {
+		"color": {
+			"background": "var:preset|color|paper",
+			"text": "var:preset|color|carbon"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "var:preset|color|carbon" },
+				":hover": { "color": { "text": "var:preset|color|apex-pink" } }
+			},
+			"heading": {
+				"color": { "text": "var:preset|color|carbon" }
+			},
+			"caption": {
+				"color": { "text": "var:preset|color|steel" }
+			}
+		},
+		"blocks": {
+			"core/separator": { "color": { "text": "rgba(10, 10, 12, 0.14)" } },
+			"core/post-date": { "color": { "text": "var:preset|color|steel" } },
+			"core/post-excerpt": { "color": { "text": "var:preset|color|steel" } }
+		}
+	}
+}

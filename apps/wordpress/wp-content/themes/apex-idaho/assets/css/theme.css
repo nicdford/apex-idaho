@@ -1,0 +1,1382 @@
+/**
+ * APEX Idaho — theme styles that theme.json cannot express.
+ *
+ * Loaded on the front end and inside the editor canvas (add_editor_style).
+ *
+ * Ground rule, learned the hard way on the Luau page: never put transform,
+ * filter, backdrop-filter, clip-path, contain or z-index stacking on a
+ * container that can hold page content. Event Tickets opens its checkout
+ * modal as a position:fixed descendant of the content, and any of those turn
+ * the container into the modal's box or clip it. Shapes here are drawn with
+ * pseudo-elements, or applied to leaf elements (images, buttons) only.
+ */
+
+/* ==========================================================================
+   0. Root
+   ========================================================================== */
+
+:root {
+	--apex-pink: var(--wp--preset--color--apex-pink);
+	--apex-hot: var(--wp--preset--color--hot-pink);
+	--apex-orange: var(--wp--preset--color--ignition);
+	--apex-caution: var(--wp--preset--color--caution);
+	--apex-carbon: var(--wp--preset--color--carbon);
+	--apex-asphalt: var(--wp--preset--color--asphalt);
+	--apex-graphite: var(--wp--preset--color--graphite);
+	--apex-steel: var(--wp--preset--color--steel);
+	--apex-smoke: var(--wp--preset--color--smoke);
+	--apex-chalk: var(--wp--preset--color--chalk);
+	--apex-grad: var(--wp--preset--gradient--apex);
+	--apex-line: var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
+	--apex-line-strong: var(--wp--custom--line--strong, rgba(255, 255, 255, 0.18));
+	--apex-slant: var(--wp--custom--slant, 12px);
+	--apex-ease: var(--wp--custom--ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+	--apex-display: var(--wp--preset--font-family--display);
+}
+
+/* Beaver Builder's cached CSS can set html{font-size:10px}; every size here is rem. */
+html {
+	font-size: 100% !important;
+	scroll-padding-top: 7.5rem;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	font-variant-numeric: lining-nums;
+}
+
+.wp-site-blocks {
+	overflow-x: clip;
+}
+
+/* Template parts and main sit flush; sections own their spacing. */
+.wp-site-blocks > * {
+	margin-block-start: 0;
+}
+
+::selection {
+	background: var(--apex-pink);
+	color: var(--apex-carbon);
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 3px solid var(--apex-caution);
+	outline-offset: 3px;
+}
+
+:where(h1, h2, h3, h4, .wp-block-heading) {
+	text-wrap: balance;
+}
+
+:where(p) {
+	text-wrap: pretty;
+}
+
+/* Italic display type overhangs its box; give the last glyph room. */
+:where(h1, h2, h3, h4, h5) {
+	padding-inline-end: 0.04em;
+}
+
+a:where(:not(.wp-element-button)) {
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.22em;
+	text-decoration-color: var(--apex-pink);
+	transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+a:where(:not(.wp-element-button)):hover {
+	text-decoration-color: currentColor;
+}
+
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+.skip-link.screen-reader-text:focus {
+	background: var(--apex-caution);
+	clip: auto !important;
+	clip-path: none;
+	color: var(--apex-carbon);
+	display: block;
+	font-weight: 700;
+	height: auto;
+	left: 8px;
+	padding: 1rem 1.25rem;
+	text-decoration: none;
+	top: 8px;
+	width: auto;
+	z-index: 100000;
+}
+
+/* ==========================================================================
+   1. Textures — background-image only, so section colours still apply and no
+      stacking context is created.
+   ========================================================================== */
+
+.apex-texture-grid {
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+	background-size: 56px 56px;
+	background-position: -1px -1px;
+}
+
+.apex-texture-speed {
+	background-image: repeating-linear-gradient(-62deg, transparent 0 26px, rgba(255, 255, 255, 0.035) 26px 27px);
+}
+
+.apex-texture-carbon {
+	background-image:
+		linear-gradient(27deg, rgba(255, 255, 255, 0.022) 5px, transparent 5px),
+		linear-gradient(207deg, rgba(255, 255, 255, 0.022) 5px, transparent 5px),
+		linear-gradient(27deg, rgba(0, 0, 0, 0.28) 5px, transparent 5px),
+		linear-gradient(207deg, rgba(0, 0, 0, 0.28) 5px, transparent 5px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.012) 10px, transparent 10px),
+		linear-gradient(rgba(255, 255, 255, 0.02) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.22) 50%, rgba(0, 0, 0, 0.22) 75%, rgba(255, 255, 255, 0.03) 75%);
+	background-position: 0 5px, 10px 0, 0 10px, 10px 5px, 0 0, 0 0;
+	background-size: 20px 20px;
+}
+
+/* On a Hot section the texture must sit on top of the section's gradient,
+   not replace it (both are background-image). */
+[class*="is-style-section-hot"].apex-texture-speed {
+	background-image:
+		repeating-linear-gradient(-62deg, transparent 0 26px, rgba(10, 10, 12, 0.07) 26px 27px),
+		var(--apex-grad);
+}
+
+[class*="is-style-section-hot"].apex-texture-grid {
+	background-image:
+		linear-gradient(rgba(10, 10, 12, 0.07) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(10, 10, 12, 0.07) 1px, transparent 1px),
+		var(--apex-grad);
+	background-size: 56px 56px, 56px 56px, auto;
+}
+
+/* Hero/page-band background: two brand glows over the grid. */
+.apex-texture-night {
+	background-image:
+		radial-gradient(110% 80% at 88% 0%, rgba(232, 25, 125, 0.3) 0%, rgba(232, 25, 125, 0) 58%),
+		radial-gradient(70% 60% at 0% 100%, rgba(249, 115, 22, 0.16) 0%, rgba(249, 115, 22, 0) 60%),
+		linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+	background-size: auto, auto, 56px 56px, 56px 56px;
+	background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+}
+
+/* ==========================================================================
+   2. Section shapes
+   ========================================================================== */
+
+/* Angled bottom edge: a wedge in the next section's colour, drawn over the
+   section's bottom padding. Set the colour with an .apex-into-* class. */
+.apex-cut-bottom {
+	position: relative;
+}
+
+.apex-cut-bottom::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: var(--apex-cut-size, clamp(28px, 5vw, 84px));
+	background: var(--apex-cut-into, var(--apex-carbon));
+	clip-path: polygon(0 100%, 100% 0, 100% 100%);
+	pointer-events: none;
+	z-index: 4;
+}
+
+.apex-cut-bottom.apex-cut-flip::after {
+	clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.apex-into-asphalt { --apex-cut-into: var(--apex-asphalt); }
+.apex-into-paper { --apex-cut-into: var(--wp--preset--color--paper); }
+.apex-into-white { --apex-cut-into: #fff; }
+.apex-into-hot { --apex-cut-into: var(--apex-grad); }
+
+/* Racing stripe along the top edge of a section. */
+.apex-stripe-top {
+	position: relative;
+}
+
+.apex-stripe-top::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 6px;
+	background:
+		linear-gradient(var(--apex-pink), var(--apex-pink)) 0 0 / 100% 4px no-repeat,
+		linear-gradient(90deg, transparent 0 62%, var(--apex-orange) 62% 100%) 0 100% / 100% 1px no-repeat;
+	pointer-events: none;
+}
+
+/* Cover with speed lines over the image. */
+.wp-block-cover.is-style-apex-speedlines::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+	background-image: repeating-linear-gradient(-62deg, transparent 0 22px, rgba(255, 255, 255, 0.05) 22px 23px);
+	mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.2) 70%);
+	-webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.2) 70%);
+}
+
+.wp-block-cover.is-style-apex-speedlines > .wp-block-cover__inner-container {
+	z-index: 3;
+}
+
+/* A cover whose content is pinned to a corner still lines up with the page
+   grid: let the constrained inner container span the cover. Core sets
+   width:auto with a five-class selector, hence the repeated class. */
+.wp-block-cover.has-custom-content-position.has-custom-content-position.has-custom-content-position > .wp-block-cover__inner-container.is-layout-constrained {
+	width: 100%;
+}
+
+/* Huge numerals / words used as structure (01, 02...). */
+.apex-index {
+	font-family: var(--apex-display);
+	font-weight: 900;
+	font-style: italic;
+	line-height: 0.8;
+	color: transparent !important;
+	-webkit-text-stroke: 2px var(--apex-pink);
+	letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   3. Buttons — slanted, forward-leaning parallelograms.
+   The outline sits inside the shape because clip-path would hide an outer one.
+   ========================================================================== */
+
+.wp-element-button,
+.wp-block-button__link {
+	clip-path: polygon(var(--apex-slant) 0, 100% 0, calc(100% - var(--apex-slant)) 100%, 0 100%);
+	transition: transform 0.2s var(--apex-ease), background 0.2s ease, color 0.2s ease;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.wp-element-button:hover,
+.wp-block-button__link:hover {
+	transform: translateX(3px);
+}
+
+.wp-element-button:active,
+.wp-block-button__link:active {
+	transform: translateX(1px);
+}
+
+.wp-element-button:focus-visible,
+.wp-block-button__link:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: -7px;
+}
+
+/* Arrow variation. */
+.wp-block-button.is-style-apex-arrow .wp-block-button__link::after {
+	content: "→";
+	display: inline-block;
+	margin-left: 0.6em;
+	font-style: normal;
+	transition: transform 0.2s var(--apex-ease);
+}
+
+.wp-block-button.is-style-apex-arrow .wp-block-button__link:hover::after {
+	transform: translateX(4px);
+}
+
+/* Core "Outline" restyled as a ghost: translucent fill with rails top and
+   bottom (side borders would be clipped by the slant). */
+.wp-block-button.is-style-outline > .wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-outline {
+	border: 0;
+	padding: 1em 2em;
+	box-shadow: inset 0 2px 0 currentColor, inset 0 -2px 0 currentColor;
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background),
+.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background) {
+	background: rgba(255, 255, 255, 0.07);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color),
+.wp-block-button .wp-block-button__link.is-style-outline:not(.has-text-color) {
+	color: var(--apex-chalk);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover,
+.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background):hover {
+	background: var(--apex-chalk);
+	color: var(--apex-carbon);
+}
+
+.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color),
+.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
+	color: var(--apex-carbon);
+}
+
+.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background),
+.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
+	background: rgba(10, 10, 12, 0.06);
+}
+
+.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover,
+.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {
+	background: var(--apex-carbon);
+	color: var(--apex-chalk);
+}
+
+/* ==========================================================================
+   4. Type styles
+   ========================================================================== */
+
+/* Eyebrow: tracked uppercase kicker with a slanted gradient bar. */
+.is-style-apex-eyebrow {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--small);
+	font-style: normal;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	line-height: 1.3;
+	text-transform: uppercase;
+}
+
+.is-style-apex-eyebrow:not(.has-text-color) {
+	color: var(--apex-hot);
+}
+
+.is-style-apex-eyebrow::before {
+	content: "";
+	display: inline-block;
+	width: 2.4em;
+	height: 4px;
+	margin-right: 0.9em;
+	vertical-align: 0.22em;
+	background: var(--apex-grad);
+	transform: skewX(-24deg);
+}
+
+.is-style-section-paper .is-style-apex-eyebrow:not(.has-text-color),
+.is-style-section-hot .is-style-apex-eyebrow:not(.has-text-color) {
+	color: var(--apex-carbon);
+}
+
+.is-style-section-hot .is-style-apex-eyebrow::before {
+	background: var(--apex-carbon);
+}
+
+p.is-style-apex-lede {
+	font-size: var(--wp--preset--font-size--large);
+	line-height: 1.5;
+	max-width: 62ch;
+}
+
+p.is-style-apex-lede.has-text-align-center {
+	margin-inline: auto;
+}
+
+/* Title bands lay out at wide size; a constrained layout would centre the
+   narrower lede, so pin it to the band's left edge instead. */
+.apex-page-hero > .is-style-apex-lede:not(.has-text-align-center) {
+	margin-left: max(0px, calc((100% - var(--wp--style--global--wide-size, 1320px)) / 2)) !important;
+	margin-right: auto !important;
+}
+
+/* Outline heading: stroke in the text colour, hollow fill. */
+.wp-block-heading.is-style-apex-outline {
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: clamp(1px, 0.028em, 3px) currentColor;
+	paint-order: stroke fill;
+}
+
+/* Gradient heading, sized to its text so the whole ramp shows. */
+.wp-block-heading.is-style-apex-gradient {
+	background: var(--apex-grad);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	width: fit-content;
+	max-width: 100%;
+	padding-inline-end: 0.12em;
+}
+
+.wp-block-heading.is-style-apex-gradient.has-text-align-center {
+	margin-inline: auto;
+}
+
+.wp-block-heading.is-style-apex-gradient.has-text-align-right {
+	margin-inline-start: auto;
+}
+
+/* Heading conventions, so editors get the look with plain Bold / Italic:
+   bold words render in the APEX gradient, italic words render outlined. */
+:where(h1, h2, h3, h4, .wp-block-heading, .wp-block-post-title) strong {
+	background: var(--apex-grad);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	padding-inline-end: 0.08em;
+	margin-inline-end: -0.04em;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+:where(h1, h2, h3, h4, .wp-block-heading, .wp-block-post-title) em {
+	font-style: inherit;
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: clamp(1px, 0.03em, 3px) currentColor;
+}
+
+.is-style-section-hot :where(h1, h2, h3, h4, .wp-block-heading) strong {
+	background: none;
+	-webkit-text-fill-color: currentColor;
+	text-decoration: underline;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.12em;
+}
+
+.has-mega-font-size,
+.has-display-font-size {
+	line-height: 0.84 !important;
+	letter-spacing: -0.015em;
+}
+
+.apex-tabular {
+	font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   5. Separators
+   ========================================================================== */
+
+hr.wp-block-separator {
+	border: 0;
+	border-top: 1px solid currentColor;
+	opacity: 1;
+}
+
+hr.wp-block-separator.is-style-apex-stripe {
+	border: 0;
+	height: 10px;
+	background:
+		linear-gradient(var(--apex-pink), var(--apex-pink)) 0 0 / 100% 5px no-repeat,
+		linear-gradient(var(--apex-orange), var(--apex-orange)) 0 100% / 100% 2px no-repeat;
+}
+
+hr.wp-block-separator.is-style-apex-checker {
+	border: 0;
+	height: 16px;
+	background: repeating-conic-gradient(var(--apex-chalk) 0 25%, transparent 0 50%) 0 0 / 16px 16px;
+}
+
+.is-style-section-paper hr.wp-block-separator.is-style-apex-checker,
+.is-style-section-hot hr.wp-block-separator.is-style-apex-checker {
+	background: repeating-conic-gradient(var(--apex-carbon) 0 25%, transparent 0 50%) 0 0 / 16px 16px;
+}
+
+hr.wp-block-separator.is-style-apex-chevrons {
+	border: 0;
+	height: 16px;
+	background: var(--apex-grad);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cpath d='M2 0h7l8 8-8 8H2l8-8z'/%3E%3C/svg%3E") 0 50% / 24px 16px repeat-x;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cpath d='M2 0h7l8 8-8 8H2l8-8z'/%3E%3C/svg%3E") 0 50% / 24px 16px repeat-x;
+}
+
+/* ==========================================================================
+   6. Lists, images, tables, details, quotes
+   ========================================================================== */
+
+ul.is-style-apex-diamonds {
+	list-style: none;
+	padding-left: 0;
+}
+
+ul.is-style-apex-diamonds > li {
+	position: relative;
+	padding-left: 1.7em;
+}
+
+ul.is-style-apex-diamonds > li + li {
+	margin-top: 0.55em;
+}
+
+ul.is-style-apex-diamonds > li::before {
+	content: "";
+	position: absolute;
+	left: 0.25em;
+	top: 0.6em;
+	width: 0.48em;
+	height: 0.48em;
+	background: var(--apex-grad);
+	transform: rotate(45deg);
+}
+
+.wp-block-image.is-style-apex-angled img {
+	clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%);
+}
+
+.wp-block-image.is-style-apex-chamfer img {
+	clip-path: polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px);
+}
+
+.wp-block-post-featured-image.apex-angled img {
+	clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
+}
+
+/* Default tables. */
+.wp-block-table table {
+	border-collapse: collapse;
+	width: 100%;
+	font-variant-numeric: tabular-nums;
+}
+
+.wp-block-table th,
+.wp-block-table td {
+	border: 0;
+	border-bottom: 1px solid var(--apex-line-strong);
+	padding: 0.75em 1em;
+	text-align: left;
+}
+
+.wp-block-table thead {
+	border-bottom: 0;
+}
+
+.wp-block-table th {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* Timing sheet. */
+.wp-block-table.is-style-apex-timing thead th {
+	color: var(--apex-smoke);
+	border-bottom: 3px solid var(--apex-pink);
+}
+
+.wp-block-table.is-style-apex-timing tbody tr:nth-child(odd) {
+	background: rgba(255, 255, 255, 0.03);
+}
+
+.wp-block-table.is-style-apex-timing tbody tr:hover {
+	background: rgba(232, 25, 125, 0.08);
+}
+
+.wp-block-table.is-style-apex-timing td {
+	border-bottom-color: var(--apex-line);
+}
+
+.wp-block-table.is-style-apex-timing td:first-child {
+	width: 1%;
+	white-space: nowrap;
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--large);
+	font-style: italic;
+	font-weight: 700;
+	color: var(--apex-hot);
+}
+
+.is-style-section-paper .wp-block-table.is-style-apex-timing td:first-child {
+	color: var(--apex-pink);
+}
+
+.is-style-section-paper .wp-block-table.is-style-apex-timing tbody tr:nth-child(odd) {
+	background: rgba(10, 10, 12, 0.04);
+}
+
+.is-style-section-paper .wp-block-table th,
+.is-style-section-paper .wp-block-table td {
+	border-bottom-color: rgba(10, 10, 12, 0.12);
+}
+
+.wp-block-table figcaption {
+	margin-top: 0.75em;
+}
+
+/* Details: accordion rows. */
+.wp-block-details > summary {
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--x-large);
+	font-style: italic;
+	font-weight: 800;
+	line-height: 1.05;
+	text-transform: uppercase;
+}
+
+.wp-block-details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.wp-block-details > summary::after {
+	content: "+";
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 1.6em;
+	height: 1.6em;
+	font-style: normal;
+	font-weight: 600;
+	color: var(--apex-carbon);
+	background: var(--apex-grad);
+	clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+	transition: transform 0.25s var(--apex-ease);
+}
+
+.wp-block-details[open] > summary::after {
+	transform: rotate(45deg);
+}
+
+.wp-block-details > summary:hover {
+	color: var(--apex-hot);
+}
+
+.is-style-section-paper .wp-block-details > summary:hover {
+	color: var(--apex-pink);
+}
+
+.wp-block-details > :not(summary) {
+	margin-top: var(--wp--preset--spacing--30);
+}
+
+.is-style-section-paper .wp-block-details {
+	border-bottom-color: rgba(10, 10, 12, 0.16) !important;
+}
+
+.wp-block-quote cite,
+.wp-block-pullquote cite {
+	display: block;
+	margin-top: 0.75em;
+	color: var(--apex-smoke);
+}
+
+.wp-block-pullquote {
+	border-top: 6px solid var(--apex-pink);
+	border-bottom: 2px solid var(--apex-orange);
+}
+
+/* ==========================================================================
+   7. Forms (core blocks and plain inputs)
+   ========================================================================== */
+
+:where(input[type="text"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="number"], input[type="password"], input[type="date"], select, textarea):not(.tribe-dialog *) {
+	background: var(--apex-asphalt);
+	border: 1px solid var(--apex-steel);
+	border-radius: 0;
+	color: var(--apex-chalk);
+	font: inherit;
+	padding: 0.7em 0.9em;
+}
+
+:where(input, select, textarea):not(.tribe-dialog *):focus {
+	border-color: var(--apex-pink);
+}
+
+::placeholder {
+	color: var(--apex-smoke);
+	opacity: 1;
+}
+
+.wp-block-search__input {
+	min-height: 3.1rem;
+}
+
+.wp-block-search__inside-wrapper {
+	gap: 0.5rem;
+}
+
+/* ==========================================================================
+   8. Header
+   ========================================================================== */
+
+.wp-site-blocks > header.wp-block-template-part {
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 0px);
+	z-index: 100;
+}
+
+@media (max-width: 600px) {
+	/* The admin bar scrolls away on small screens. */
+	.wp-site-blocks > header.wp-block-template-part {
+		top: 0;
+	}
+}
+
+.apex-header {
+	background: rgba(10, 10, 12, 0.97);
+	border-bottom: 1px solid var(--apex-line);
+	transition: box-shadow 0.25s ease;
+}
+
+.is-scrolled .apex-header {
+	box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.9);
+}
+
+.apex-header::after {
+	content: "";
+	display: block;
+	height: 2px;
+	background: linear-gradient(90deg, var(--apex-pink) 0 55%, transparent 55% 56%, var(--apex-orange) 56% 78%, transparent 78% 79%, var(--apex-caution) 79% 100%);
+}
+
+/* Ticker strip. */
+.apex-header__ticker {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--small);
+	font-style: italic;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-transform: uppercase;
+	min-height: 2.25rem;
+	align-items: center;
+}
+
+.apex-header__ticker a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.apex-header__ticker a:hover {
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+}
+
+.apex-header__ticker p {
+	margin: 0;
+	white-space: nowrap;
+}
+
+/* Main bar. */
+.apex-header__bar {
+	min-height: 4.5rem;
+}
+
+.apex-header .wp-block-site-logo img,
+.apex-logo img {
+	display: block;
+	height: 40px;
+	width: auto;
+}
+
+.apex-header .wp-block-navigation-item__content {
+	position: relative;
+	padding: 0.35em 0.15em;
+	color: var(--apex-chalk);
+	transition: color 0.15s ease;
+}
+
+.apex-header .wp-block-navigation-item__content::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -0.05em;
+	height: 3px;
+	background: var(--apex-grad);
+	transform: scaleX(0) skewX(-24deg);
+	transform-origin: left center;
+	transition: transform 0.25s var(--apex-ease);
+}
+
+.apex-header .wp-block-navigation-item__content:hover,
+.apex-header .wp-block-navigation-item__content[aria-current] {
+	color: #fff;
+}
+
+.apex-header .wp-block-navigation-item__content:hover::after,
+.apex-header .wp-block-navigation-item__content[aria-current]::after {
+	transform: scaleX(1) skewX(-24deg);
+}
+
+.apex-header .wp-block-navigation__responsive-container-open,
+.apex-header .wp-block-navigation__responsive-container-close {
+	color: var(--apex-chalk);
+}
+
+.apex-header .wp-block-navigation__responsive-container-open svg {
+	width: 30px;
+	height: 30px;
+}
+
+/* Seven links, a cart and a button don't fit a tablet row. Core's Navigation
+   only collapses below 600px, so collapse this header's menu below 1100px by
+   applying core's own <600px rules across that range. */
+@media (min-width: 600px) and (max-width: 1099px) {
+	.apex-header .wp-block-navigation__responsive-container-open:not(.always-shown) {
+		display: flex;
+	}
+
+	.apex-header .wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) {
+		display: none;
+	}
+}
+
+/* Mobile overlay. */
+.apex-header .wp-block-navigation__responsive-container.is-menu-open {
+	padding: clamp(1.25rem, 6vw, 3rem);
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+	background-size: 56px 56px;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open {
+	--navigation-layout-justification-setting: flex-start;
+	--navigation-layout-justify: flex-start;
+	border-left: 6px solid var(--apex-pink);
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
+	padding-top: 4rem;
+	gap: 0.5rem;
+	align-items: flex-start;
+	counter-reset: apex-nav;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
+	align-items: flex-start;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
+	counter-increment: apex-nav;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content::before {
+	content: counter(apex-nav, decimal-leading-zero);
+	display: inline-block;
+	min-width: 2.4em;
+	font-size: 0.32em;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	vertical-align: 0.95em;
+	color: var(--apex-hot);
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+	font-size: clamp(2.25rem, 10vw, 3.75rem);
+	font-weight: 900;
+	line-height: 1;
+	padding: 0.1em 0;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content::after {
+	display: none;
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item:nth-child(odd) .wp-block-navigation-item__content:hover {
+	color: var(--apex-hot);
+}
+
+.apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item:nth-child(even) .wp-block-navigation-item__content:hover {
+	color: var(--apex-orange);
+}
+
+.apex-header__cta .wp-block-button__link {
+	font-size: var(--wp--preset--font-size--medium);
+	padding: 0.8em 1.4em;
+	white-space: nowrap;
+}
+
+@media (max-width: 781px) {
+	.apex-header__bar {
+		min-height: 4rem;
+	}
+
+	.apex-header .wp-block-site-logo img,
+	.apex-logo img {
+		height: 32px;
+	}
+
+	.apex-header__cta {
+		display: none !important;
+	}
+}
+
+/* Wordmark fallback when no logo image exists. */
+.apex-wordmark {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.18em;
+	font-family: var(--apex-display);
+	font-size: 2rem;
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	letter-spacing: -0.01em;
+	text-decoration: none !important;
+	text-transform: uppercase;
+	color: var(--apex-chalk) !important;
+}
+
+.apex-wordmark__apex {
+	background: var(--apex-grad);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	padding-right: 0.06em;
+}
+
+.apex-wordmark__idaho {
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	font-size: 0.62em;
+}
+
+@media (max-width: 781px) {
+	.apex-wordmark--header {
+		font-size: 1.6rem;
+	}
+}
+
+/* ==========================================================================
+   9. Ticker group style (header strip, discipline bands)
+   ========================================================================== */
+
+.wp-block-group.is-style-apex-ticker {
+	overflow: hidden;
+	white-space: nowrap;
+	flex-wrap: nowrap !important;
+}
+
+.apex-ticker__track {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: inherit;
+	width: max-content;
+}
+
+.apex-ticker__track.is-measured {
+	animation: apex-marquee var(--apex-ticker-duration, 45s) linear infinite;
+}
+
+.apex-ticker__track > * {
+	flex: none;
+	margin: 0 !important;
+}
+
+.wp-block-group.is-style-apex-ticker:hover .apex-ticker__track,
+.wp-block-group.is-style-apex-ticker:focus-within .apex-ticker__track {
+	animation-play-state: paused;
+}
+
+@keyframes apex-marquee {
+	to {
+		transform: translateX(var(--apex-ticker-shift, -50%));
+	}
+}
+
+/* Separator glyph between ticker items. */
+.wp-block-group.is-style-apex-ticker .apex-ticker__track > *::after,
+.wp-block-group.is-style-apex-ticker .apex-events--ticker .apex-ticker-item::after {
+	content: "///";
+	margin-left: var(--apex-ticker-gap, 1.5rem);
+	opacity: 0.55;
+	font-style: normal;
+	letter-spacing: -0.08em;
+}
+
+.wp-block-group.is-style-apex-ticker .apex-ticker__track > .apex-events--ticker::after {
+	content: none;
+}
+
+.apex-band-ticker {
+	--apex-ticker-gap: 2.25rem;
+}
+
+.apex-band-ticker p {
+	margin: 0;
+	font-family: var(--apex-display);
+	font-weight: 900;
+	font-style: italic;
+	text-transform: uppercase;
+	line-height: 1;
+}
+
+.apex-band-ticker p:nth-child(even) {
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: 2px currentColor;
+}
+
+/* ==========================================================================
+   10. Page hero (page, archive, single templates)
+   ========================================================================== */
+
+/* Long titles wrap evenly instead of leaving one word on the last line. */
+.apex-page-hero .wp-block-post-title,
+.apex-page-hero .wp-block-query-title {
+	text-wrap: balance;
+}
+
+.apex-crumb {
+	font-family: var(--apex-display);
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	font-size: var(--wp--preset--font-size--small);
+}
+
+/* ==========================================================================
+   11. Cards: posts, paths, perks, partners
+   ========================================================================== */
+
+.apex-card {
+	position: relative;
+	transition: transform 0.25s var(--apex-ease), border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.apex-card:hover {
+	border-color: rgba(232, 25, 125, 0.55) !important;
+}
+
+/* Text link with a travelling arrow. */
+.apex-link-arrow a {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--large);
+	font-style: italic;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: var(--apex-chalk);
+}
+
+.apex-link-arrow a::after {
+	content: "→";
+	display: inline-block;
+	margin-left: 0.5em;
+	font-style: normal;
+	color: var(--apex-hot);
+	transition: transform 0.2s var(--apex-ease);
+}
+
+.apex-link-arrow a:hover::after,
+.apex-card:hover .apex-link-arrow a::after {
+	transform: translateX(5px);
+}
+
+.is-style-section-paper .apex-link-arrow a,
+.is-style-section-hot .apex-link-arrow a {
+	color: var(--apex-carbon);
+}
+
+.is-style-section-paper .apex-link-arrow a::after {
+	color: var(--apex-pink);
+}
+
+/* Stretched link: the card's link covers the whole card. */
+.apex-card .apex-card__link a::before,
+.apex-card .wp-block-post-title a::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+.apex-card .wp-block-post-featured-image {
+	overflow: hidden;
+}
+
+.apex-card .wp-block-post-featured-image img {
+	transition: transform 0.5s var(--apex-ease);
+}
+
+.apex-card:hover .wp-block-post-featured-image img {
+	transform: scale(1.04);
+}
+
+/* Path cards (Drive / Watch / Shoot). */
+.apex-path {
+	position: relative;
+	overflow: hidden;
+}
+
+.apex-path::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 5px;
+	background: var(--apex-grad);
+	transform: scaleY(0.25);
+	transform-origin: top;
+	transition: transform 0.35s var(--apex-ease);
+}
+
+.apex-path:hover::before {
+	transform: scaleY(1);
+}
+
+.apex-path .apex-index {
+	font-size: clamp(4rem, 9vw, 7rem);
+	margin: 0;
+}
+
+/* Stat strip. */
+.apex-stats > .wp-block-column {
+	border-left: 1px solid var(--apex-line-strong);
+	padding-left: var(--wp--preset--spacing--40);
+}
+
+.apex-stat__num {
+	margin: 0;
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--huge);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 0.9;
+	text-transform: uppercase;
+	background: var(--apex-grad);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	width: fit-content;
+	padding-right: 0.1em;
+}
+
+.apex-stat__label {
+	margin: 0.35rem 0 0;
+	font-family: var(--apex-display);
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--apex-smoke);
+}
+
+/* Perk tiles. */
+.apex-perk .apex-index {
+	font-size: 3.25rem;
+	margin: 0;
+	-webkit-text-stroke-width: 1.5px;
+}
+
+.is-style-section-paper .apex-index {
+	-webkit-text-stroke-color: var(--apex-pink);
+}
+
+/* Media partner cards. */
+.apex-partner {
+	position: relative;
+}
+
+.apex-partner .apex-partner-photo {
+	margin: 0;
+}
+
+.apex-partner__links {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 0.35rem;
+	font-size: var(--wp--preset--font-size--small);
+}
+
+.apex-partner__links a {
+	color: var(--apex-smoke);
+	text-decoration: none;
+	word-break: break-word;
+}
+
+.apex-partner__links a:hover {
+	color: var(--apex-hot);
+}
+
+.apex-partner__links li::before {
+	content: "▸";
+	color: var(--apex-pink);
+	margin-right: 0.55em;
+	font-size: 0.8em;
+}
+
+/* ==========================================================================
+   12. Footer
+   ========================================================================== */
+
+.apex-footer__main {
+	position: relative;
+	overflow: hidden;
+}
+
+/* Watermark: decorative, given empty alt text so screen readers skip it. */
+.apex-footer__main::before {
+	content: "APEX IDAHO";
+	content: "APEX IDAHO" / "";
+	position: absolute;
+	left: -0.04em;
+	bottom: -0.2em;
+	font-family: var(--apex-display);
+	font-size: clamp(5rem, 19vw, 17rem);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+	white-space: nowrap;
+	color: transparent;
+	-webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+	pointer-events: none;
+}
+
+.apex-footer__main > * {
+	position: relative;
+}
+
+.apex-footer h2 {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--small);
+	font-style: normal;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	color: var(--apex-hot);
+}
+
+.apex-footer__links {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 0.4rem;
+}
+
+.apex-footer__links a {
+	font-family: var(--apex-display);
+	font-size: var(--wp--preset--font-size--large);
+	font-style: italic;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--apex-chalk);
+}
+
+.apex-footer__links a:hover {
+	color: var(--apex-hot);
+}
+
+.apex-footer__bottom {
+	border-top: 1px solid var(--apex-line);
+}
+
+.apex-footer__bottom p {
+	margin: 0;
+}
+
+.apex-footer .wp-block-site-logo img,
+.apex-logo--footer img {
+	height: 52px;
+	width: auto;
+}
+
+/* Social icons as slanted tiles. */
+.apex-social.wp-block-social-links {
+	gap: 0.5rem;
+}
+
+.apex-social .wp-social-link {
+	background: var(--apex-graphite) !important;
+	color: var(--apex-chalk) !important;
+	border-radius: 0 !important;
+	clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+	transition: background 0.2s ease, transform 0.2s var(--apex-ease);
+}
+
+.apex-social .wp-social-link:hover {
+	background: var(--apex-pink) !important;
+	color: var(--apex-carbon) !important;
+	transform: translateX(2px);
+}
+
+.apex-social .wp-social-link a {
+	padding: 0.7rem 0.95rem !important;
+	color: inherit !important;
+}
+
+.apex-social .wp-social-link svg {
+	width: 1.15rem;
+	height: 1.15rem;
+}
+
+/* Sponsor strip in the footer. */
+.apex-sponsor-strip {
+	border-top: 4px solid var(--apex-pink);
+}
+
+/* ==========================================================================
+   13. Media package upload (WooCommerce product page)
+   ========================================================================== */
+
+.apex-car-photo-field {
+	margin: 1.25rem 0;
+	padding: 1.25rem;
+	border: 1px solid var(--apex-pink);
+	border-left-width: 5px;
+	background: rgba(232, 25, 125, 0.06);
+}
+
+.apex-car-photo-field label {
+	display: block;
+	margin: 1rem 0 0.35rem;
+	font-weight: 700;
+}
+
+.apex-car-photo-field__title {
+	margin: 0 0 0.5rem;
+	font-weight: 700;
+}
+
+.apex-car-photo-field__req {
+	color: var(--apex-hot);
+}
+
+.apex-car-photo-field__hint {
+	margin: 0 0 0.4rem;
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--apex-smoke);
+}
+
+.apex-car-photo-field textarea {
+	width: 100%;
+}
+
+/* ==========================================================================
+   14. Motion preferences
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.apex-ticker__track {
+		animation: none !important;
+	}
+}

@@ -12,7 +12,7 @@
 	margin: 0;
 	padding: 0;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
 	gap: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -191,6 +191,44 @@
 
 .apex-event-card:hover .apex-event-card__cta .apex-arrow {
 	transform: translateX(5px);
+}
+
+/* A lone event gets the whole row as a wide, horizontal feature card
+   instead of one stretched tile. */
+.apex-events__cards:has(> .apex-event-card:only-child) {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 782px) {
+	.apex-event-card:only-child {
+		flex-direction: row;
+	}
+
+	.apex-event-card:only-child .apex-event-card__media {
+		flex: 0 0 52%;
+		aspect-ratio: auto;
+		min-height: 340px;
+	}
+
+	.apex-event-card:only-child .apex-event-card__media img,
+	.apex-event-card:only-child .apex-event-card__placeholder {
+		position: absolute;
+		inset: 0;
+		clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+	}
+
+	.apex-event-card:only-child .apex-event-card__body {
+		justify-content: center;
+		padding: var(--wp--preset--spacing--50);
+	}
+
+	.apex-event-card:only-child .apex-event-card__date {
+		margin-top: 0 !important;
+	}
+
+	.apex-event-card:only-child .apex-event-card__title {
+		font-size: var(--wp--preset--font-size--xx-large);
+	}
 }
 
 /* ==========================================================================

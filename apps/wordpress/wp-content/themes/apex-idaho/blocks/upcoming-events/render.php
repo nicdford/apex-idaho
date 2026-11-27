@@ -111,11 +111,8 @@ $apex_show_image = ! isset( $attributes['showImage'] ) || $attributes['showImage
 				<li class="apex-event-card<?php echo $apex_show_image ? '' : ' has-no-media'; ?>">
 					<?php if ( $apex_show_image ) : ?>
 						<div class="apex-event-card__media" aria-hidden="true">
-							<?php if ( $apex_event['image'] ) : ?>
-								<img src="<?php echo esc_url( $apex_event['image'] ); ?>" alt="" loading="lazy" decoding="async">
-							<?php else : ?>
-								<span class="apex-event-card__placeholder"></span>
-							<?php endif; ?>
+							<?php // Events without a featured image use the theme's drift photo, as the single event page does. ?>
+							<img src="<?php echo esc_url( $apex_event['image'] ? $apex_event['image'] : get_theme_file_uri( 'assets/images/hero-drift.jpg' ) ); ?>" alt="" loading="lazy" decoding="async">
 							<span class="apex-event-card__num"><?php echo esc_html( str_pad( (string) ( $apex_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 						</div>
 					<?php endif; ?>

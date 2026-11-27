@@ -21,24 +21,6 @@ in the media library (`uploads/2023/07/APEX_Idaho_logo-2.png`) or imports the
 bundled copy. Change it in Site Editor → Header → logo. Before activation (in
 Live Preview) the header shows the bundled copy.
 
-## Role in the headless setup
-
-The public site is moving to a Next.js front end (`apps/web`). Events,
-tickets, the WooCommerce shop, news posts and sponsors stay managed in
-WordPress; page content moves into the app. This theme stays active on
-WordPress and does two jobs there:
-
-- It renders the pages WordPress keeps serving after the switch: event pages
-  with the ticket form, cart, checkout, shop, account and forms. These match
-  the Next.js site because both use this design.
-- It is the single source of the design. `apps/web` generates its CSS tokens
-  from `theme.json` and `styles/sections/` and copies `assets/css/theme.css`
-  and `blocks/blocks.css`. After changing any of them, run
-  `npm run sync:tokens` in `apps/web` and commit both; CI fails otherwise.
-
-Everything below still applies, and the theme works on its own if the
-headless front end is rolled back. See `apps/web/README.md` for the cutover.
-
 ## Cutting over from Beaver Builder
 
 Both themes deploy side by side (the workflow mirrors the whole `themes/`

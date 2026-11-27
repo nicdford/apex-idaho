@@ -2,23 +2,11 @@
 
 Wordpress + Docker + Commonly used tools to build beautiful sites.
 
-## Public site (headless)
-
-- `apps/web/`: the Next.js front end. Events, tickets and the WooCommerce
-  shop are still managed (and sold) in WordPress; the app reads events, ticket
-  availability, news posts and sponsors over the REST API, and keeps page
-  content as static files. WordPress serves checkout, ticket purchase,
-  accounts and forms. Setup, deployment and the domain cutover are in its
-  [README](apps/web/README.md).
-- `apps/wordpress/wp-content/plugins/apex-headless/`: the WordPress side of it
-  (the sponsors endpoint and the cache-refresh webhook).
-
 ## Themes
 
 - `apps/wordpress/wp-content/themes/apex-idaho/`: the Gutenberg block theme
-  that replaces Beaver Builder. It styles the pages WordPress keeps serving
-  and is the design source for `apps/web`. Cutover steps, editing guide and
-  dev notes are in its [README](apps/wordpress/wp-content/themes/apex-idaho/README.md).
+  that replaces Beaver Builder. Cutover steps, editing guide and dev notes are
+  in its [README](apps/wordpress/wp-content/themes/apex-idaho/README.md).
 - `bb-theme` + `bb-theme-child`: the Beaver Builder theme currently live. Kept
   deployable for rollback until the switch is done.
 

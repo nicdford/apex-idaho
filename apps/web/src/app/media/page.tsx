@@ -1,47 +1,16 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { Button, Buttons } from '@/components/Button';
 import { Eyebrow } from '@/components/Eyebrow';
 import { PageHero } from '@/components/PageHero';
-import { applicationLink, contact, mediaPackageLink, partnerGroups, rules, type Partner } from '@/content/media';
-import { getMediaPartnerPhotos, type MediaPartnerPhoto } from '@/lib/wp';
+import { PersonCard } from '@/components/PersonCard';
+import { applicationLink, contact, mediaPackageLink, partnerGroups, rules } from '@/content/media';
 
 export const metadata: Metadata = {
   title: 'Media',
   description: 'Official APEX Idaho media partners, the media package for drivers, and how to apply for media credentials.',
 };
 
-function PartnerCard({ partner, photo }: { partner: Partner; photo?: MediaPartnerPhoto }) {
-  return (
-    <article className="apex-partner apex-card is-style-section-panel" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
-      {photo?.photo ? (
-        <figure className="apex-partner-photo">
-          <Image src={photo.photo.url} alt={partner.name} width={photo.photo.width} height={photo.photo.height} sizes="(max-width: 700px) 100vw, 25vw" style={{ objectPosition: photo.focal }} />
-        </figure>
-      ) : (
-        <figure className="apex-partner-photo is-placeholder">
-          <span className="apex-partner-photo__initials" aria-hidden="true">
-            {partner.initials}
-          </span>
-        </figure>
-      )}
-      <div className="apex-stack apex-stack--sm" style={{ padding: 'var(--wp--preset--spacing--30) var(--wp--preset--spacing--40) var(--wp--preset--spacing--40)' }}>
-        <p className="is-style-apex-eyebrow has-x-small-font-size">{partner.specialty}</p>
-        <h3 className="wp-block-heading has-xx-large-font-size">{partner.name}</h3>
-        <p className="has-smoke-color">{partner.business}</p>
-        <ul className="apex-partner__links" role="list">
-          {partner.links.map((link) => (
-            <li key={link.label}>{link.href ? <a href={link.href}>{link.label}</a> : link.label}</li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
-}
-
-export default async function MediaPage() {
-  const photos = await getMediaPartnerPhotos();
-
+export default function MediaPage() {
   return (
     <>
       <PageHero eyebrow="APEX Idaho" title={<>Me<strong>dia</strong></>} lede="Come capture the magic that is APEX Idaho events.">
@@ -107,7 +76,7 @@ export default async function MediaPage() {
               )}
               <div className="apex-grid">
                 {group.partners.map((p) => (
-                  <PartnerCard key={p.slug} partner={p} photo={photos[p.slug]} />
+                  <PersonCard key={p.slug} person={p} />
                 ))}
               </div>
             </div>

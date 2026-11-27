@@ -2,7 +2,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 import type { Tag } from '@/lib/wp';
 
-const TAGS: Tag[] = ['site', 'events', 'sponsors', 'partners', 'pages', 'posts'];
+const TAGS: Tag[] = ['events', 'sponsors', 'posts'];
 
 function authorized(header: string | null): boolean {
   const secret = process.env.REVALIDATE_SECRET;

@@ -22,6 +22,7 @@ type TecEvent = {
   end_date: string;
   utc_start_date?: string;
   utc_end_date?: string;
+  timezone?: string;
   all_day: boolean;
   cost: string;
   ticketed?: string[] | false;
@@ -47,6 +48,8 @@ export type ApexEvent = {
   /** Milliseconds since the epoch, or null when the API gave no UTC time. */
   startsAt: number | null;
   endsAt: number | null;
+  /** IANA zone the event's wall-clock times are in, e.g. "America/Boise". */
+  timezone: string | null;
   allDay: boolean;
   cost: string;
   ticketed: boolean;
@@ -73,6 +76,7 @@ function normalize(e: TecEvent): ApexEvent {
     end: e.end_date,
     startsAt: Number.isFinite(startsAt) ? startsAt : null,
     endsAt: Number.isFinite(endsAt) ? endsAt : null,
+    timezone: e.timezone || null,
     allDay: !!e.all_day,
     cost: decodeEntities(e.cost),
     ticketed: Array.isArray(e.ticketed) ? e.ticketed.length > 0 : !!e.ticketed,
@@ -166,6 +170,9 @@ export function mapUrl(event: ApexEvent): string | null {
 }
 
 /* ---------------------------------------------------------------- timing -- */
+
+/** The current time, for server components (cached pages re-render on revalidation). */
+export const renderTime = () => Date.now();
 
 /** True until the event has ended (or when the API gave no end time). */
 export function isUpcoming(event: ApexEvent, now = Date.now()): boolean {

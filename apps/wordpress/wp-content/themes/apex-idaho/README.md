@@ -23,9 +23,10 @@ Live Preview) the header shows the bundled copy.
 
 ## Role in the headless setup
 
-The public site is moving to a Next.js front end (`apps/web`) that reads
-WordPress over the REST API. This theme stays active on WordPress and does two
-jobs there:
+The public site is moving to a Next.js front end (`apps/web`). Events,
+tickets, the WooCommerce shop, news posts and sponsors stay managed in
+WordPress; page content moves into the app. This theme stays active on
+WordPress and does two jobs there:
 
 - It renders the pages WordPress keeps serving after the switch: event pages
   with the ticket form, cart, checkout, shop, account and forms. These match

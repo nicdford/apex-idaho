@@ -1,30 +1,34 @@
 /**
- * Media page copy and partner details (WordPress: patterns/page-media.php,
- * media-partners.php, media-rules.php). Photos and focal points come from the
- * Media Partner posts in WordPress, matched by slug.
+ * Media page copy, partners and rules. Static content: edit here and deploy.
+ * Photos live in public/images/partners; focal points are CSS object-position.
  */
+import type { Person } from '@/components/PersonCard';
 import { WORDPRESS_PUBLIC_URL } from '@/lib/config';
+import danielle from '../../public/images/partners/danielle-choutdara.jpg';
+import jordan from '../../public/images/partners/jordan-van-diest.jpg';
+import lyndon from '../../public/images/partners/lyndon-hunter.jpg';
+import mathew from '../../public/images/partners/mathew-perez.jpg';
+import orion from '../../public/images/partners/orion-martin.jpg';
 
-export type PartnerLink = { label: string; href?: string };
-export type Partner = { slug: string; initials: string; specialty: string; name: string; business: string; links: PartnerLink[] };
+export type Partner = Person & { slug: string };
 
 export const partnerGroups: { label: string; partners: Partner[] }[] = [
   {
     label: 'Official',
     partners: [
-      { slug: 'danielle-choutdara', initials: 'DC', specialty: 'Photography', name: 'Danielle Choutdara', business: 'DC Photography', links: [{ label: '@dc_photography444', href: 'https://www.instagram.com/dc_photography444' }, { label: 'daniellelea444@gmail.com', href: 'mailto:daniellelea444@gmail.com' }] },
-      { slug: 'lyndon-hunter', initials: 'LH', specialty: 'Photography', name: 'Lyndon Hunter', business: 'LyndonNotFound', links: [{ label: '@lyndonnotfound', href: 'https://www.instagram.com/lyndonnotfound' }, { label: 'lyndonhunter404@gmail.com', href: 'mailto:lyndonhunter404@gmail.com' }, { label: 'lyndonnotfound.squarespace.com', href: 'https://lyndonnotfound.squarespace.com' }] },
-      { slug: 'mathew-perez', initials: 'MP', specialty: 'Videography', name: 'Mathew Perez', business: 'Lucid Videography', links: [{ label: '@lucid_videography', href: 'https://www.instagram.com/lucid_videography' }, { label: 'perezhouse.mlp@gmail.com', href: 'mailto:perezhouse.mlp@gmail.com' }, { label: 'YouTube channel' }] },
-      { slug: 'orion-martin', initials: 'OM', specialty: 'Photography', name: 'Orion Martin', business: 'Instant Crush', links: [{ label: '@instantcrush.photo', href: 'https://www.instagram.com/instantcrush.photo' }, { label: 'orionmartinmarketing@gmail.com', href: 'mailto:orionmartinmarketing@gmail.com' }, { label: 'instantcrushphoto.darkroom.com', href: 'https://instantcrushphoto.darkroom.com' }] },
-      { slug: 'jordan-van-diest', initials: 'JV', specialty: 'Photography & Media', name: 'Jordan Van Diest', business: 'Platinum Media', links: [{ label: '@platinummediallc', href: 'https://www.instagram.com/platinummediallc' }, { label: 'platinummedia208@gmail.com', href: 'mailto:platinummedia208@gmail.com' }, { label: 'linktr.ee/platinummediallc', href: 'https://linktr.ee/platinummediallc' }] },
+      { slug: 'danielle-choutdara', initials: 'DC', kicker: 'Photography', name: 'Danielle Choutdara', detail: 'DC Photography', photo: danielle, focal: '35% 35%', links: [{ label: '@dc_photography444', href: 'https://www.instagram.com/dc_photography444' }, { label: 'daniellelea444@gmail.com', href: 'mailto:daniellelea444@gmail.com' }] },
+      { slug: 'lyndon-hunter', initials: 'LH', kicker: 'Photography', name: 'Lyndon Hunter', detail: 'LyndonNotFound', photo: lyndon, focal: '45% 39%', links: [{ label: '@lyndonnotfound', href: 'https://www.instagram.com/lyndonnotfound' }, { label: 'lyndonhunter404@gmail.com', href: 'mailto:lyndonhunter404@gmail.com' }, { label: 'lyndonnotfound.squarespace.com', href: 'https://lyndonnotfound.squarespace.com' }] },
+      { slug: 'mathew-perez', initials: 'MP', kicker: 'Videography', name: 'Mathew Perez', detail: 'Lucid Videography', photo: mathew, focal: '47% 48%', links: [{ label: '@lucid_videography', href: 'https://www.instagram.com/lucid_videography' }, { label: 'perezhouse.mlp@gmail.com', href: 'mailto:perezhouse.mlp@gmail.com' }, { label: 'YouTube channel' }] },
+      { slug: 'orion-martin', initials: 'OM', kicker: 'Photography', name: 'Orion Martin', detail: 'Instant Crush', photo: orion, focal: '54% 37%', links: [{ label: '@instantcrush.photo', href: 'https://www.instagram.com/instantcrush.photo' }, { label: 'orionmartinmarketing@gmail.com', href: 'mailto:orionmartinmarketing@gmail.com' }, { label: 'instantcrushphoto.darkroom.com', href: 'https://instantcrushphoto.darkroom.com' }] },
+      { slug: 'jordan-van-diest', initials: 'JV', kicker: 'Photography & Media', name: 'Jordan Van Diest', detail: 'Platinum Media', photo: jordan, focal: '45% 52%', links: [{ label: '@platinummediallc', href: 'https://www.instagram.com/platinummediallc' }, { label: 'platinummedia208@gmail.com', href: 'mailto:platinummedia208@gmail.com' }, { label: 'linktr.ee/platinummediallc', href: 'https://linktr.ee/platinummediallc' }] },
     ],
   },
   {
     label: 'New for 2026',
     partners: [
-      { slug: 'caleb-anderson', initials: 'CA', specialty: 'Drone', name: 'Caleb Anderson', business: 'Caleb Aerials', links: [{ label: '@caleb.aerials', href: 'https://www.instagram.com/caleb.aerials' }, { label: 'caleb.aerials@gmail.com', href: 'mailto:caleb.aerials@gmail.com' }, { label: 'linktr.ee/caleb.aerials', href: 'https://linktr.ee/caleb.aerials' }] },
-      { slug: 'john-dow-ii', initials: 'JD', specialty: 'Photography', name: 'John Dow II', business: 'F83 Photos', links: [{ label: '@f83photos', href: 'https://www.instagram.com/f83photos' }, { label: 'f83photos@icloud.com', href: 'mailto:f83photos@icloud.com' }, { label: 'f83photos.com', href: 'https://f83photos.com' }] },
-      { slug: 'john-kisiel', initials: 'JK', specialty: 'Photography', name: 'John Kisiel', business: 'John Kisiel Photography', links: [{ label: '@john.kisiel', href: 'https://www.instagram.com/john.kisiel' }, { label: 'johnraymondkisiel@gmail.com', href: 'mailto:johnraymondkisiel@gmail.com' }, { label: 'johnkisielphotography.pixieset.com', href: 'https://johnkisielphotography.pixieset.com' }] },
+      { slug: 'caleb-anderson', initials: 'CA', kicker: 'Drone', name: 'Caleb Anderson', detail: 'Caleb Aerials', links: [{ label: '@caleb.aerials', href: 'https://www.instagram.com/caleb.aerials' }, { label: 'caleb.aerials@gmail.com', href: 'mailto:caleb.aerials@gmail.com' }, { label: 'linktr.ee/caleb.aerials', href: 'https://linktr.ee/caleb.aerials' }] },
+      { slug: 'john-dow-ii', initials: 'JD', kicker: 'Photography', name: 'John Dow II', detail: 'F83 Photos', links: [{ label: '@f83photos', href: 'https://www.instagram.com/f83photos' }, { label: 'f83photos@icloud.com', href: 'mailto:f83photos@icloud.com' }, { label: 'f83photos.com', href: 'https://f83photos.com' }] },
+      { slug: 'john-kisiel', initials: 'JK', kicker: 'Photography', name: 'John Kisiel', detail: 'John Kisiel Photography', links: [{ label: '@john.kisiel', href: 'https://www.instagram.com/john.kisiel' }, { label: 'johnraymondkisiel@gmail.com', href: 'mailto:johnraymondkisiel@gmail.com' }, { label: 'johnkisielphotography.pixieset.com', href: 'https://johnkisielphotography.pixieset.com' }] },
     ],
   },
 ];

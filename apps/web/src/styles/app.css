@@ -852,3 +852,166 @@ html.has-modal-open {
 	display: flex;
 	align-items: center;
 }
+
+/* ==========================================================================
+   Tech & rules
+   ========================================================================== */
+
+.apex-rules-card {
+	padding: var(--wp--preset--spacing--40);
+	border-top: 5px solid var(--wp--preset--color--red);
+}
+
+.apex-rules {
+	list-style: none;
+	counter-reset: apex-rule;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 1rem;
+}
+
+.apex-rules > li {
+	counter-increment: apex-rule;
+	position: relative;
+	padding-left: 2.75rem;
+}
+
+.apex-rules > li::before {
+	content: counter(apex-rule, decimal-leading-zero);
+	position: absolute;
+	left: 0;
+	top: -0.15em;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.4em;
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1.2;
+	color: var(--wp--preset--color--red);
+}
+
+.apex-rules ul,
+.apex-rules ol {
+	margin: 0.45rem 0 0;
+	padding-left: 1.25rem;
+	display: grid;
+	gap: 0.3rem;
+	color: var(--wp--preset--color--steel);
+}
+
+.apex-conduct {
+	display: grid;
+	gap: 1rem;
+}
+
+/* Printing (the Tech & rules sheet): black on white, no site chrome. */
+@media print {
+	.apex-site-header,
+	.apex-footer,
+	.apex-skip-link,
+	.apex-print-hide {
+		display: none !important;
+	}
+
+	*,
+	*::before,
+	*::after {
+		color: #000 !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	.apex-page-hero,
+	.apex-section {
+		padding-block: 0 1rem !important;
+	}
+
+	.apex-rules-card {
+		padding: 0;
+		border-top-color: #000;
+	}
+
+	.apex-rules > li {
+		break-inside: avoid;
+	}
+
+	.is-style-apex-diamonds > li::before {
+		background: #000 !important;
+	}
+}
+
+/* ==========================================================================
+   Tickets (event page; managed in WordPress)
+   ========================================================================== */
+
+.apex-tickets {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--wp--preset--color--steel);
+}
+
+.apex-ticket {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.75rem 2rem;
+	padding-block: 1.1rem;
+	border-bottom: 1px solid var(--wp--preset--color--steel);
+}
+
+.apex-ticket__main {
+	flex: 1 1 20rem;
+	min-width: 0;
+}
+
+.apex-ticket__name {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--x-large);
+	line-height: 1;
+}
+
+.apex-ticket__desc {
+	margin: 0.45rem 0 0;
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--smoke);
+}
+
+.apex-ticket__side {
+	flex: 0 0 auto;
+	text-align: right;
+}
+
+.apex-ticket__price {
+	margin: 0;
+	padding-right: 0.08em; /* italic overhang */
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--xx-large);
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1;
+}
+
+.apex-ticket__status {
+	margin: 0.4rem 0 0;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	line-height: 1;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--red-bright);
+}
+
+.apex-ticket.is-unavailable .apex-ticket__price,
+.apex-ticket.is-unavailable .apex-ticket__status {
+	color: var(--wp--preset--color--smoke);
+}
+
+@media (max-width: 599px) {
+	.apex-ticket__side {
+		text-align: left;
+	}
+}

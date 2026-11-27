@@ -5,8 +5,10 @@ import { Button, Buttons } from '@/components/Button';
 import { Countdown } from '@/components/Countdown';
 import { EventCards } from '@/components/EventCards';
 import { Eyebrow } from '@/components/Eyebrow';
+import { TicketList } from '@/components/TicketList';
 import { WordPressContent } from '@/components/WordPressContent';
-import { eventDescriptionHtml, formatDateRange, formatStart, getEvent, getPastEvents, getUpcomingEvents, hasNotStarted, isUpcoming, mapUrl, type ApexEvent } from '@/lib/events';
+import { eventDescriptionHtml, formatDateRange, formatStart, getEvent, getPastEvents, getUpcomingEvents, hasNotStarted, isUpcoming, mapUrl, renderTime, type ApexEvent } from '@/lib/events';
+import { getTickets } from '@/lib/tickets';
 import heroImage from '../../../../public/images/hero-drift.jpg';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -44,8 +46,10 @@ export default async function EventPage({ params }: Props) {
   const event = await getEvent(slug);
   if (!event) notFound();
 
-  const upcoming = isUpcoming(event);
-  const others = (await getUpcomingEvents(4)).filter((e) => e.id !== event.id).slice(0, 3);
+  const now = renderTime();
+  const upcoming = isUpcoming(event, now);
+  const [upcomingEvents, tickets] = await Promise.all([getUpcomingEvents(4), upcoming ? getTickets(event) : Promise.resolve([])]);
+  const others = upcomingEvents.filter((e) => e.id !== event.id).slice(0, 3);
   const map = mapUrl(event);
   const calendar = gcal(event);
 
@@ -102,7 +106,7 @@ export default async function EventPage({ params }: Props) {
             ) : (
               <Image src={heroImage} alt="" sizes="(max-width: 900px) 100vw, 48vw" priority placeholder="blur" />
             )}
-            {event.startsAt && hasNotStarted(event) ? <Countdown target={event.startsAt} label="Lights out in" /> : null}
+            {event.startsAt && hasNotStarted(event, now) ? <Countdown target={event.startsAt} label="Lights out in" /> : null}
           </div>
         </div>
       </section>
@@ -111,7 +115,18 @@ export default async function EventPage({ params }: Props) {
         <div className="apex-wrap apex-wrap--narrow apex-stack apex-stack--lg">
           <Eyebrow>Event details</Eyebrow>
           <WordPressContent html={eventDescriptionHtml(event)} />
-          {upcoming && (event.ticketed || event.cost) ? (
+          {tickets.length ? (
+            <div id="tickets" className="apex-stack apex-stack--lg" style={{ marginTop: 'var(--wp--preset--spacing--40)' }}>
+              <h2 className="wp-block-heading has-xx-large-font-size">
+                Tick<strong>ets</strong>
+              </h2>
+              <TicketList event={event} tickets={tickets} now={now} />
+              <Buttons>
+                <Button href={event.ticketsUrl}>Buy tickets</Button>
+              </Buttons>
+              <p className="has-smoke-color has-small-font-size">You&rsquo;ll pick your tickets and check out through the APEX Idaho store.</p>
+            </div>
+          ) : upcoming && (event.ticketed || event.cost) ? (
             <p className="has-smoke-color">
               Tickets, driver entries and any extras are sold on the event&rsquo;s ticket page. You&rsquo;ll check out through the APEX Idaho store.
             </p>

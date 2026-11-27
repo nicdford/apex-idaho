@@ -3,7 +3,7 @@
  * paths-three, split-series-media, cta-line). Events and the countdown come
  * from WordPress; everything here is editable text.
  */
-import { WORDPRESS_PUBLIC_URL } from '@/lib/config';
+import { KBD_STANDINGS_URL, WORDPRESS_PUBLIC_URL } from '@/lib/config';
 
 export const hero = {
   eyebrow: 'Drift · Grip · Comp Series',
@@ -42,7 +42,7 @@ export const series = {
   eyebrow: 'Points on the line',
   title: 'KBD Comp Series',
   body: 'Hot laps, comp layouts and fields capped at sixteen drivers. Every round counts — follow the standings as the season plays out.',
-  link: { label: 'View standings', href: '/kbd-comp' },
+  link: { label: 'View standings', href: KBD_STANDINGS_URL },
 };
 
 export const mediaPackage = {

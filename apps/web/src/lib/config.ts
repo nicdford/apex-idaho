@@ -22,6 +22,9 @@ export const SITE_NAME = 'APEX Idaho';
 export const SITE_DESCRIPTION =
   'Drift, grip and full-throttle competition across Idaho. Every skill level on track, spectators welcome.';
 
+/** KBD Comp Series standings (series manager). Update each season; /kbd-comp redirects here. */
+export const KBD_STANDINGS_URL = 'https://series-manager.fly.dev/s/2026-kbd-comp-series';
+
 export type NavItem = { label: string; href: string };
 
 export const PRIMARY_NAV: NavItem[] = [
@@ -47,8 +50,9 @@ export const FOOTER_NAV: { heading: string; links: NavItem[] }[] = [
     heading: 'Drivers',
     links: [
       { label: 'Tech & Rules', href: '/tech-rules' },
-      { label: 'KBD Standings', href: '/kbd-comp' },
+      { label: 'KBD Standings', href: KBD_STANDINGS_URL },
       { label: 'Media Package', href: `${WORDPRESS_PUBLIC_URL}/product/media-package/` },
+      { label: 'Refund Policy', href: '/refund-policy' },
     ],
   },
   {
@@ -62,5 +66,8 @@ export const FOOTER_NAV: { heading: string; links: NavItem[] }[] = [
 
 export const CART_URL = `${WORDPRESS_PUBLIC_URL}/cart/`;
 
-/** Instagram handle the media rules ask photographers to tag; used when WordPress has none. */
-export const DEFAULT_SOCIAL = { instagram: 'https://www.instagram.com/apex_idaho/' };
+/** Social profiles shown in the footer (keys match the icons in components/SocialLinks). */
+export const SOCIAL: Record<string, string> = {
+  instagram: 'https://www.instagram.com/apex_idaho/',
+  facebook: 'https://www.facebook.com/profile.php?id=100091864913810',
+};

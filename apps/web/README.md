@@ -1,9 +1,11 @@
 # APEX Idaho web
 
-The public site: a Next.js app that reads content from WordPress over the REST
-API. WordPress stays the backend, where staff edit events, pages, posts,
-sponsors and media partners, and it keeps serving everything that takes money
-or personal details: cart, checkout, ticket purchase, accounts and forms.
+The public site: a Next.js app. WordPress stays the backend for the things
+that change week to week and take money: **events, tickets and the WooCommerce
+shop** are created, priced and sold in WordPress exactly as before, and
+WordPress keeps serving cart, checkout, ticket purchase, accounts and forms.
+News posts and sponsors are also edited there. Everything else (page copy,
+the team, media partners, tech rules) is static content in this app.
 
 ```
 visitor ──▶ Next.js (this app)  ──REST──▶  WordPress (apps/wordpress)
@@ -18,20 +20,31 @@ visitor ──▶ Next.js (this app)  ──REST──▶  WordPress (apps/wordp
 
 | Page | Served by | Content comes from |
 | --- | --- | --- |
-| Home `/` | Next | Copy in `src/content/home.ts`; events from The Events Calendar |
-| Events `/events`, `/events/[slug]` | Next | The Events Calendar REST API |
-| Sponsors `/sponsors` | Next | `sponsor` posts, via `apex/v1/sponsors` |
-| Media `/media` | Next | Copy in `src/content/media.ts`; partner photos from `apex/v1/media-partners` |
-| News `/news`, posts | Next | Posts (`wp/v2/posts`) |
-| Any other page (`/about`, `/tech-rules`, …) | Next | Pages (`wp/v2/pages`), block-editor HTML rendered as-is |
+| Home `/` | Next | Copy in `src/content/home.ts`; upcoming events from WordPress |
+| Events `/events`, `/events/[slug]` | Next | The Events Calendar (WordPress) |
+| Tickets on an event page | Next (read-only) | Event Tickets (WordPress): names, prices, how many are left, sale dates |
 | Ticket purchase (`/event/[slug]` on WordPress) | WordPress | Event Tickets + WooCommerce |
-| Cart, checkout, shop, account, forms | WordPress | WooCommerce and the site's form plugin |
+| Cart, checkout, shop, products, account, forms | WordPress | WooCommerce and the site's form plugin |
+| News `/news`, posts | Next | Posts (WordPress) |
+| Sponsors `/sponsors`, footer strip | Next | `sponsor` posts (WordPress), via `apex/v1/sponsors` |
+| About, Tech & Rules, Refund Policy | Next | `src/content/*.ts` |
+| Media `/media` | Next | `src/content/media.ts`, photos in `public/images/partners` |
 
-"Get tickets" on an event page links to that event on WordPress, where the
-ticket form is. The paths WordPress keeps are listed in `next.config.ts`
-(`WORDPRESS_PATHS`) and `src/lib/html.ts`; requests for them here redirect to
-WordPress, and links to them inside WordPress content are rewritten to go
-straight there.
+Sponsors stay in WordPress because the pages WordPress still serves (event
+ticket pages, cart, checkout) show the same sponsor strip in their footer, so
+one list feeds both.
+
+"Get tickets" and "Buy tickets" on an event page link to that event on
+WordPress, where the ticket form is. The paths WordPress keeps are listed in
+`next.config.ts` (`WORDPRESS_PATHS`), `src/lib/html.ts` and the plugin's
+`apex_headless_wordpress_paths()`; keep the three in step. Requests for them
+here redirect to WordPress, and links to them inside WordPress content are
+rewritten to go straight there.
+
+Old WordPress page URLs are redirected in `next.config.ts`: `/kbd-comp` to the
+standings (`KBD_STANDINGS_URL` in `src/lib/config.ts`), `/refund_returns` to
+`/refund-policy`, `/mfos-schedule` to `/events`, `/media-partner/*` to
+`/media`. The WordPress pages themselves are left untouched.
 
 The WordPress pages that remain (event and ticket pages, cart, checkout) are
 styled by the `apex-idaho` block theme, so the two halves look the same.
@@ -92,11 +105,12 @@ Redirects and allowed image hosts are fixed into the build, so a change to
 ## Caching and updates
 
 Pages are prerendered at build time and cached. Every WordPress request is
-tagged (`site`, `events`, `sponsors`, `partners`, `pages`, `posts`). When
-someone saves, trashes or deletes content, or changes the site title, logo or
-icon, the `apex-headless` plugin calls `POST /api/revalidate` with the
-affected tags and the next visit renders the change. Pages also refresh in the
-background every `REVALIDATE_SECONDS` in case a webhook is missed.
+tagged (`events`, `sponsors`, `posts`). When someone saves, trashes or deletes
+an event, venue, organizer, ticket, product, post or sponsor, or a sale
+changes a ticket's stock, the `apex-headless` plugin calls
+`POST /api/revalidate` with the affected tags and the next visit renders the
+change. Pages also refresh in the background every `REVALIDATE_SECONDS` in
+case a webhook is missed. Static content changes with a deploy.
 
 If WordPress is unreachable, requests fail soft: pages keep their last cached
 content, and a fresh build still succeeds with empty sections.
@@ -110,9 +124,10 @@ curl -X POST https://apex-idaho.com/api/revalidate -H "x-revalidate-secret: $REV
 ## WordPress setup
 
 1. Activate **APEX Idaho Headless API**
-   (`apps/wordpress/wp-content/plugins/apex-headless`). It adds read-only
-   endpoints for site settings, sponsors and media partner photos, and sends
-   the revalidation webhook. It works with either theme active.
+   (`apps/wordpress/wp-content/plugins/apex-headless`). It adds the read-only
+   sponsors endpoint and sends the revalidation webhook. It works with either
+   theme active. Without it the site still works, but sponsors are empty and
+   edits take up to `REVALIDATE_SECONDS` to show.
 2. Add to `wp-config.php`:
 
    ```php
@@ -123,7 +138,8 @@ curl -X POST https://apex-idaho.com/api/revalidate -H "x-revalidate-secret: $REV
 
    Generate the secret with `openssl rand -hex 32`.
 
-The Events Calendar's REST API must stay enabled (it is by default).
+The Events Calendar's and Event Tickets' REST APIs must stay enabled (they are
+by default).
 
 ## Deploying
 
@@ -187,13 +203,25 @@ reverse and set `APEX_HEADLESS_REDIRECT` to `false`.
 
 ## Editing
 
-- **Events, sponsors, media partner photos, pages and posts:** edit in
-  WordPress as before. Changes show within seconds.
-- **Site title, logo, icon, social links:** WordPress settings and Customizer.
-- **Home and Media page copy** (headlines, intro text, the media partner
-  list): `src/content/*.ts`, then deploy. Move these into WordPress fields if
-  non-developers need to edit them often.
-- **Navigation:** `PRIMARY_NAV` and `FOOTER_NAV` in `src/lib/config.ts`.
+**In WordPress (as before; changes show within seconds):**
+
+- **Events:** Events → add or edit. Date, venue, description, featured image.
+- **Tickets and driver entries:** in the event's Tickets box (Event Tickets
+  with WooCommerce). Price, capacity, sale dates and descriptions show on the
+  event page here; buying happens on the WordPress event page.
+- **Shop products, orders, coupons, refunds:** WooCommerce, unchanged.
+- **News posts:** Posts.
+- **Sponsors:** Sponsors (logo, link, colour treatment, order).
+
+**In this app (edit, then deploy):**
+
+- Home page copy: `src/content/home.ts`.
+- About and the team: `src/content/about.ts`, photos in `public/images/team`.
+- Tech & Rules: `src/content/tech-rules.ts` (change `updated` with the rules).
+- Refund Policy: `src/content/refund-policy.ts`.
+- Media page, partners and media rules: `src/content/media.ts`, photos in
+  `public/images/partners`.
+- Navigation, social links, KBD standings link: `src/lib/config.ts`.
 
 Not yet supported: previewing WordPress drafts here (WordPress's own preview
 still works on the CMS host).
@@ -204,8 +232,8 @@ still works on the CMS host).
 src/
   app/            routes (App Router), sitemap, robots, revalidation webhook
   components/     header, footer, navigation, event cards, sponsors, buttons
-  content/        copy for the designed pages
-  lib/            WordPress client (wp.ts), events (events.ts), HTML rewriting, config
+  content/        static page content (home, about, media, tech rules, refund policy)
+  lib/            WordPress client (wp.ts), events (events.ts), tickets (tickets.ts), HTML rewriting, config
   styles/         tokens.css + theme/ (generated), app.css (app-only)
   fonts/          Barlow, Barlow Condensed
 scripts/

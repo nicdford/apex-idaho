@@ -4,12 +4,14 @@ Wordpress + Docker + Commonly used tools to build beautiful sites.
 
 ## Public site (headless)
 
-- `apps/web/`: the Next.js front end. It reads events, pages, posts, sponsors
-  and media partners from WordPress over the REST API; WordPress keeps
-  checkout, tickets, accounts and forms. Setup, deployment and the domain
-  cutover are in its [README](apps/web/README.md).
+- `apps/web/`: the Next.js front end. Events, tickets and the WooCommerce
+  shop are still managed (and sold) in WordPress; the app reads events, ticket
+  availability, news posts and sponsors over the REST API, and keeps page
+  content as static files. WordPress serves checkout, ticket purchase,
+  accounts and forms. Setup, deployment and the domain cutover are in its
+  [README](apps/web/README.md).
 - `apps/wordpress/wp-content/plugins/apex-headless/`: the WordPress side of it
-  (extra REST endpoints and the cache-refresh webhook).
+  (the sponsors endpoint and the cache-refresh webhook).
 
 ## Themes
 

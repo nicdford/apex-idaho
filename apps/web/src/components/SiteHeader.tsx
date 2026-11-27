@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { CART_URL, PRIMARY_NAV } from '@/lib/config';
+import { CART_URL, KBD_STANDINGS_URL, PRIMARY_NAV, SITE_NAME } from '@/lib/config';
 import { formatDateRange, getUpcomingEvents } from '@/lib/events';
-import { getSite } from '@/lib/wp';
-import localLogo from '../../public/images/apex-idaho-logo.png';
+import logo from '../../public/images/apex-idaho-logo.png';
 import { Button, Buttons } from './Button';
 import { MainNav } from './MainNav';
 import { Marquee } from './Marquee';
+import { SmartLink } from './SmartLink';
 
 export async function SiteHeader() {
-  const [events, site] = await Promise.all([getUpcomingEvents(4), getSite()]);
+  const events = await getUpcomingEvents(4);
 
   const ticker = [
     ...(events.length
@@ -25,9 +25,9 @@ export async function SiteHeader() {
           </span>
         ))
       : [<span key="soon">Next season&rsquo;s schedule drops soon</span>]),
-    <Link key="kbd" href="/kbd-comp">
+    <SmartLink key="kbd" href={KBD_STANDINGS_URL}>
       KBD Comp Series standings
-    </Link>,
+    </SmartLink>,
     <span key="tag">Drift · Grip · All skill levels welcome</span>,
   ];
 
@@ -38,12 +38,8 @@ export async function SiteHeader() {
           <Marquee items={ticker} slashes duration={60} gap="1.5rem" label={events.length ? 'Upcoming events' : undefined} />
         </div>
         <div className="apex-wrap apex-header__bar">
-          <Link href="/" className="apex-header__logo" aria-label={`${site.name} home`}>
-            {site.logo ? (
-              <Image src={site.logo.url} alt={site.name} width={site.logo.width} height={site.logo.height} priority sizes="172px" />
-            ) : (
-              <Image src={localLogo} alt={site.name} priority sizes="172px" />
-            )}
+          <Link href="/" className="apex-header__logo" aria-label={`${SITE_NAME} home`}>
+            <Image src={logo} alt={SITE_NAME} priority sizes="172px" />
           </Link>
           <div className="apex-header__right">
             <MainNav items={PRIMARY_NAV} />

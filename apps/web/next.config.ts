@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { KBD_STANDINGS_URL } from './src/lib/config';
 
 /**
  * WORDPRESS_URL: where the app reads the WordPress REST API.
@@ -47,6 +48,11 @@ const nextConfig: NextConfig = {
     return [
       // WordPress event permalinks (/event/slug/) live at /events/slug here.
       { source: '/event/:slug', destination: '/events/:slug', permanent: true },
+      // Old WordPress page URLs.
+      { source: '/kbd-comp', destination: KBD_STANDINGS_URL, permanent: false },
+      { source: '/refund_returns', destination: '/refund-policy', permanent: true },
+      { source: '/mfos-schedule', destination: '/events', permanent: false },
+      { source: '/media-partner/:slug*', destination: '/media#partners', permanent: true },
       ...WORDPRESS_PATHS.map((source) => ({
         source,
         destination: `${wordpressPublic}${source}`,

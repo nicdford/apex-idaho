@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: APEX Idaho Headless API
- * Description: Data endpoints and cache revalidation for the Next.js front end (apps/web). Theme-independent: works with the block theme or the Beaver Builder child theme active.
- * Version: 1.0.0
+ * Description: Cache revalidation and the sponsors endpoint for the Next.js front end (apps/web). Theme-independent: works with the block theme or the Beaver Builder child theme active.
+ * Version: 1.1.0
  * Requires at least: 6.6
  * Requires PHP: 7.4
  * Author: Nic D. Ford
@@ -14,21 +14,22 @@
  *   define( 'APEX_HEADLESS_REVALIDATE_SECRET', '…long random string…' ); // same as REVALIDATE_SECRET in the Next.js env
  *   define( 'APEX_HEADLESS_REDIRECT', false ); // true at cutover: send public page views to the Next.js site
  *
- * Endpoints (all public, read-only):
+ * What WordPress manages for the front end: events (The Events Calendar,
+ * /wp-json/tribe/events/v1), tickets (Event Tickets, /wp-json/tribe/tickets/v1,
+ * sold through WooCommerce on the event page), the shop, news posts
+ * (/wp-json/wp/v2/posts) and sponsors (below, shared with the footer of the
+ * pages WordPress still serves). Pages are static content in the app.
  *
- *   GET /wp-json/apex/v1/site            name, tagline, logo, site icon, social links
- *   GET /wp-json/apex/v1/sponsors        sponsor logos with their colour treatment
- *   GET /wp-json/apex/v1/media-partners  media partner photos with focal points
+ * Endpoint (public, read-only):
  *
- * Events come from The Events Calendar's own API (/wp-json/tribe/events/v1),
- * pages and posts from core (/wp-json/wp/v2).
+ *   GET /wp-json/apex/v1/sponsors   sponsor logos with their colour treatment
  *
  * @package apex-headless
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'APEX_HEADLESS_VERSION', '1.0.0' );
+define( 'APEX_HEADLESS_VERSION', '1.1.0' );
 
 /* ==========================================================================
    REST endpoints
@@ -36,41 +37,15 @@ define( 'APEX_HEADLESS_VERSION', '1.0.0' );
 
 add_action( 'rest_api_init', 'apex_headless_register_routes' );
 function apex_headless_register_routes() {
-	$routes = array(
-		'/site'           => 'apex_headless_rest_site',
-		'/sponsors'       => 'apex_headless_rest_sponsors',
-		'/media-partners' => 'apex_headless_rest_media_partners',
+	register_rest_route(
+		'apex/v1',
+		'/sponsors',
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'apex_headless_rest_sponsors',
+			'permission_callback' => '__return_true',
+		)
 	);
-
-	foreach ( $routes as $route => $callback ) {
-		register_rest_route(
-			'apex/v1',
-			$route,
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => $callback,
-				'permission_callback' => '__return_true',
-			)
-		);
-	}
-}
-
-/**
- * A theme mod from the active theme, falling back to the Beaver Builder
- * themes' saved settings (theme mods are stored per theme).
- */
-function apex_headless_theme_mod( $name ) {
-	$value = get_theme_mod( $name );
-	if ( $value ) {
-		return (string) $value;
-	}
-	foreach ( array( 'bb-theme-child', 'bb-theme', 'apex-idaho' ) as $stylesheet ) {
-		$mods = get_option( 'theme_mods_' . $stylesheet );
-		if ( is_array( $mods ) && ! empty( $mods[ $name ] ) ) {
-			return (string) $mods[ $name ];
-		}
-	}
-	return '';
 }
 
 /**
@@ -91,44 +66,6 @@ function apex_headless_image( $attachment_id, $size = 'large' ) {
 		'height' => (int) $src[2],
 		'alt'    => (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
 	);
-}
-
-function apex_headless_rest_site() {
-	$logo_id = (int) get_option( 'site_logo' );
-	if ( ! $logo_id ) {
-		$logo_id = (int) get_theme_mod( 'custom_logo' );
-	}
-	$logo = apex_headless_image( $logo_id, 'full' );
-
-	// The block theme ships the logo; use it when no Site Logo is set yet.
-	if ( ! $logo && file_exists( WP_CONTENT_DIR . '/themes/apex-idaho/assets/images/apex-idaho-logo.png' ) ) {
-		$logo = array(
-			'url'    => content_url( '/themes/apex-idaho/assets/images/apex-idaho-logo.png' ),
-			'width'  => 800,
-			'height' => 205,
-			'alt'    => get_bloginfo( 'name' ),
-		);
-	}
-
-	$social = array_filter(
-		array(
-			'instagram' => apex_headless_theme_mod( 'fl-social-instagram' ),
-			'facebook'  => apex_headless_theme_mod( 'fl-social-facebook' ),
-			'youtube'   => apex_headless_theme_mod( 'fl-social-youtube' ),
-			'tiktok'    => apex_headless_theme_mod( 'fl-social-tiktok' ),
-		)
-	);
-
-	$data = array(
-		'name'        => get_bloginfo( 'name' ),
-		'description' => get_bloginfo( 'description' ),
-		'url'         => home_url( '/' ),
-		'logo'        => $logo,
-		'icon'        => get_site_icon_url( 512 ) ? get_site_icon_url( 512 ) : null,
-		'social'      => (object) $social,
-	);
-
-	return rest_ensure_response( apply_filters( 'apex_headless_site', $data ) );
 }
 
 /**
@@ -192,42 +129,6 @@ function apex_headless_rest_sponsors() {
 	return rest_ensure_response( $out );
 }
 
-function apex_headless_rest_media_partners() {
-	if ( ! post_type_exists( 'media_partner' ) ) {
-		return rest_ensure_response( array() );
-	}
-
-	$posts = get_posts(
-		array(
-			'post_type'      => 'media_partner',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => array(
-				'menu_order' => 'ASC',
-				'title'      => 'ASC',
-			),
-			'no_found_rows'  => true,
-		)
-	);
-
-	$out = array();
-	foreach ( $posts as $post ) {
-		$x = get_post_meta( $post->ID, '_apex_focal_x', true );
-		$y = get_post_meta( $post->ID, '_apex_focal_y', true );
-
-		$out[] = array(
-			'id'    => (int) $post->ID,
-			'slug'  => $post->post_name,
-			'name'  => html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' ),
-			'link'  => get_permalink( $post ),
-			'photo' => apex_headless_image( get_post_thumbnail_id( $post ), 'medium_large' ),
-			'focal' => ( '' === $x ? 50 : (int) $x ) . '% ' . ( '' === $y ? 25 : (int) $y ) . '%',
-		);
-	}
-
-	return rest_ensure_response( $out );
-}
-
 /* ==========================================================================
    Revalidation: tell the Next.js site which cached data changed
    ========================================================================== */
@@ -239,13 +140,17 @@ function apex_headless_tags_for_post_type( $post_type ) {
 	$map = apply_filters(
 		'apex_headless_revalidate_map',
 		array(
-			'post'          => array( 'posts' ),
-			'page'          => array( 'pages' ),
-			'tribe_events'  => array( 'events' ),
-			'tribe_venue'   => array( 'events' ),
-			'sponsor'       => array( 'sponsors' ),
-			'media_partner' => array( 'partners' ),
-			'attachment'    => array(),
+			'post'               => array( 'posts' ),
+			'tribe_events'       => array( 'events' ),
+			'tribe_venue'        => array( 'events' ),
+			'tribe_organizer'    => array( 'events' ),
+			// Tickets: WooCommerce products (Event Tickets' "woo" provider),
+			// RSVPs and Tickets Commerce. Event pages show their prices and
+			// what is left.
+			'product'            => array( 'events' ),
+			'tribe_rsvp_tickets' => array( 'events' ),
+			'tec_tc_ticket'      => array( 'events' ),
+			'sponsor'            => array( 'sponsors' ),
 		)
 	);
 	return isset( $map[ $post_type ] ) ? $map[ $post_type ] : array();
@@ -254,7 +159,9 @@ function apex_headless_tags_for_post_type( $post_type ) {
 add_action( 'save_post', 'apex_headless_queue_revalidation', 20, 2 );
 add_action( 'before_delete_post', 'apex_headless_queue_revalidation_on_delete', 20, 2 );
 add_action( 'trashed_post', 'apex_headless_queue_revalidation_on_trash', 20 );
-add_action( 'updated_option', 'apex_headless_queue_site_revalidation', 20 );
+// A sale changes how many tickets are left.
+add_action( 'woocommerce_product_set_stock', 'apex_headless_queue_events_revalidation' );
+add_action( 'event_tickets_after_save_ticket', 'apex_headless_queue_events_revalidation' );
 
 function apex_headless_queue_revalidation( $post_id, $post = null ) {
 	if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
@@ -276,10 +183,8 @@ function apex_headless_queue_revalidation_on_trash( $post_id ) {
 	apex_headless_queue_revalidation( $post_id );
 }
 
-function apex_headless_queue_site_revalidation( $option ) {
-	if ( in_array( $option, array( 'blogname', 'blogdescription', 'site_logo', 'site_icon' ), true ) ) {
-		apex_headless_queue_tags( array( 'site' ) );
-	}
+function apex_headless_queue_events_revalidation() {
+	apex_headless_queue_tags( array( 'events' ) );
 }
 
 function apex_headless_queue_tags( $tags ) {
@@ -324,6 +229,8 @@ function apex_headless_send_revalidation() {
 /**
  * Paths WordPress keeps serving itself: shopping, checkout, accounts, ticket
  * pages (Event Tickets' purchase form lives on the event page) and forms.
+ * Keep in step with WORDPRESS_PATHS in apps/web/next.config.ts: a path the
+ * app sends here but that is missing below would redirect back and forth.
  */
 function apex_headless_wordpress_paths() {
 	return apply_filters(
@@ -341,6 +248,7 @@ function apex_headless_wordpress_paths() {
 			'/tickets-order',
 			'/media/media-application',
 			'/mfos-driver-registration',
+			'/mfos-drivers-list',
 			'/wc-api/',
 		)
 	);

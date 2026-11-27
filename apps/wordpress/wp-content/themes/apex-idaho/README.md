@@ -15,8 +15,18 @@ Both themes deploy side by side (the workflow mirrors the whole `themes/`
 folder), so merging this changes nothing on the live site until someone
 switches themes.
 
-1. **Preview.** Appearance → Themes → APEX Idaho → *Live Preview*. Nothing is
-   saved until you hit Activate.
+1. **Preview.** Two levels, both invisible to visitors:
+   - *Quick look:* get the theme onto the server (merge, or upload a zip of
+     this folder with `vendor/` included under Appearance → Themes → Add New →
+     Upload), then Appearance → Themes → APEX Idaho → *Live Preview*. For a
+     block theme this opens the Site Editor in preview mode: browse templates
+     and pages with real content, and nothing is saved until you click
+     Activate. Don't *activate* a hand-uploaded copy on the live site before
+     this is merged: the deploy mirrors `themes/` with `--delete`, so the next
+     deploy from a branch without this theme removes it from the server.
+   - *Full test:* Live Preview can't exercise the front end (ticket checkout
+     modal, cart, checkout). For that, clone the site to a Cloudways staging
+     app, activate the theme there and click through with test payments.
 2. **Set the logo.** Site Editor → Header → click the logo → upload. Until
    then the header falls back to the PNG the old header hard-coded
    (`uploads/2023/07/APEX_Idaho_logo-2-300x77.png`), then to a text wordmark.

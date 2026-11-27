@@ -47,7 +47,10 @@ switches themes.
    in the database is changed by the switch.
 5. **Migrate the remaining Beaver Builder pages** one at a time: open the page,
    insert one of the *APEX: Full Pages* patterns (or build from sections),
-   then turn Beaver Builder off for that page.
+   then turn Beaver Builder off for that page. *Page: About* and *Page: Tech &
+   Rules* carry the current live content (team, mission, the March 2026
+   rules); the default Page template works, since its own title band steps
+   aside when the content brings one.
 6. When no page uses Beaver Builder any more, deactivate Beaver Builder and
    Beaver Themer, then delete `bb-theme` and `bb-theme-child` from the repo.
 
@@ -97,7 +100,7 @@ an outline. Plain Cmd/Ctrl+B and Cmd/Ctrl+I, no extra settings.
 | Heading | Outline, Red |
 | Button | Arrow; core *Outline* is restyled as a ghost button |
 | Separator | Racing Stripe, Checkered Flag, Chevrons |
-| List | Diamonds |
+| List | Diamonds, Numbered Rules (big red numerals; nested lists stay plain) |
 | Image | Angled Cut, Chamfer |
 | Table | Timing Sheet (schedules, standings) |
 | Cover | Speed Lines |
@@ -120,7 +123,19 @@ plus the three legacy page templates above.
 
 ### Patterns
 Under *APEX: Heroes / Sections / Events / Calls to Action / Full Pages* in the
-inserter. *Full Pages* also appear as starter layouts when creating a page.
+inserter. *Full Pages* also appear as starter layouts when creating a page:
+Home, Media, Sponsors, Festival of Speed, About and Tech & Rules. Sections
+include *Team grid* (photo or initials, role, name, links; replace a photo
+with the image block's Replace button).
+
+A page that starts with a full-page pattern's title band drops the Page
+template's own band and spacing, so it looks the same as on its custom
+template.
+
+### Printing
+Any button or link pointing at `#print` opens the print dialog (Tech & Rules
+has one). Printouts are black on white without the header, footer or
+buttons, with columns stacked.
 
 ## Development
 

@@ -59,6 +59,7 @@ function apex_idaho_register_block_styles() {
 		),
 		'core/list'      => array(
 			'apex-diamonds' => __( 'Diamonds', 'apex-idaho' ),
+			'apex-rules'    => __( 'Numbered Rules', 'apex-idaho' ),
 		),
 		'core/image'     => array(
 			'apex-angled'  => __( 'Angled Cut', 'apex-idaho' ),
@@ -232,4 +233,50 @@ function apex_idaho_ensure_site_logo() {
 		set_theme_mod( 'custom_logo', $logo_id );
 		update_option( 'site_logo', $logo_id );
 	}
+}
+
+/**
+ * Full-page patterns (APEX: Full Pages) bring their own title band. When a
+ * page's content has one, drop the generic band the Page template adds, so
+ * the page works with the default template and never shows two.
+ *
+ * The template's band is the only one built around a Post Title block.
+ */
+add_filter( 'render_block_core/group', 'apex_idaho_skip_duplicate_page_band', 10, 2 );
+function apex_idaho_skip_duplicate_page_band( $content, $block ) {
+	$class = isset( $block['attrs']['className'] ) ? (string) $block['attrs']['className'] : '';
+	if ( false === strpos( $class, 'apex-page-hero' ) || ! is_singular() || empty( $block['innerBlocks'] ) ) {
+		return $content;
+	}
+
+	$is_template_band = false;
+	foreach ( $block['innerBlocks'] as $inner ) {
+		if ( 'core/post-title' === $inner['blockName'] ) {
+			$is_template_band = true;
+			break;
+		}
+	}
+	if ( ! $is_template_band ) {
+		return $content;
+	}
+
+	$post = get_queried_object();
+	if ( $post instanceof WP_Post && false !== strpos( $post->post_content, 'apex-page-hero' ) ) {
+		return '';
+	}
+	return $content;
+}
+
+/**
+ * Initials on a photo placeholder (a Paragraph with the class
+ * "apex-partner-photo__initials") are decoration: the name is the heading
+ * below. Hide them from screen readers.
+ */
+add_filter( 'render_block_core/paragraph', 'apex_idaho_hide_placeholder_initials', 10, 2 );
+function apex_idaho_hide_placeholder_initials( $content, $block ) {
+	$class = isset( $block['attrs']['className'] ) ? (string) $block['attrs']['className'] : '';
+	if ( false === strpos( $class, 'apex-partner-photo__initials' ) ) {
+		return $content;
+	}
+	return preg_replace( '/^(\s*<p\b)/', '$1 aria-hidden="true"', $content, 1 );
 }

@@ -509,6 +509,46 @@ ul.is-style-apex-diamonds > li::before {
 	transform: rotate(45deg);
 }
 
+/* List style "Numbered Rules": big red numerals (tech rules, regulations). */
+ol.is-style-apex-rules {
+	list-style: none;
+	counter-reset: apex-rule;
+	padding-left: 0;
+}
+
+ol.is-style-apex-rules > li {
+	counter-increment: apex-rule;
+	position: relative;
+	padding-left: 2.75rem;
+}
+
+ol.is-style-apex-rules > li + li {
+	margin-top: 1rem;
+}
+
+ol.is-style-apex-rules > li::before {
+	content: counter(apex-rule, decimal-leading-zero);
+	position: absolute;
+	left: 0;
+	top: -0.15em;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.4em;
+	font-style: italic;
+	font-weight: 900;
+	line-height: 1.2;
+	color: var(--apex-red);
+}
+
+ol.is-style-apex-rules :where(ul, ol) {
+	margin-top: 0.45rem;
+	padding-left: 1.25rem;
+	opacity: 0.85;
+}
+
+ol.is-style-apex-rules :where(ul, ol) > li + li {
+	margin-top: 0.3rem;
+}
+
 .wp-block-image.is-style-apex-angled img {
 	clip-path: polygon(7% 0, 100% 0, 93% 100%, 0 100%);
 }
@@ -1132,6 +1172,30 @@ ul.is-style-apex-diamonds > li::before {
 	margin: 0;
 }
 
+/* Crew cards use a plain Image block for the photo; portraits crop from
+   the upper part of the frame so heads stay in. */
+.apex-partner .wp-block-image.apex-partner-photo img {
+	width: 100%;
+	height: 100%;
+	object-position: 50% 25%;
+}
+
+.apex-partner-photo.is-placeholder > .apex-partner-photo__initials {
+	margin: 0;
+}
+
+/* A page built from a full-page pattern (it starts with its own title band)
+   is a stack of full-width sections, as in the theme's page templates: no
+   padding around the content and no gaps between sections. */
+.wp-block-post-content:has(> .apex-page-hero:first-child) {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.wp-block-post-content:has(> .apex-page-hero:first-child) > * + * {
+	margin-block-start: 0;
+}
+
 .apex-partner__links {
 	list-style: none;
 	padding: 0;
@@ -1321,5 +1385,67 @@ ul.is-style-apex-diamonds > li::before {
 
 	.apex-ticker__track {
 		animation: none !important;
+	}
+}
+
+
+/* ==========================================================================
+   Print (e.g. the Tech & Rules sheet): black on white, no site chrome.
+   A button or link to "#print" opens the print dialog (assets/js/theme.js).
+   ========================================================================== */
+
+@media print {
+	.wp-site-blocks > header,
+	.wp-site-blocks > footer,
+	.skip-link,
+	.wp-block-buttons {
+		display: none !important;
+	}
+
+	*,
+	*::before,
+	*::after {
+		color: #000 !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	* {
+		border-color: #000 !important;
+	}
+
+	ul.is-style-apex-diamonds > li::before {
+		background: #000 !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	/* Columns stack: side-by-side columns split badly across pages. */
+	.wp-block-columns {
+		display: block !important;
+	}
+
+	.wp-block-column {
+		width: 100% !important;
+		margin: 0 0 1.5rem !important;
+		padding-inline: 0 !important;
+	}
+
+	/* No trailing space: it would spill onto an empty last page. */
+	.wp-block-column:last-child,
+	.wp-block-post-content > :last-child {
+		margin-bottom: 0 !important;
+		padding-bottom: 0 !important;
+	}
+
+	.apex-page-hero,
+	.wp-block-post-content > .wp-block-group.alignfull {
+		padding-top: 0 !important;
+		padding-bottom: 1rem !important;
+	}
+
+	ol.is-style-apex-rules > li {
+		break-inside: avoid;
 	}
 }

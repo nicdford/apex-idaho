@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'APEX_IDAHO_VERSION', '2.2.1' );
+define( 'APEX_IDAHO_VERSION', '2.3.0' );
 define( 'APEX_IDAHO_DIR', get_template_directory() );
 define( 'APEX_IDAHO_URI', get_template_directory_uri() );
 

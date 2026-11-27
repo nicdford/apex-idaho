@@ -15,11 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * @param string $title   Heading HTML (may contain <strong>/<em>/<br>).
  * @param string $lede    Intro sentence, plain text.
  * @param array  $buttons List of [label, url, style] where style is '' or 'outline'.
+ * @param string $into    Colour of the section below, for the angled edge:
+ *                        'asphalt', 'paper', 'white' or 'red' ('' = carbon).
  * @return string
  */
-function apex_idaho_page_band_markup( $eyebrow, $title, $lede = '', $buttons = array() ) {
-	$out  = '<!-- wp:group {"tagName":"section","align":"full","className":"apex-page-hero apex-texture-night apex-cut-bottom","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"calc(var(--wp--preset--spacing--70) + 2.5rem)"},"blockGap":"var:preset|spacing|30"}},"backgroundColor":"carbon","layout":{"type":"constrained","contentSize":"1320px"}} -->' . "\n";
-	$out .= '<section class="wp-block-group alignfull apex-page-hero apex-texture-night apex-cut-bottom has-carbon-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:calc(var(--wp--preset--spacing--70) + 2.5rem)">';
+function apex_idaho_page_band_markup( $eyebrow, $title, $lede = '', $buttons = array(), $into = '' ) {
+	$class = 'apex-page-hero apex-texture-night apex-cut-bottom' . ( $into ? ' apex-into-' . sanitize_html_class( $into ) : '' );
+	$out   = '<!-- wp:group {"tagName":"section","align":"full","className":"' . $class . '","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"calc(var(--wp--preset--spacing--70) + 2.5rem)"},"blockGap":"var:preset|spacing|30"}},"backgroundColor":"carbon","layout":{"type":"constrained","contentSize":"1320px"}} -->' . "\n";
+	$out  .= '<section class="wp-block-group alignfull ' . $class . ' has-carbon-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:calc(var(--wp--preset--spacing--70) + 2.5rem)">';
 	$out .= '<!-- wp:paragraph {"className":"is-style-apex-eyebrow"} -->' . "\n" . '<p class="is-style-apex-eyebrow">' . esc_html( $eyebrow ) . '</p>' . "\n" . '<!-- /wp:paragraph -->' . "\n\n";
 	$out .= '<!-- wp:heading {"level":1} -->' . "\n" . '<h1 class="wp-block-heading">' . wp_kses( $title, array( 'strong' => array(), 'em' => array(), 'br' => array() ) ) . '</h1>' . "\n" . '<!-- /wp:heading -->';
 

@@ -5,15 +5,15 @@
  * Categories: apex-cta
  * Keywords: split, two columns, kbd, standings, media package, promo
  * Viewport Width: 1440
- * Description: Two promo panels side by side: a hot gradient panel for the comp series standings and a dark panel selling the media package.
+ * Description: Two promo panels side by side: a red panel for the comp series standings and a dark panel selling the media package.
  *
  * @package apex-idaho
  */
 ?>
 <!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"carbon","layout":{"type":"constrained"}} -->
 <section class="wp-block-group alignfull has-carbon-background-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)"><!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-<div class="wp-block-columns alignwide"><!-- wp:column {"className":"is-style-section-hot","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|30"}}} -->
-<div class="wp-block-column is-style-section-hot" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--50)"><!-- wp:paragraph {"className":"is-style-apex-eyebrow"} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"className":"is-style-section-red","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|30"}}} -->
+<div class="wp-block-column is-style-section-red" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--50)"><!-- wp:paragraph {"className":"is-style-apex-eyebrow"} -->
 <p class="is-style-apex-eyebrow">Points on the line</p>
 <!-- /wp:paragraph -->
 

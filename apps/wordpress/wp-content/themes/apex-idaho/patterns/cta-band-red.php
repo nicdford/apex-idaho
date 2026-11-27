@@ -1,17 +1,17 @@
 <?php
 /**
- * Title: CTA: Hot band (Tech & Rules)
- * Slug: apex-idaho/cta-band-hot
+ * Title: CTA: Red band (Tech & Rules)
+ * Slug: apex-idaho/cta-band-red
  * Categories: apex-cta
- * Keywords: cta, banner, band, rules, gradient
+ * Keywords: cta, banner, band, rules, red
  * Viewport Width: 1440
- * Description: Gradient band with a headline, one line of copy and a dark button. Defaults to the Tech & Rules call-out.
+ * Description: Solid red band with a headline, one line of copy and a dark button. Defaults to the Tech & Rules call-out.
  *
  * @package apex-idaho
  */
 ?>
-<!-- wp:group {"tagName":"section","align":"full","className":"is-style-section-hot apex-texture-speed","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<section class="wp-block-group alignfull is-style-section-hot apex-texture-speed" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:group {"align":"wide","style":{"spacing":{"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+<!-- wp:group {"tagName":"section","align":"full","className":"is-style-section-red apex-texture-speed","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+<section class="wp-block-group alignfull is-style-section-red apex-texture-speed" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:group {"align":"wide","style":{"spacing":{"blockGap":"var:preset|spacing|40"}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 <div class="wp-block-group alignwide"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"},"layout":{"selfStretch":"fixed","flexSize":"min(100%, 640px)"}},"layout":{"type":"default"}} -->
 <div class="wp-block-group"><!-- wp:heading {"fontSize":"huge"} -->
 <h2 class="wp-block-heading has-huge-font-size">Official tech &amp; rules</h2>

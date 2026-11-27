@@ -5,7 +5,7 @@
  * Categories: apex-sections, apex-events
  * Keywords: stats, numbers, facts, highlights
  * Viewport Width: 1440
- * Description: Four big gradient facts with labels, divided by hairlines.
+ * Description: Four big red facts with labels, divided by hairlines.
  *
  * @package apex-idaho
  */

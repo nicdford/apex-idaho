@@ -4,10 +4,16 @@ Full Site Editing theme that replaces the Beaver Builder setup
 (`bb-theme` + `bb-theme-child`). Pages, templates, header and footer are all
 Gutenberg blocks, editable under **Appearance → Editor**.
 
-Design direction: modern, aggressive, automotive. Carbon-black base, the APEX
-pink→orange ramp, condensed italic display type that leans forward, slanted
-"parallelogram" buttons, racing stripes, checkered flags and timing-sheet
-tables.
+Design direction: modern, aggressive, automotive, in red and black. Carbon-black
+base, one accent (APEX Red), no colour gradients, condensed italic display
+type that leans forward, slanted "parallelogram" buttons, racing stripes,
+checkered flags and timing-sheet tables.
+
+Colours live in `theme.json`: **APEX Red** `#E10E1E` (buttons, badges, stripes,
+red sections; white text on it), **Signal Red** `#FF4B4B` (small red text on
+black, where APEX Red would fall below 4.5:1) and **Deep Red** `#A50A16` (red
+text on light backgrounds). To match the logo's exact red, change those three
+values; everything else reads from them.
 
 ## Cutting over from Beaver Builder
 
@@ -69,12 +75,12 @@ plugin's own CSS variables, but needs eyes on:
 ## Editing guide
 
 ### Heading conventions
-In any heading, **bold** text renders in the APEX gradient and *italic* text
-renders as an outline. Plain Cmd/Ctrl+B and Cmd/Ctrl+I, no extra settings.
+In any heading, **bold** text renders in APEX Red and *italic* text renders as
+an outline. Plain Cmd/Ctrl+B and Cmd/Ctrl+I, no extra settings.
 
 ### Section styles (Group → Styles)
 - **Paper**: light section, dark text.
-- **Hot**: pink→orange gradient, dark text, dark buttons.
+- **Red**: solid APEX Red, white text, black buttons.
 - **Asphalt**: slightly lifted dark section.
 - **Panel**: bordered card surface.
 - **Ticker (scrolling)**: turns a row of paragraphs into a looping marquee.
@@ -83,7 +89,7 @@ renders as an outline. Plain Cmd/Ctrl+B and Cmd/Ctrl+I, no extra settings.
 | Block | Styles |
 | --- | --- |
 | Paragraph | Eyebrow (kicker label), Lede (intro size) |
-| Heading | Outline, Gradient |
+| Heading | Outline, Red |
 | Button | Arrow; core *Outline* is restyled as a ghost button |
 | Separator | Racing Stripe, Checkered Flag, Chevrons |
 | List | Diamonds |

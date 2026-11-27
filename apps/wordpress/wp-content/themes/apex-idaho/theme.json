@@ -16,22 +16,17 @@
 				{ "slug": "smoke", "name": "Smoke", "color": "#A0A0AB" },
 				{ "slug": "chalk", "name": "Chalk", "color": "#F2F2F4" },
 				{ "slug": "white", "name": "White", "color": "#FFFFFF" },
-				{ "slug": "apex-pink", "name": "APEX Pink", "color": "#E8197D" },
-				{ "slug": "hot-pink", "name": "Hot Pink", "color": "#FF3D9E" },
-				{ "slug": "ignition", "name": "Ignition Orange", "color": "#F97316" },
-				{ "slug": "caution", "name": "Caution", "color": "#FFC21A" },
+				{ "slug": "red", "name": "APEX Red", "color": "#E10E1E" },
+				{ "slug": "red-bright", "name": "Signal Red (text on dark)", "color": "#FF4B4B" },
+				{ "slug": "red-deep", "name": "Deep Red", "color": "#A50A16" },
 				{ "slug": "paper", "name": "Paper", "color": "#F2F1EE" }
 			],
 			"gradients": [
-				{ "slug": "apex", "name": "APEX", "gradient": "linear-gradient(120deg, #E8197D 0%, #F97316 100%)" },
-				{ "slug": "apex-reverse", "name": "APEX Reverse", "gradient": "linear-gradient(120deg, #F97316 0%, #E8197D 100%)" },
-				{ "slug": "apex-burn", "name": "Burnout", "gradient": "linear-gradient(90deg, #FF3D9E 0%, #E8197D 38%, #F97316 100%)" },
-				{ "slug": "night", "name": "Night Session", "gradient": "radial-gradient(110% 80% at 88% 0%, rgba(232,25,125,0.32) 0%, rgba(10,10,12,0) 58%), radial-gradient(70% 60% at 0% 100%, rgba(249,115,22,0.18) 0%, rgba(10,10,12,0) 60%), linear-gradient(180deg, #0A0A0C 0%, #0A0A0C 100%)" },
-				{ "slug": "hero-fade", "name": "Hero Fade", "gradient": "linear-gradient(100deg, rgba(10,10,12,0.96) 0%, rgba(10,10,12,0.78) 40%, rgba(10,10,12,0.25) 100%)" },
-				{ "slug": "carbon-fade", "name": "Carbon Fade", "gradient": "linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,0.92) 100%)" }
+				{ "slug": "hero-fade", "name": "Photo Shade (left)", "gradient": "linear-gradient(100deg, rgba(10,10,12,0.96) 0%, rgba(10,10,12,0.78) 40%, rgba(10,10,12,0.25) 100%)" },
+				{ "slug": "carbon-fade", "name": "Photo Shade (bottom)", "gradient": "linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,0.92) 100%)" }
 			],
 			"duotone": [
-				{ "slug": "carbon-pink", "name": "Carbon and Pink", "colors": [ "#0A0A0C", "#E8197D" ] },
+				{ "slug": "carbon-red", "name": "Carbon and Red", "colors": [ "#0A0A0C", "#E10E1E" ] },
 				{ "slug": "carbon-chalk", "name": "Carbon and Chalk", "colors": [ "#0A0A0C", "#F2F2F4" ] }
 			]
 		},
@@ -42,8 +37,8 @@
 		"shadow": {
 			"defaultPresets": false,
 			"presets": [
-				{ "slug": "glow", "name": "Pink Glow", "shadow": "0 0 48px rgba(232, 25, 125, 0.35)" },
-				{ "slug": "hard", "name": "Hard Offset", "shadow": "10px 10px 0 0 #E8197D" },
+				{ "slug": "glow", "name": "Red Glow", "shadow": "0 0 48px rgba(225, 14, 30, 0.35)" },
+				{ "slug": "hard", "name": "Hard Offset", "shadow": "10px 10px 0 0 #E10E1E" },
 				{ "slug": "lift", "name": "Lift", "shadow": "0 24px 48px -24px rgba(0, 0, 0, 0.8)" }
 			]
 		},
@@ -151,10 +146,10 @@
 				"color": { "text": "var:preset|color|chalk" },
 				"typography": { "textDecoration": "underline" },
 				":hover": {
-					"color": { "text": "var:preset|color|hot-pink" }
+					"color": { "text": "var:preset|color|red-bright" }
 				},
 				":focus": {
-					"color": { "text": "var:preset|color|hot-pink" }
+					"color": { "text": "var:preset|color|red-bright" }
 				}
 			},
 			"heading": {
@@ -183,8 +178,8 @@
 			},
 			"button": {
 				"color": {
-					"text": "var:preset|color|carbon",
-					"gradient": "var:preset|gradient|apex"
+					"text": "var:preset|color|white",
+					"background": "var:preset|color|red"
 				},
 				"border": { "radius": "0", "width": "0", "style": "none" },
 				"spacing": {
@@ -202,13 +197,13 @@
 				":hover": {
 					"color": {
 						"text": "var:preset|color|carbon",
-						"gradient": "var:preset|gradient|apex-reverse"
+						"background": "var:preset|color|chalk"
 					}
 				},
 				":focus": {
 					"color": {
 						"text": "var:preset|color|carbon",
-						"gradient": "var:preset|gradient|apex-reverse"
+						"background": "var:preset|color|chalk"
 					}
 				}
 			},
@@ -261,7 +256,7 @@
 				"elements": {
 					"link": {
 						"typography": { "textDecoration": "none" },
-						":hover": { "color": { "text": "var:preset|color|hot-pink" } }
+						":hover": { "color": { "text": "var:preset|color|red-bright" } }
 					}
 				}
 			},
@@ -285,7 +280,7 @@
 				},
 				"elements": {
 					"link": {
-						"color": { "text": "var:preset|color|hot-pink" },
+						"color": { "text": "var:preset|color|red-bright" },
 						"typography": { "textDecoration": "none" }
 					}
 				}
@@ -310,7 +305,7 @@
 			},
 			"core/quote": {
 				"border": {
-					"left": { "color": "var:preset|color|apex-pink", "style": "solid", "width": "4px" }
+					"left": { "color": "var:preset|color|red", "style": "solid", "width": "4px" }
 				},
 				"spacing": {
 					"padding": { "left": "var:preset|spacing|40" }

@@ -20,7 +20,7 @@
 <div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)">
 <!-- wp:post-date {"format":"M j, Y"} /-->
 
-<!-- wp:post-title {"level":3,"isLink":true,"fontSize":"x-large"} /-->
+<!-- wp:post-title {"level":2,"isLink":true,"fontSize":"x-large"} /-->
 
 <!-- wp:post-excerpt {"excerptLength":22} /-->
 </div>

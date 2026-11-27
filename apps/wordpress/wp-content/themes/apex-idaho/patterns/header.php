@@ -17,8 +17,8 @@ $apex_link = static function ( $path ) {
 <!-- wp:group {"className":"apex-header","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"default"}} -->
 <div class="wp-block-group apex-header">
 
-<!-- wp:group {"align":"full","className":"apex-header__ticker is-style-apex-ticker","style":{"spacing":{"padding":{"top":"0.45rem","bottom":"0.45rem","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"blockGap":"1.5rem"}},"gradient":"apex","textColor":"carbon","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group alignfull apex-header__ticker is-style-apex-ticker has-carbon-color has-apex-gradient-background has-text-color has-background" style="padding-top:0.45rem;padding-right:var(--wp--preset--spacing--40);padding-bottom:0.45rem;padding-left:var(--wp--preset--spacing--40)">
+<!-- wp:group {"align":"full","className":"apex-header__ticker is-style-apex-ticker","style":{"spacing":{"padding":{"top":"0.45rem","bottom":"0.45rem","left":"var:preset|spacing|40","right":"var:preset|spacing|40"},"blockGap":"1.5rem"}},"backgroundColor":"red","textColor":"white","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group alignfull apex-header__ticker is-style-apex-ticker has-white-color has-red-background-color has-text-color has-background" style="padding-top:0.45rem;padding-right:var(--wp--preset--spacing--40);padding-bottom:0.45rem;padding-left:var(--wp--preset--spacing--40)">
 <!-- wp:apex/upcoming-events {"count":4,"layout":"ticker","emptyMessage":"Next season's schedule drops soon"} /-->
 
 <!-- wp:paragraph -->

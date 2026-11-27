@@ -5,13 +5,13 @@
  * Categories: apex-sections
  * Keywords: ticker, marquee, scrolling, band
  * Viewport Width: 1440
- * Description: Full-width gradient band of huge scrolling words. Edit or add paragraphs; every second one is outlined.
+ * Description: Full-width red band of huge scrolling words. Edit or add paragraphs; every second one is outlined.
  *
  * @package apex-idaho
  */
 ?>
-<!-- wp:group {"align":"full","className":"is-style-apex-ticker apex-band-ticker","style":{"spacing":{"padding":{"top":"1.1rem","bottom":"1.1rem"},"blockGap":"2.25rem"},"typography":{"fontSize":"clamp(2.25rem, 5vw, 3.75rem)"}},"gradient":"apex","textColor":"carbon","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group alignfull is-style-apex-ticker apex-band-ticker has-carbon-color has-apex-gradient-background has-text-color has-background" style="padding-top:1.1rem;padding-bottom:1.1rem;font-size:clamp(2.25rem, 5vw, 3.75rem)"><!-- wp:paragraph -->
+<!-- wp:group {"align":"full","className":"is-style-apex-ticker apex-band-ticker","style":{"spacing":{"padding":{"top":"1.1rem","bottom":"1.1rem"},"blockGap":"2.25rem"},"typography":{"fontSize":"clamp(2.25rem, 5vw, 3.75rem)"}},"backgroundColor":"red","textColor":"white","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group alignfull is-style-apex-ticker apex-band-ticker has-white-color has-red-background-color has-text-color has-background" style="padding-top:1.1rem;padding-bottom:1.1rem;font-size:clamp(2.25rem, 5vw, 3.75rem)"><!-- wp:paragraph -->
 <p>Drift</p>
 <!-- /wp:paragraph -->
 

@@ -47,7 +47,7 @@ function apex_idaho_register_block_styles() {
 		),
 		'core/heading'   => array(
 			'apex-outline'  => __( 'Outline', 'apex-idaho' ),
-			'apex-gradient' => __( 'Gradient', 'apex-idaho' ),
+			'apex-accent'   => __( 'Red', 'apex-idaho' ),
 		),
 		'core/button'    => array(
 			'apex-arrow' => __( 'Arrow', 'apex-idaho' ),

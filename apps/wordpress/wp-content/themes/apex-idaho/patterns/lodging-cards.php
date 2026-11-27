@@ -33,8 +33,8 @@ $apex_hotels = array(
 <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
 <div class="wp-block-columns alignwide">
 <?php foreach ( $apex_hotels as $apex_hotel ) : ?>
-<!-- wp:column {"className":"is-style-section-panel","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|30"},"border":{"left":{"color":"var:preset|color|apex-pink","width":"5px","style":"solid"}}}} -->
-<div class="wp-block-column is-style-section-panel" style="border-left-color:var(--wp--preset--color--apex-pink);border-left-style:solid;border-left-width:5px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:heading {"level":3,"fontSize":"xx-large"} -->
+<!-- wp:column {"className":"is-style-section-panel","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50","right":"var:preset|spacing|50"},"blockGap":"var:preset|spacing|30"},"border":{"left":{"color":"var:preset|color|red","width":"5px","style":"solid"}}}} -->
+<div class="wp-block-column is-style-section-panel" style="border-left-color:var(--wp--preset--color--red);border-left-style:solid;border-left-width:5px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:heading {"level":3,"fontSize":"xx-large"} -->
 <h3 class="wp-block-heading has-xx-large-font-size"><?php echo esc_html( $apex_hotel[0] ); ?></h3>
 <!-- /wp:heading -->
 

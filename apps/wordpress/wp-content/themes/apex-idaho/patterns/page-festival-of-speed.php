@@ -24,6 +24,6 @@
 
 <!-- wp:pattern {"slug":"apex-idaho/lodging-cards"} /-->
 
-<!-- wp:pattern {"slug":"apex-idaho/cta-band-hot"} /-->
+<!-- wp:pattern {"slug":"apex-idaho/cta-band-red"} /-->
 
 <!-- wp:pattern {"slug":"apex-idaho/cta-ready"} /-->

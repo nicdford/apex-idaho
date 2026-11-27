@@ -35,24 +35,24 @@ body .tribe-tickets {
 	--tec-color-icon-primary-alt: #a0a0ab;
 	--tec-color-icon-secondary: #5a5a66;
 	--tec-color-icon-active: #f2f2f4;
-	--tec-color-icon-focus: #ff3d9e;
+	--tec-color-icon-focus: #ff4b4b;
 	--tec-color-event-icon: #f2f2f4;
-	--tec-color-event-icon-hover: #ff3d9e;
+	--tec-color-event-icon-hover: #ff4b4b;
 
-	--tec-color-accent-primary: #e8197d;
-	--tec-color-accent-primary-hover: #ff3d9e;
-	--tec-color-accent-primary-active: #c8106a;
-	--tec-color-accent-primary-background: rgba(232, 25, 125, 0.12);
+	--tec-color-accent-primary: #e10e1e;
+	--tec-color-accent-primary-hover: #ff4b4b;
+	--tec-color-accent-primary-active: #a50a16;
+	--tec-color-accent-primary-background: rgba(225, 14, 30, 0.12);
 	--tec-color-accent-secondary: #f2f2f4;
-	--tec-color-button-primary: #e8197d;
-	--tec-color-button-primary-hover: #ff3d9e;
-	--tec-color-button-primary-active: #c8106a;
-	--tec-color-button-primary-background: rgba(232, 25, 125, 0.12);
+	--tec-color-button-primary: #e10e1e;
+	--tec-color-button-primary-hover: #ff4b4b;
+	--tec-color-button-primary-active: #a50a16;
+	--tec-color-button-primary-background: rgba(225, 14, 30, 0.12);
 	--tec-color-button-secondary: #f2f2f4;
 
 	--tec-color-link-primary: #f2f2f4;
-	--tec-color-link-accent: #ff3d9e;
-	--tec-color-link-accent-hover: #ff7ab9;
+	--tec-color-link-accent: #ff4b4b;
+	--tec-color-link-accent-hover: #ff8080;
 
 	--tec-color-border-default: #2e2e38;
 	--tec-color-border-secondary: #24242c;
@@ -66,14 +66,14 @@ body .tribe-tickets {
 	--tec-color-background-secondary: #1d1d23;
 	--tec-color-background-secondary-hover: #24242c;
 	--tec-color-background-messages: rgba(255, 255, 255, 0.06);
-	--tec-color-background-primary-multiday: rgba(232, 25, 125, 0.3);
-	--tec-color-background-primary-multiday-hover: rgba(232, 25, 125, 0.42);
+	--tec-color-background-primary-multiday: rgba(225, 14, 30, 0.3);
+	--tec-color-background-primary-multiday-hover: rgba(225, 14, 30, 0.42);
 	--tec-color-background-secondary-multiday: rgba(255, 255, 255, 0.14);
 	--tec-color-background-secondary-multiday-hover: rgba(255, 255, 255, 0.22);
-	--tec-color-accent-primary-week-event: rgba(232, 25, 125, 0.16);
-	--tec-color-accent-primary-week-event-hover: rgba(232, 25, 125, 0.26);
-	--tec-color-accent-primary-week-event-featured: rgba(232, 25, 125, 0.08);
-	--tec-color-accent-primary-week-event-featured-hover: rgba(232, 25, 125, 0.18);
+	--tec-color-accent-primary-week-event: rgba(225, 14, 30, 0.16);
+	--tec-color-accent-primary-week-event-hover: rgba(225, 14, 30, 0.26);
+	--tec-color-accent-primary-week-event-featured: rgba(225, 14, 30, 0.08);
+	--tec-color-accent-primary-week-event-featured-hover: rgba(225, 14, 30, 0.18);
 	--tec-color-box-shadow: rgba(0, 0, 0, 0.5);
 	--tec-color-box-shadow-secondary: rgba(0, 0, 0, 0.4);
 	--tec-color-scroll-track: rgba(255, 255, 255, 0.1);
@@ -100,7 +100,7 @@ body .tribe-dialog .tribe-tickets {
 	--tec-color-accent-secondary: #141827;
 	--tec-color-button-secondary: #141827;
 	--tec-color-link-primary: #141827;
-	--tec-color-link-accent: #c8106a;
+	--tec-color-link-accent: #a50a16;
 	--tec-color-border-default: #d5d5d5;
 	--tec-color-border-secondary: #e4e4e4;
 	--tec-color-border-tertiary: #7d7d7d;
@@ -144,7 +144,7 @@ body .tribe-dialog :where(h1, h2, h3, h4, h5, h6) {
 .tribe-events-single .tribe-events-schedule h2,
 .tribe-events-single .tribe-events-schedule .tribe-event-date-start,
 .tribe-events-single .tribe-events-schedule .tribe-event-time {
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 	font-family: var(--wp--preset--font-family--display);
 	font-weight: 700;
 	letter-spacing: 0.06em;
@@ -185,8 +185,8 @@ body .tribe-dialog :where(h1, h2, h3, h4, h5, h6) {
 
 .woocommerce-store-notice,
 p.demo_store {
-	background: var(--wp--preset--gradient--apex);
-	color: var(--wp--preset--color--carbon);
+	background: var(--wp--preset--color--red);
+	color: #fff;
 }
 
 .wc-block-components-product-price,
@@ -198,9 +198,9 @@ p.demo_store {
 
 .wc-block-components-product-sale-badge,
 .wc-block-grid__product-onsale {
-	background: var(--wp--preset--gradient--apex) !important;
+	background: var(--wp--preset--color--red) !important;
 	border: 0 !important;
-	color: var(--wp--preset--color--carbon) !important;
+	color: #fff !important;
 	font-family: var(--wp--preset--font-family--display);
 	font-style: italic;
 	font-weight: 800;
@@ -242,7 +242,7 @@ p.demo_store {
 }
 
 .apex-legacy-builder .fl-builder-content a:where(:not(.fl-button):not(.wp-element-button)) {
-	color: #c8106a;
+	color: #a50a16;
 }
 
 .apex-legacy-builder .fl-builder-content :where(input, select, textarea) {

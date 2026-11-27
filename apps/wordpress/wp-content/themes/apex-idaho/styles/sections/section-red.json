@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+	"version": 3,
+	"title": "Red",
+	"slug": "section-red",
+	"blockTypes": [ "core/group", "core/columns", "core/column", "core/cover" ],
+	"styles": {
+		"color": {
+			"background": "var:preset|color|red",
+			"text": "var:preset|color|white"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "var:preset|color|white" },
+				":hover": { "color": { "text": "var:preset|color|white" } }
+			},
+			"heading": {
+				"color": { "text": "var:preset|color|white" }
+			},
+			"button": {
+				"color": { "text": "var:preset|color|white", "background": "var:preset|color|carbon" },
+				":hover": { "color": { "text": "var:preset|color|carbon", "background": "var:preset|color|white" } },
+				":focus": { "color": { "text": "var:preset|color|carbon", "background": "var:preset|color|white" } }
+			}
+		}
+	}
+}

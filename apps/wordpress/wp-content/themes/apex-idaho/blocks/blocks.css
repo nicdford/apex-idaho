@@ -27,7 +27,7 @@
 
 .apex-event-card:hover,
 .apex-event-card:focus-within {
-	border-color: rgba(232, 25, 125, 0.6);
+	border-color: rgba(225, 14, 30, 0.6);
 	transform: translateY(-4px);
 }
 
@@ -55,7 +55,7 @@
 .apex-event-card__placeholder {
 	background:
 		repeating-linear-gradient(-62deg, transparent 0 18px, rgba(255, 255, 255, 0.05) 18px 19px),
-		radial-gradient(120% 120% at 100% 0%, rgba(232, 25, 125, 0.55) 0%, rgba(249, 115, 22, 0.18) 45%, transparent 75%),
+		linear-gradient(var(--wp--preset--color--red), var(--wp--preset--color--red)) 100% 0 / 34% 6px no-repeat,
 		var(--wp--preset--color--graphite);
 }
 
@@ -92,8 +92,8 @@
 	align-self: flex-start;
 	margin: -2.6rem 0 0.6rem !important;
 	padding: 0.45rem 1rem 0.4rem 0.85rem;
-	background: var(--wp--preset--gradient--apex);
-	color: var(--wp--preset--color--carbon);
+	background: var(--wp--preset--color--red);
+	color: #fff;
 	font-family: var(--wp--preset--font-family--display);
 	font-style: italic;
 	text-transform: uppercase;
@@ -140,7 +140,7 @@
 }
 
 .apex-event-card:focus-within {
-	outline: 3px solid var(--wp--preset--color--caution);
+	outline: 3px solid var(--wp--preset--color--chalk);
 	outline-offset: 3px;
 }
 
@@ -155,7 +155,7 @@
 	font-weight: 700;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 }
 
 .apex-event-card__foot {
@@ -184,7 +184,7 @@
 
 .apex-event-card__cta .apex-arrow {
 	display: inline-block;
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 	font-style: normal;
 	transition: transform 0.2s ease;
 }
@@ -201,7 +201,7 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border-top: 3px solid var(--wp--preset--color--apex-pink);
+	border-top: 3px solid var(--wp--preset--color--red);
 }
 
 .apex-event-row {
@@ -220,7 +220,7 @@
 }
 
 .apex-event-row:hover {
-	background: rgba(232, 25, 125, 0.09);
+	background: rgba(225, 14, 30, 0.09);
 }
 
 .apex-event-row__pos,
@@ -238,7 +238,7 @@
 }
 
 .apex-event-row:first-child .apex-event-row__pos {
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 }
 
 .apex-event-row__date {
@@ -274,7 +274,7 @@
 }
 
 .apex-event-row__go {
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 	font-size: 1.35rem;
 	transition: transform 0.2s ease;
 }
@@ -321,7 +321,6 @@
 .apex-ticker-item__meta {
 	margin-left: 0.45em;
 	font-weight: 600;
-	opacity: 0.85;
 }
 
 .apex-events__empty {
@@ -331,7 +330,7 @@
 		repeating-conic-gradient(rgba(255, 255, 255, 0.06) 0 25%, transparent 0 50%) 100% 0 / 28px 28px no-repeat,
 		var(--wp--preset--color--asphalt);
 	border: 1px solid var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
-	border-left: 5px solid var(--wp--preset--color--caution);
+	border-left: 5px solid var(--wp--preset--color--red);
 }
 
 .apex-events__empty p {
@@ -345,7 +344,7 @@
 	font-weight: 900;
 	text-transform: uppercase;
 	line-height: 1;
-	color: var(--wp--preset--color--caution);
+	color: var(--wp--preset--color--red-bright);
 	margin-bottom: 0.5rem !important;
 }
 
@@ -535,7 +534,7 @@
 	font-size: var(--wp--preset--font-size--small);
 	font-weight: 700;
 	letter-spacing: 0.24em;
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 }
 
 .apex-countdown__title {
@@ -547,7 +546,7 @@
 }
 
 a.apex-countdown__title:hover {
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 }
 
 .apex-countdown__clock {
@@ -567,13 +566,10 @@ a.apex-countdown__title:hover {
 	min-width: 4.6rem;
 	padding: 0.75rem 0.85rem 0.6rem;
 	background: rgba(10, 10, 12, 0.72);
-	border-top: 3px solid var(--wp--preset--color--apex-pink);
+	border-top: 3px solid var(--wp--preset--color--red);
 	clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
 }
 
-.apex-countdown__unit:nth-child(2) { border-top-color: #f04a4f; }
-.apex-countdown__unit:nth-child(3) { border-top-color: #f5602f; }
-.apex-countdown__unit:nth-child(4) { border-top-color: var(--wp--preset--color--ignition); }
 
 .apex-countdown__unit b {
 	white-space: nowrap;
@@ -603,8 +599,8 @@ a.apex-countdown__title:hover {
 
 .apex-countdown.is-live .apex-countdown__clock {
 	padding: 0.75rem 1.25rem;
-	background: var(--wp--preset--gradient--apex);
-	color: var(--wp--preset--color--carbon);
+	background: var(--wp--preset--color--red);
+	color: #fff;
 	font-size: var(--wp--preset--font-size--x-large);
 }
 
@@ -653,8 +649,8 @@ a.apex-countdown__title:hover {
 	display: grid;
 	place-items: center;
 	background:
-		repeating-linear-gradient(-62deg, transparent 0 18px, rgba(10, 10, 12, 0.08) 18px 19px),
-		var(--wp--preset--gradient--apex);
+		repeating-linear-gradient(-62deg, transparent 0 18px, rgba(10, 10, 12, 0.1) 18px 19px),
+		var(--wp--preset--color--red);
 }
 
 .apex-partner-photo__initials {
@@ -663,7 +659,7 @@ a.apex-countdown__title:hover {
 	font-style: italic;
 	font-weight: 900;
 	line-height: 1;
-	color: var(--wp--preset--color--carbon);
+	color: #fff;
 	letter-spacing: 0.02em;
 }
 
@@ -687,7 +683,7 @@ a.apex-countdown__title:hover {
 }
 
 .apex-cart-link__a:hover {
-	color: var(--wp--preset--color--hot-pink);
+	color: var(--wp--preset--color--red-bright);
 }
 
 .apex-cart-link__count {
@@ -696,8 +692,8 @@ a.apex-countdown__title:hover {
 	min-width: 1.45rem;
 	height: 1.45rem;
 	padding: 0 0.3rem;
-	background: var(--wp--preset--gradient--apex);
-	color: var(--wp--preset--color--carbon);
+	background: var(--wp--preset--color--red);
+	color: #fff;
 	font-size: 0.8rem;
 	font-style: normal;
 	font-weight: 800;

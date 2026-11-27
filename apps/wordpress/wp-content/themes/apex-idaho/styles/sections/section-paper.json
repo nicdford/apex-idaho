@@ -12,7 +12,7 @@
 		"elements": {
 			"link": {
 				"color": { "text": "var:preset|color|carbon" },
-				":hover": { "color": { "text": "var:preset|color|apex-pink" } }
+				":hover": { "color": { "text": "var:preset|color|red-deep" } }
 			},
 			"heading": {
 				"color": { "text": "var:preset|color|carbon" }

@@ -16,17 +16,15 @@
    ========================================================================== */
 
 :root {
-	--apex-pink: var(--wp--preset--color--apex-pink);
-	--apex-hot: var(--wp--preset--color--hot-pink);
-	--apex-orange: var(--wp--preset--color--ignition);
-	--apex-caution: var(--wp--preset--color--caution);
+	--apex-red: var(--wp--preset--color--red);
+	--apex-red-bright: var(--wp--preset--color--red-bright);
+	--apex-red-deep: var(--wp--preset--color--red-deep);
 	--apex-carbon: var(--wp--preset--color--carbon);
 	--apex-asphalt: var(--wp--preset--color--asphalt);
 	--apex-graphite: var(--wp--preset--color--graphite);
 	--apex-steel: var(--wp--preset--color--steel);
 	--apex-smoke: var(--wp--preset--color--smoke);
 	--apex-chalk: var(--wp--preset--color--chalk);
-	--apex-grad: var(--wp--preset--gradient--apex);
 	--apex-line: var(--wp--custom--line--subtle, rgba(255, 255, 255, 0.08));
 	--apex-line-strong: var(--wp--custom--line--strong, rgba(255, 255, 255, 0.18));
 	--apex-slant: var(--wp--custom--slant, 12px);
@@ -57,12 +55,12 @@ body {
 }
 
 ::selection {
-	background: var(--apex-pink);
-	color: var(--apex-carbon);
+	background: var(--apex-red);
+	color: #fff;
 }
 
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-	outline: 3px solid var(--apex-caution);
+	outline: 3px solid currentColor;
 	outline-offset: 3px;
 }
 
@@ -82,7 +80,7 @@ body {
 a:where(:not(.wp-element-button)) {
 	text-decoration-thickness: 2px;
 	text-underline-offset: 0.22em;
-	text-decoration-color: var(--apex-pink);
+	text-decoration-color: var(--apex-red);
 	transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
@@ -104,10 +102,10 @@ a:where(:not(.wp-element-button)):hover {
 }
 
 .skip-link.screen-reader-text:focus {
-	background: var(--apex-caution);
+	background: var(--apex-red);
 	clip: auto !important;
 	clip-path: none;
-	color: var(--apex-carbon);
+	color: #fff;
 	display: block;
 	font-weight: 700;
 	height: auto;
@@ -148,31 +146,26 @@ a:where(:not(.wp-element-button)):hover {
 	background-size: 20px 20px;
 }
 
-/* On a Hot section the texture must sit on top of the section's gradient,
-   not replace it (both are background-image). */
-[class*="is-style-section-hot"].apex-texture-speed {
-	background-image:
-		repeating-linear-gradient(-62deg, transparent 0 26px, rgba(10, 10, 12, 0.07) 26px 27px),
-		var(--apex-grad);
+/* On a Red section the texture lines go dark so they read on red. */
+[class*="is-style-section-red"].apex-texture-speed {
+	background-image: repeating-linear-gradient(-62deg, transparent 0 26px, rgba(10, 10, 12, 0.09) 26px 27px);
 }
 
-[class*="is-style-section-hot"].apex-texture-grid {
+[class*="is-style-section-red"].apex-texture-grid {
 	background-image:
-		linear-gradient(rgba(10, 10, 12, 0.07) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(10, 10, 12, 0.07) 1px, transparent 1px),
-		var(--apex-grad);
-	background-size: 56px 56px, 56px 56px, auto;
+		linear-gradient(rgba(10, 10, 12, 0.09) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(10, 10, 12, 0.09) 1px, transparent 1px);
+	background-size: 56px 56px;
 }
 
-/* Hero/page-band background: two brand glows over the grid. */
+/* Hero/page-band background: the grid, nothing else. Kept as its own class so
+   bands can be restyled in one place. */
 .apex-texture-night {
 	background-image:
-		radial-gradient(110% 80% at 88% 0%, rgba(232, 25, 125, 0.3) 0%, rgba(232, 25, 125, 0) 58%),
-		radial-gradient(70% 60% at 0% 100%, rgba(249, 115, 22, 0.16) 0%, rgba(249, 115, 22, 0) 60%),
-		linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-	background-size: auto, auto, 56px 56px, 56px 56px;
-	background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+		linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+	background-size: 56px 56px;
+	background-position: -1px -1px;
 }
 
 /* ==========================================================================
@@ -205,7 +198,7 @@ a:where(:not(.wp-element-button)):hover {
 .apex-into-asphalt { --apex-cut-into: var(--apex-asphalt); }
 .apex-into-paper { --apex-cut-into: var(--wp--preset--color--paper); }
 .apex-into-white { --apex-cut-into: #fff; }
-.apex-into-hot { --apex-cut-into: var(--apex-grad); }
+.apex-into-red { --apex-cut-into: var(--apex-red); }
 
 /* Racing stripe along the top edge of a section. */
 .apex-stripe-top {
@@ -220,8 +213,8 @@ a:where(:not(.wp-element-button)):hover {
 	top: 0;
 	height: 6px;
 	background:
-		linear-gradient(var(--apex-pink), var(--apex-pink)) 0 0 / 100% 4px no-repeat,
-		linear-gradient(90deg, transparent 0 62%, var(--apex-orange) 62% 100%) 0 100% / 100% 1px no-repeat;
+		linear-gradient(var(--apex-red), var(--apex-red)) 0 0 / 100% 4px no-repeat,
+		linear-gradient(90deg, transparent 0 62%, var(--apex-chalk) 62% 100%) 0 100% / 100% 1px no-repeat;
 	pointer-events: none;
 }
 
@@ -255,7 +248,7 @@ a:where(:not(.wp-element-button)):hover {
 	font-style: italic;
 	line-height: 0.8;
 	color: transparent !important;
-	-webkit-text-stroke: 2px var(--apex-pink);
+	-webkit-text-stroke: 2px var(--apex-red);
 	letter-spacing: -0.02em;
 }
 
@@ -326,18 +319,24 @@ a:where(:not(.wp-element-button)):hover {
 	color: var(--apex-carbon);
 }
 
-.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color),
-.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
+.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
 	color: var(--apex-carbon);
 }
 
-.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background),
-.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
+.is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
 	background: rgba(10, 10, 12, 0.06);
 }
 
+.is-style-section-red .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
+	color: #fff;
+}
+
+.is-style-section-red .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
+	background: rgba(10, 10, 12, 0.18);
+}
+
 .is-style-section-paper .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover,
-.is-style-section-hot .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {
+.is-style-section-red .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {
 	background: var(--apex-carbon);
 	color: var(--apex-chalk);
 }
@@ -358,7 +357,7 @@ a:where(:not(.wp-element-button)):hover {
 }
 
 .is-style-apex-eyebrow:not(.has-text-color) {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .is-style-apex-eyebrow::before {
@@ -368,16 +367,19 @@ a:where(:not(.wp-element-button)):hover {
 	height: 4px;
 	margin-right: 0.9em;
 	vertical-align: 0.22em;
-	background: var(--apex-grad);
+	background: var(--apex-red);
 	transform: skewX(-24deg);
 }
 
-.is-style-section-paper .is-style-apex-eyebrow:not(.has-text-color),
-.is-style-section-hot .is-style-apex-eyebrow:not(.has-text-color) {
+.is-style-section-paper .is-style-apex-eyebrow:not(.has-text-color) {
 	color: var(--apex-carbon);
 }
 
-.is-style-section-hot .is-style-apex-eyebrow::before {
+.is-style-section-red .is-style-apex-eyebrow:not(.has-text-color) {
+	color: #fff;
+}
+
+.is-style-section-red .is-style-apex-eyebrow::before {
 	background: var(--apex-carbon);
 }
 
@@ -405,36 +407,16 @@ p.is-style-apex-lede.has-text-align-center {
 	paint-order: stroke fill;
 }
 
-/* Gradient heading, sized to its text so the whole ramp shows. */
-.wp-block-heading.is-style-apex-gradient {
-	background: var(--apex-grad);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	width: fit-content;
-	max-width: 100%;
-	padding-inline-end: 0.12em;
-}
-
-.wp-block-heading.is-style-apex-gradient.has-text-align-center {
-	margin-inline: auto;
-}
-
-.wp-block-heading.is-style-apex-gradient.has-text-align-right {
-	margin-inline-start: auto;
+/* Red heading. */
+.wp-block-heading.is-style-apex-accent {
+	color: var(--apex-red);
 }
 
 /* Heading conventions, so editors get the look with plain Bold / Italic:
-   bold words render in the APEX gradient, italic words render outlined. */
+   bold words render in APEX Red, italic words render outlined. */
 :where(h1, h2, h3, h4, .wp-block-heading, .wp-block-post-title) strong {
-	background: var(--apex-grad);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	padding-inline-end: 0.08em;
-	margin-inline-end: -0.04em;
-	-webkit-box-decoration-break: clone;
-	box-decoration-break: clone;
+	color: var(--apex-red);
+	font-weight: inherit;
 }
 
 :where(h1, h2, h3, h4, .wp-block-heading, .wp-block-post-title) em {
@@ -443,9 +425,9 @@ p.is-style-apex-lede.has-text-align-center {
 	-webkit-text-stroke: clamp(1px, 0.03em, 3px) currentColor;
 }
 
-.is-style-section-hot :where(h1, h2, h3, h4, .wp-block-heading) strong {
-	background: none;
-	-webkit-text-fill-color: currentColor;
+/* On red, red words would vanish: underline them instead. */
+.is-style-section-red :where(h1, h2, h3, h4, .wp-block-heading) strong {
+	color: inherit;
 	text-decoration: underline;
 	text-decoration-thickness: 0.08em;
 	text-underline-offset: 0.12em;
@@ -475,8 +457,8 @@ hr.wp-block-separator.is-style-apex-stripe {
 	border: 0;
 	height: 10px;
 	background:
-		linear-gradient(var(--apex-pink), var(--apex-pink)) 0 0 / 100% 5px no-repeat,
-		linear-gradient(var(--apex-orange), var(--apex-orange)) 0 100% / 100% 2px no-repeat;
+		linear-gradient(var(--apex-red), var(--apex-red)) 0 0 / 100% 5px no-repeat,
+		linear-gradient(var(--apex-chalk), var(--apex-chalk)) 0 100% / 100% 2px no-repeat;
 }
 
 hr.wp-block-separator.is-style-apex-checker {
@@ -486,14 +468,14 @@ hr.wp-block-separator.is-style-apex-checker {
 }
 
 .is-style-section-paper hr.wp-block-separator.is-style-apex-checker,
-.is-style-section-hot hr.wp-block-separator.is-style-apex-checker {
+.is-style-section-red hr.wp-block-separator.is-style-apex-checker {
 	background: repeating-conic-gradient(var(--apex-carbon) 0 25%, transparent 0 50%) 0 0 / 16px 16px;
 }
 
 hr.wp-block-separator.is-style-apex-chevrons {
 	border: 0;
 	height: 16px;
-	background: var(--apex-grad);
+	background: var(--apex-red);
 	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cpath d='M2 0h7l8 8-8 8H2l8-8z'/%3E%3C/svg%3E") 0 50% / 24px 16px repeat-x;
 	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cpath d='M2 0h7l8 8-8 8H2l8-8z'/%3E%3C/svg%3E") 0 50% / 24px 16px repeat-x;
 }
@@ -523,7 +505,7 @@ ul.is-style-apex-diamonds > li::before {
 	top: 0.6em;
 	width: 0.48em;
 	height: 0.48em;
-	background: var(--apex-grad);
+	background: var(--apex-red);
 	transform: rotate(45deg);
 }
 
@@ -569,7 +551,7 @@ ul.is-style-apex-diamonds > li::before {
 /* Timing sheet. */
 .wp-block-table.is-style-apex-timing thead th {
 	color: var(--apex-smoke);
-	border-bottom: 3px solid var(--apex-pink);
+	border-bottom: 3px solid var(--apex-red);
 }
 
 .wp-block-table.is-style-apex-timing tbody tr:nth-child(odd) {
@@ -577,7 +559,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .wp-block-table.is-style-apex-timing tbody tr:hover {
-	background: rgba(232, 25, 125, 0.08);
+	background: rgba(225, 14, 30, 0.08);
 }
 
 .wp-block-table.is-style-apex-timing td {
@@ -591,11 +573,11 @@ ul.is-style-apex-diamonds > li::before {
 	font-size: var(--wp--preset--font-size--large);
 	font-style: italic;
 	font-weight: 700;
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .is-style-section-paper .wp-block-table.is-style-apex-timing td:first-child {
-	color: var(--apex-pink);
+	color: var(--apex-red);
 }
 
 .is-style-section-paper .wp-block-table.is-style-apex-timing tbody tr:nth-child(odd) {
@@ -640,8 +622,8 @@ ul.is-style-apex-diamonds > li::before {
 	height: 1.6em;
 	font-style: normal;
 	font-weight: 600;
-	color: var(--apex-carbon);
-	background: var(--apex-grad);
+	color: #fff;
+	background: var(--apex-red);
 	clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
 	transition: transform 0.25s var(--apex-ease);
 }
@@ -651,11 +633,11 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .wp-block-details > summary:hover {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .is-style-section-paper .wp-block-details > summary:hover {
-	color: var(--apex-pink);
+	color: var(--apex-red);
 }
 
 .wp-block-details > :not(summary) {
@@ -674,8 +656,8 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .wp-block-pullquote {
-	border-top: 6px solid var(--apex-pink);
-	border-bottom: 2px solid var(--apex-orange);
+	border-top: 6px solid var(--apex-red);
+	border-bottom: 2px solid var(--apex-chalk);
 }
 
 /* ==========================================================================
@@ -692,7 +674,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 :where(input, select, textarea):not(.tribe-dialog *):focus {
-	border-color: var(--apex-pink);
+	border-color: var(--apex-red);
 }
 
 ::placeholder {
@@ -739,7 +721,7 @@ ul.is-style-apex-diamonds > li::before {
 	content: "";
 	display: block;
 	height: 2px;
-	background: linear-gradient(90deg, var(--apex-pink) 0 55%, transparent 55% 56%, var(--apex-orange) 56% 78%, transparent 78% 79%, var(--apex-caution) 79% 100%);
+	background: var(--apex-red);
 }
 
 /* Ticker strip. */
@@ -796,7 +778,7 @@ ul.is-style-apex-diamonds > li::before {
 	right: 0;
 	bottom: -0.05em;
 	height: 3px;
-	background: var(--apex-grad);
+	background: var(--apex-red);
 	transform: scaleX(0) skewX(-24deg);
 	transform-origin: left center;
 	transition: transform 0.25s var(--apex-ease);
@@ -847,7 +829,7 @@ ul.is-style-apex-diamonds > li::before {
 .apex-header .wp-block-navigation__responsive-container.is-menu-open {
 	--navigation-layout-justification-setting: flex-start;
 	--navigation-layout-justify: flex-start;
-	border-left: 6px solid var(--apex-pink);
+	border-left: 6px solid var(--apex-red);
 }
 
 .apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
@@ -873,7 +855,7 @@ ul.is-style-apex-diamonds > li::before {
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	vertical-align: 0.95em;
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
@@ -888,11 +870,11 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item:nth-child(odd) .wp-block-navigation-item__content:hover {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item:nth-child(even) .wp-block-navigation-item__content:hover {
-	color: var(--apex-orange);
+	color: var(--apex-red-bright);
 }
 
 .apex-header__cta .wp-block-button__link {
@@ -933,10 +915,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-wordmark__apex {
-	background: var(--apex-grad);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
+	color: var(--apex-red);
 	padding-right: 0.06em;
 }
 
@@ -1050,7 +1029,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-card:hover {
-	border-color: rgba(232, 25, 125, 0.55) !important;
+	border-color: rgba(225, 14, 30, 0.55) !important;
 }
 
 /* Text link with a travelling arrow. */
@@ -1070,7 +1049,7 @@ ul.is-style-apex-diamonds > li::before {
 	display: inline-block;
 	margin-left: 0.5em;
 	font-style: normal;
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 	transition: transform 0.2s var(--apex-ease);
 }
 
@@ -1079,13 +1058,17 @@ ul.is-style-apex-diamonds > li::before {
 	transform: translateX(5px);
 }
 
-.is-style-section-paper .apex-link-arrow a,
-.is-style-section-hot .apex-link-arrow a {
+.is-style-section-paper .apex-link-arrow a {
 	color: var(--apex-carbon);
 }
 
+.is-style-section-red .apex-link-arrow a,
+.is-style-section-red .apex-link-arrow a::after {
+	color: #fff;
+}
+
 .is-style-section-paper .apex-link-arrow a::after {
-	color: var(--apex-pink);
+	color: var(--apex-red);
 }
 
 /* Stretched link: the card's link covers the whole card. */
@@ -1122,7 +1105,7 @@ ul.is-style-apex-diamonds > li::before {
 	top: 0;
 	bottom: 0;
 	width: 5px;
-	background: var(--apex-grad);
+	background: var(--apex-red);
 	transform: scaleY(0.25);
 	transform-origin: top;
 	transition: transform 0.35s var(--apex-ease);
@@ -1151,12 +1134,7 @@ ul.is-style-apex-diamonds > li::before {
 	font-weight: 900;
 	line-height: 0.9;
 	text-transform: uppercase;
-	background: var(--apex-grad);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	width: fit-content;
-	padding-right: 0.1em;
+	color: var(--apex-red);
 }
 
 .apex-stat__label {
@@ -1177,7 +1155,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .is-style-section-paper .apex-index {
-	-webkit-text-stroke-color: var(--apex-pink);
+	-webkit-text-stroke-color: var(--apex-red);
 }
 
 /* Media partner cards. */
@@ -1205,12 +1183,12 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-partner__links a:hover {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-partner__links li::before {
 	content: "▸";
-	color: var(--apex-pink);
+	color: var(--apex-red);
 	margin-right: 0.55em;
 	font-size: 0.8em;
 }
@@ -1252,7 +1230,7 @@ ul.is-style-apex-diamonds > li::before {
 	font-style: normal;
 	font-weight: 700;
 	letter-spacing: 0.24em;
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-footer__links {
@@ -1274,7 +1252,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-footer__links a:hover {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-footer__bottom {
@@ -1305,8 +1283,8 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-social .wp-social-link:hover {
-	background: var(--apex-pink) !important;
-	color: var(--apex-carbon) !important;
+	background: var(--apex-red) !important;
+	color: #fff !important;
 	transform: translateX(2px);
 }
 
@@ -1322,7 +1300,7 @@ ul.is-style-apex-diamonds > li::before {
 
 /* Sponsor strip in the footer. */
 .apex-sponsor-strip {
-	border-top: 4px solid var(--apex-pink);
+	border-top: 4px solid var(--apex-red);
 }
 
 /* ==========================================================================
@@ -1332,9 +1310,9 @@ ul.is-style-apex-diamonds > li::before {
 .apex-car-photo-field {
 	margin: 1.25rem 0;
 	padding: 1.25rem;
-	border: 1px solid var(--apex-pink);
+	border: 1px solid var(--apex-red);
 	border-left-width: 5px;
-	background: rgba(232, 25, 125, 0.06);
+	background: rgba(225, 14, 30, 0.06);
 }
 
 .apex-car-photo-field label {
@@ -1349,7 +1327,7 @@ ul.is-style-apex-diamonds > li::before {
 }
 
 .apex-car-photo-field__req {
-	color: var(--apex-hot);
+	color: var(--apex-red-bright);
 }
 
 .apex-car-photo-field__hint {

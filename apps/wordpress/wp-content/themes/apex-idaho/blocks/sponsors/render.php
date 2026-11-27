@@ -34,7 +34,9 @@ $apex_item = static function ( $sponsor, $decorative, $show_name ) {
 	$img   = sprintf(
 		'<img src="%1$s" alt="%2$s" loading="lazy" decoding="async"%3$s>',
 		esc_url( $sponsor['logo'] ),
-		$decorative ? '' : esc_attr( $sponsor['title'] ),
+		// Empty alt on the duplicate marquee pass, and when the name is printed
+		// beside the logo (otherwise screen readers hear it twice).
+		( $decorative || $show_name ) ? '' : esc_attr( $sponsor['title'] ),
 		$style
 	);
 	$name  = $show_name ? '<span class="apex-sponsor__name">' . esc_html( $sponsor['title'] ) . '</span>' : '';
